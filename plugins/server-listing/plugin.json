@@ -1,0 +1,15 @@
+{
+    "id": "server-listing",
+    "name": "Server-Listing",
+    "description": "Plugin for Azuriom",
+    "version": "1.0.0",
+    "url": "https://azuriom.com",
+    "authors": [
+        "Azuriom"
+    ],
+    "azuriom_api": "1.1.0",
+    "providers": [
+        "\\Azuriom\\Plugin\\ServerListing\\Providers\\ServerListingServiceProvider",
+        "\\Azuriom\\Plugin\\ServerListing\\Providers\\RouteServiceProvider"
+    ]
+}

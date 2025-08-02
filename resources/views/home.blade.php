@@ -28,7 +28,7 @@
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <form action="{{ route('server-listing.index') }}" method="GET" class="row g-3">
+                        <form action="" method="GET" class="row g-3">
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -414,8 +414,8 @@
                         <h2 class="fw-bold mb-3">Want to promote your server?</h2>
                         <p class="lead mb-4">Get your Minecraft server listed and reach thousands of potential players!
                         </p>
-                        <a href="{{ route('server-listing.submit') }}" class="btn btn-light btn-lg px-5"> <i
-                                class="bi bi-plus me-2"></i>Add Your Server </a>
+                        <a href="" class="btn btn-light btn-lg px-5"> <i class="bi bi-plus me-2"></i>Add Your
+                            Server </a>
                     </div>
                 </div>
             </div>
