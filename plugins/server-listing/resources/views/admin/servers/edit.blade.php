@@ -15,14 +15,9 @@
                     <i class="bi bi-save"></i> {{ trans('server-listing::messages.actions.update') }}
                 </button>
                 <a href="{{ route('server-listing.admin.servers.destroy', $server->slug) }}" class="btn btn-danger"
-                    data-confirm="delete"
-                    onclick="event.preventDefault(); document.getElementById('deleteForm').submit(); ">
+                    data-confirm="delete">
                     <i class="bi bi-trash"></i> {{ trans('server-listing::messages.actions.delete') }}
                 </a>
-                <form id="deleteForm" action="{{ route('server-listing.admin.servers.destroy', $server->slug) }}"
-                    method="POST">
-                    @method('DELETE')
-                </form>
             </form>
         </div>
     </div>

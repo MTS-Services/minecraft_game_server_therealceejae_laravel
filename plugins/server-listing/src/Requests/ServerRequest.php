@@ -39,7 +39,7 @@ class ServerRequest extends FormRequest
     public function rules(): array
     {
         $server = $this->route('server'); // route binding for update
-        $imageRules = ['image', 'max:5000', 'mimetypes:image/jpeg,image/png,image/webp,image/gif'];
+        $imageRules = ['image', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
 
         return [
             'user_id' => 'required|sometimes|exists:users,id',
@@ -62,12 +62,12 @@ class ServerRequest extends FormRequest
             'version' => ['required', 'string', 'max:50'],
             'max_players' => ['required', 'integer', 'min:1'],
             'current_players' => ['nullable', 'integer', 'min:0'],
-            'is_online' => ['boolean'],
-            'is_premium' => ['boolean'],
-            'is_featured' => ['boolean'],
-            'is_approved' => ['boolean'],
+            'is_online' => ['nullable', 'boolean'],
+            'is_premium' => ['nullable', 'boolean'],
+            'is_featured' => ['nullable', 'boolean'],
+            'is_approved' => ['nullable', 'boolean'],
             'tags' => ['nullable', 'array'],
-            'tags.*' => ['string', 'max:50'],
+            'tags.*' => ['string'],
             'vote_count' => ['nullable', 'integer', 'min:0'],
             'total_votes' => ['nullable', 'integer', 'min:0'],
             'last_ping' => ['nullable', 'date'],

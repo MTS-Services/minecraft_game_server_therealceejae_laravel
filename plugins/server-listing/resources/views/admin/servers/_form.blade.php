@@ -38,6 +38,7 @@
     </script>
 @endpush
 
+
 <div class="row gx-3">
     <div class="col-md-4 mb-3">
         <label class="form-label" for="userSelect">{{ trans('server-listing::messages.fields.user') }}</label>
@@ -160,20 +161,26 @@
         @php
             $tagsValue = old('tags', isset($server->tags) ? json_decode($server->tags, true) : []);
             $tagsValue = is_array($tagsValue) ? implode(',', $tagsValue) : $tagsValue;
+            $hasTagError = $errors->has('tags') || $errors->has('tags.*');
         @endphp
         <label for="tagsInput">{{ trans('server-listing::messages.fields.tags') }}</label>
-        <input name="tags[]" id="tagsInput" class="form-control @error('tags') is-invalid @enderror"
+        <input name="tags[]" id="tagsInput" class="form-control {{ $hasTagError ? 'is-invalid' : '' }}"
             value="{{ $tagsValue }}" placeholder="{{ trans('server-listing::messages.placeholder.tags') }}">
         @error('tags')
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
+        @foreach ($errors->get('tags.*') as $tagErrors)
+            @foreach ($tagErrors as $message)
+                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+            @endforeach
+        @endforeach
     </div>
     <div class="col-md-2 mb-3">
         <label class="form-label"
             for="isFeaturedSwitch">{{ trans('server-listing::messages.fields.is_featured') }}</label>
         <div class="mb-3 form-check form-switch">
             <input type="checkbox" class="form-check-input" id="isFeaturedSwitch" name="is_featured"
-                @checked($server->is_featured ?? false)>
+                @checked(old('is_featured', $server->is_featured ?? false))>
             <label class="form-check-label"
                 for="isFeaturedSwitch">{{ trans('server-listing::messages.fields.make_featured') }}</label>
         </div>
@@ -183,7 +190,7 @@
             for="isPremiumSwitch">{{ trans('server-listing::messages.fields.is_premium') }}</label>
         <div class="mb-3 form-check form-switch">
             <input type="checkbox" class="form-check-input" id="isFeaturedSwitch" name="is_premium"
-                @checked($server->is_premium ?? false)>
+                @checked(old('is_premium', $server->is_premium ?? false))>
             <label class="form-check-label"
                 for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_premium') }}</label>
         </div>
@@ -193,30 +200,30 @@
         <label class="form-label"
             for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }}</label>
         <input type="file" class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput"
-            name="banner_image" accept=".jpg,.jpeg,.jpe,.png,.gif,.bmp,.svg,.webp"
+            name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
             data-image-preview="bannerImagePreview">
 
         @error('banner_image')
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
 
-        <img src="{{ $server->banner_image_url ? $server->banner_image_url : '#' }}"
-            class="mt-2 img-fluid rounded img-preview {{ $server->banner_image_url ? '' : 'd-none' }}"
+        <img src="{{ isset($server->banner_image_url) ? $server->banner_image_url : '#' }}"
+            class="mt-2 img-fluid rounded img-preview {{ isset($server->banner_image_url) ? '' : 'd-none' }}"
             alt="banner image" id="bannerImagePreview">
     </div>
     <div class="col-md-4 mb-3">
         <label class="form-label"
             for="logoImageInput">{{ trans('server-listing::messages.fields.logo_image') }}</label>
         <input type="file" class="form-control @error('logo_image') is-invalid @enderror" id="logoImageInput"
-            name="logo_image" accept=".jpg,.jpeg,.jpe,.png,.gif,.bmp,.svg,.webp"
+            name="logo_image" accept="image/jpg,image/jpeg,image/png,image/gif"
             data-image-preview="logoImagePreview">
 
         @error('logo_image')
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
 
-        <img src="{{ $server->logo_image_url ? $server->logo_image_url : '#' }}"
-            class="mt-2 img-fluid rounded img-preview {{ $server->logo_image_url ? '' : 'd-none' }}"
+        <img src="{{ isset($server->logo_image_url) ? $server->logo_image_url : '#' }}"
+            class="mt-2 img-fluid rounded img-preview {{ isset($server->logo_image_url) ? '' : 'd-none' }}"
             alt="banner image" id="logoImagePreview">
     </div>
     <div class="col-md-2 mb-3">
@@ -224,7 +231,7 @@
             for="isApprovedSwitch">{{ trans('server-listing::messages.fields.is_approved') }}</label>
         <div class="mb-3 form-check form-switch">
             <input type="checkbox" class="form-check-input" id="isApprovedSwitch" name="is_approved"
-                @checked($server->is_approved ?? false)>
+                @checked(old('is_approved', $server->is_approved ?? false))>
             <label class="form-check-label"
                 for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_approved') }}</label>
         </div>
@@ -234,7 +241,7 @@
             for="isOnlineSwitch">{{ trans('server-listing::messages.fields.is_online') }}</label>
         <div class="mb-3 form-check form-switch">
             <input type="checkbox" class="form-check-input" id="isOnlineSwitch" name="is_online"
-                @checked($server->is_online ?? false)>
+                @checked(old('is_online', $server->is_online ?? false))>
             <label class="form-check-label"
                 for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_online') }}</label>
         </div>
