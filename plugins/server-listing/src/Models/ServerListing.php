@@ -45,6 +45,7 @@ class ServerListing extends Model
         'featured_bg',
         'logo_image_url',
         'banner_image_url',
+        'online_label',
     ];
 
     protected $casts = [
@@ -178,20 +179,36 @@ class ServerListing extends Model
     {
         return $query->where('is_approved', true);
     }
+    public function scopePending($query)
+    {
+        return $query->where('is_approved', false);
+    }
 
     public function scopeOnline($query)
     {
         return $query->where('is_online', true);
+    }
+    public function scopeOffline($query)
+    {
+        return $query->where('is_online', false);
     }
 
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
     }
+    public function scopeNotFeatured($query)
+    {
+        return $query->where('is_featured', false);
+    }
 
     public function scopePremium($query)
     {
         return $query->where('is_premium', true);
+    }
+    public function scopeNotPremium($query)
+    {
+        return $query->where('is_premium', false);
     }
 
     public function scopeByCategory($query, $categoryId)
@@ -224,4 +241,10 @@ class ServerListing extends Model
             ->orderBy('sort_order')
             ->orderBy('name');
     }
+
+    public function getOnlineLabelAttribute(): string
+    {
+        return $this->is_online ? 'Online' : 'Offline';
+    }
+
 }

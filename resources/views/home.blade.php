@@ -16,9 +16,11 @@
         <div class="row mb-4">
             <div class="col-12">
                 <div class="text-center mb-4">
-                    <h1 class="display-5 fw-bold text-primary mb-3">Minecraft Server List</h1>
-                    <p class="lead text-muted">Find the best Minecraft servers to play on. Browse through our extensive list
-                        of servers and find your perfect match!</p>
+                    <h1 class="display-5 fw-bold text-primary mb-3">{{ __('Minecraft Server List') }}</h1>
+                    <p class="lead text-muted">
+                        {{ __('Find the best Minecraft servers to play on. Browse through our extensive list
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        of servers and find your perfect match!') }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -65,248 +67,271 @@
         </div>
 
         {{-- Top 10 Premium Servers - Ultra Premium Design --}}
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="premium-top10-container">
-                    <!-- Premium Header with Animation -->
-                    <div class="premium-top10-header text-center mb-4">
-                        {{-- <div class="premium-crown-icon">
+        @if (isset($topServers) && count($topServers) > 0)
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="premium-top10-container">
+                        <!-- Premium Header with Animation -->
+                        <div class="premium-top10-header text-center mb-4">
+                            {{-- <div class="premium-crown-icon">
                             <i class="bi bi-gem premium-gem-icon"></i>
                         </div> --}}
-                        <h2 class="premium-title">
-                            <span class="premium-text-gradient"><i class="bi bi-gem me-2"></i>TOP 10 PREMIUM
-                                SERVERS<i class="bi bi-gem ms-2"></i></span>
-                        </h2>
-                        <p class="premium-subtitle m-0">The most exclusive and highest quality Minecraft servers</p>
-                    </div>
-
-                    <div class="card premium-top10-card border-0 shadow-lg">
-                        <div class="premium-top10-card-header">
-                            <div class="row align-items-center text-white">
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold"><i class="bi bi-trophy text-warning me-2"></i>Rank</h5>
-                                </div>
-                                <div class="col-md-4">
-                                    <h5 class="mb-0 fw-bold"><i class="bi bi-gem text-warning me-2"></i>Elite Servers</h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold text-center"><i
-                                            class="bi bi-people text-warning me-2"></i>Players</h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold text-center"><i
-                                            class="bi bi-circle text-warning me-2"></i>Status</h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold"><i class="bi bi-tags text-warning me-2"></i>Features</h5>
-                                </div>
-                            </div>
+                            <h2 class="premium-title">
+                                <span class="premium-text-gradient"><i
+                                        class="bi bi-gem me-2"></i>{{ __('TOP 10 PREMIUM SERVERS') }}<i
+                                        class="bi bi-gem ms-2"></i></span>
+                            </h2>
+                            <p class="premium-subtitle m-0">
+                                {{ __('The most exclusive and highest quality Minecraft servers') }}
+                            </p>
                         </div>
-                        <div class="card-body p-0 premium-top10-body">
-                            <!-- Server 1 -->
-                            <div class="premium-top10-row border-bottom p-4">
-                                <div class="row align-items-center">
+
+                        <div class="card premium-top10-card border-0 shadow-lg">
+                            <div class="premium-top10-card-header">
+                                <div class="row align-items-center text-white">
                                     <div class="col-md-2">
-                                        <div class="d-flex align-items-center">
-                                            <div class="elit-server-logo me-3 rounded">
-                                                <img src="https://placehold.co/60" alt="Server Logo" class="rounded">
-                                                <div class="premium-logo-badge">
-                                                    <i class="bi bi-gem"></i>
-                                                </div>
-                                            </div>
-                                            <div class="premium-rank">
-                                                <div class="premium-rank-badge">
-                                                    <i class="bi bi-gem text-dark"></i>
-                                                    <span class="fw-bold premium-rank-text">#1</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <h5 class="mb-0 fw-bold"><i
+                                                class="bi bi-trophy text-warning me-2"></i>{{ __('Rank') }}</h5>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="premium-server-banner position-relative">
-                                            <img src="https://placehold.co/400x70" alt="Server Banner"
-                                                class="rounded w-100">
-                                            <div class="premium-server-overlay">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="badge premium-version-badge me-2">
-                                                            <i class="bi bi-gear me-1"></i>1.21.7
-                                                        </span>
-                                                        <i class="bi bi-flag me-1 text-warning"></i>
-                                                        <small class="text-white fw-bold">mp.mc-complex.com</small>
+                                        <h5 class="mb-0 fw-bold"><i
+                                                class="bi bi-gem text-warning me-2"></i>{{ __('Elite Servers') }}</h5>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h5 class="mb-0 fw-bold text-center"><i
+                                                class="bi bi-people text-warning me-2"></i>{{ __('Players') }}</h5>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h5 class="mb-0 fw-bold text-center"><i
+                                                class="bi bi-circle text-warning me-2"></i>{{ __('Status') }}</h5>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h5 class="mb-0 fw-bold"><i
+                                                class="bi bi-tags text-warning me-2"></i>{{ __('Features') }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0 premium-top10-body">
+
+                                @foreach ($topServers as $topServer)
+                                    <div class="premium-top10-row border-bottom p-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="elit-server-logo me-3 rounded"
+                                                        style="height: 60px; width: 60px;">
+                                                        <img src="{{ $topServer->logo_image_url }}" alt="Server Logo"
+                                                            class="rounded object-fit-cover h-100 w-100">
+                                                        <div class="premium-logo-badge">
+                                                            <i class="bi bi-gem"></i>
+                                                        </div>
                                                     </div>
-                                                    <button class="btn btn-sm premium-copy-btn"
-                                                        onclick="copyIP('mp.mc-complex.com')">
-                                                        <i class="bi bi-copy"></i>
-                                                    </button>
+                                                    <div class="premium-rank">
+                                                        <div class="premium-rank-badge">
+                                                            <i class="bi bi-gem text-dark"></i>
+                                                            <span
+                                                                class="fw-bold premium-rank-text">{{ __('#1') }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="premium-server-banner position-relative"
+                                                    style="height: 70px; width: 400px;">
+                                                    <img src="{{ $topServer->banner_image_url }}" alt="Server Banner"
+                                                        class="rounded w-100 h-100 object-fit-cover">
+                                                    <div class="premium-server-overlay">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="badge premium-version-badge me-2">
+                                                                    <i class="bi bi-gear me-1"></i>
+                                                                    {{ __($topServer->version) }}
+                                                                </span>
+                                                                <i class="bi bi-flag me-1 text-warning"></i>
+                                                                <a class="text-white fw-bold"
+                                                                    href="{{ $topServer->website_url }}"
+                                                                    target="_blank"><small>{{ removeHttpFromUrl($topServer->website_url) }}</small></a>
+                                                            </div>
+                                                            <button class="btn btn-sm premium-copy-btn"
+                                                                onclick="copyIP('{{ $topServer->website_url }}')">
+                                                                <i class="bi bi-copy"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="text-center ">
+                                                    <h4 class="mb-0 premium-count-text">
+                                                        {{ $topServer->current_players }}/{{ $topServer->max_players }}
+                                                    </h4>
+                                                    {{-- <small class="premium-count-label">Active Players</small> --}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="text-center">
+                                                    <span class="badge premium-status-badge">
+                                                        <i class="bi bi-circle-fill me-1 premium-pulse"></i>
+                                                        {{ __($topServer->online_label) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    @foreach (json_decode(json_decode($topServer->tags, true)[0], true) as $tag)
+                                                        <span
+                                                            class="badge {{ Arr::random(tagsBgColors()) }}">{{ $tag['value'] }}</span>
+                                                    @endforeach
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="text-center ">
-                                            <h4 class="mb-0 premium-count-text">1246/5000</h4>
-                                            {{-- <small class="premium-count-label">Active Players</small> --}}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="text-center">
-                                            <span class="badge premium-status-badge">
-                                                <i class="bi bi-circle-fill me-1 premium-pulse"></i>ONLINE
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="d-flex flex-wrap gap-1">
-                                            <span class="badge bg-primary">Cobblemon</span>
-                                            <span class="badge bg-warning">Faction</span>
-                                            <span class="badge bg-info">LifeSteal</span>
-                                            <span class="badge bg-success">Pixelmon</span>
-                                            <span class="badge bg-secondary">Pokemon</span>
-                                            <span class="badge bg-dark">Skyblock</span>
-                                            <span class="badge bg-danger">SMP</span>
-                                            <span class="badge bg-primary">Survival</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
-
-                            <!-- Additional servers would follow the same pattern -->
-                            <!-- Server 2-10 with similar premium styling -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         {{-- Premium Servers - Premium Design --}}
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="premium-container">
-                    <!-- Premium Header -->
-                    <div class="premium-header text-center my-4">
-                        <h3 class="premium-section-title">
-                            <i class="bi bi-star-fill text-warning me-2"></i>
-                            <span class="premium-gradient-text">PREMIUM SERVERS</span>
-                            <i class="bi bi-star-fill text-warning ms-2"></i>
-                        </h3>
-                        <p class="premium-section-subtitle m-0">High-quality servers with enhanced features</p>
-                    </div>
-
-                    <div class="card premium-card border-0 shadow">
-                        <div class="premium-card-header">
-                            <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold premium-header-text">
-                                        <i class="bi bi-trophy text-info me-2"></i>Rank
-                                    </h5>
-                                </div>
-                                <div class="col-md-4">
-                                    <h5 class="mb-0 fw-bold premium-header-text">
-                                        <i class="bi bi-gem text-info me-2"></i>Premium Server
-                                    </h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold text-center premium-header-text">
-                                        <i class="bi bi-people text-info me-2"></i>Players
-                                    </h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold text-center premium-header-text">
-                                        <i class="bi bi-circle text-info me-2"></i>Status
-                                    </h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold premium-header-text">
-                                        <i class="bi bi-tags text-info me-2"></i>Tags
-                                    </h5>
-                                </div>
-                            </div>
+        @if (isset($premiumServers) && count($premiumServers) > 0)
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="premium-container">
+                        <!-- Premium Header -->
+                        <div class="premium-header text-center my-4">
+                            <h3 class="premium-section-title">
+                                <i class="bi bi-star-fill text-warning me-2"></i>
+                                <span class="premium-gradient-text">{{ __('PREMIUM SERVERS') }}</span>
+                                <i class="bi bi-star-fill text-warning ms-2"></i>
+                            </h3>
+                            <p class="premium-section-subtitle m-0">
+                                {{ __('High-quality servers with enhanced features') }}
+                            </p>
                         </div>
-                        <div class="card-body p-0 premium-body">
-                            <!-- Premium Server 1 -->
-                            <div class="premium-server-row border-bottom p-3">
+
+                        <div class="card premium-card border-0 shadow">
+                            <div class="premium-card-header">
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
-                                        <div class="d-flex align-items-center">
-                                            <div class="premium-logo-container me-3">
-                                                <img src="https://placehold.co/60" alt="Server Logo"
-                                                    class="rounded premium-server-logo">
-                                                <div class="premium-logo-badge">
-                                                    <i class="bi bi-star-fill"></i>
-                                                </div>
-                                            </div>
-                                            <div class="premium-rank-container">
-                                                <i class="bi bi-award text-warning"></i>
-                                                <span class="fw-bold premium-rank-number">#1</span>
-                                            </div>
-                                        </div>
+                                        <h5 class="mb-0 fw-bold premium-header-text">
+                                            <i class="bi bi-trophy text-info me-2"></i>{{ __('Rank') }}
+                                        </h5>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="premium-banner-container position-relative">
-                                            <img src="https://placehold.co/400x70" alt="Server Banner"
-                                                class="rounded w-100 premium-banner">
-                                            <div class="premium-banner-overlay">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="badge premium-version me-2">
-                                                            <i class="bi bi-gear me-1"></i>1.21.7
-                                                        </span>
-                                                        <i class="bi bi-flag me-1"></i>
-                                                        <small class="text-white">mp.mc-complex.com</small>
-                                                    </div>
-                                                    <button class="btn btn-sm premium-copy-button"
-                                                        onclick="copyIP('mp.mc-complex.com')">
-                                                        <i class="bi bi-copy"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <h5 class="mb-0 fw-bold premium-header-text">
+                                            <i class="bi bi-gem text-info me-2"></i>{{ __('Premium Server') }}
+                                        </h5>
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="text-center">
-                                            <h5 class="mb-0 premium-player-number">1246/5000</h5>
-                                        </div>
+                                        <h5 class="mb-0 fw-bold text-center premium-header-text">
+                                            <i class="bi bi-people text-info me-2"></i>{{ __('Players') }}
+                                        </h5>
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="text-center">
-                                            <span class="badge premium-online-badge">
-                                                <i class="bi bi-circle-fill me-1 premium-online-pulse"></i>Online
-                                            </span>
-                                        </div>
+                                        <h5 class="mb-0 fw-bold text-center premium-header-text">
+                                            <i class="bi bi-circle text-info me-2"></i>{{ __('Status') }}
+                                        </h5>
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="d-flex flex-wrap gap-1">
-                                            <span class="badge bg-primary">Cobblemon</span>
-                                            <span class="badge bg-warning">Faction</span>
-                                            <span class="badge bg-info">LifeSteal</span>
-                                            <span class="badge bg-success">Pixelmon</span>
-                                            <span class="badge bg-secondary">Pokemon</span>
-                                            <span class="badge bg-dark">Skyblock</span>
-                                            <span class="badge bg-danger">SMP</span>
-                                            <span class="badge bg-primary">Survival</span>
-                                        </div>
+                                        <h5 class="mb-0 fw-bold premium-header-text">
+                                            <i class="bi bi-tags text-info me-2"></i>{{ __('Tags') }}
+                                        </h5>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Additional premium servers would follow -->
+                            <div class="card-body p-0 premium-body">
+
+                                @foreach ($premiumServers as $premiumServer)
+                                    <div class="premium-server-row border-bottom p-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="premium-logo-container me-3"
+                                                        style="height: 60px; width: 60px;">
+                                                        <img src="{{ $premiumServer->logo_image_url }}" alt="Server Logo"
+                                                            class="rounded premium-server-logo h-100 w-100 object-fit-cover">
+                                                        <div class="premium-logo-badge">
+                                                            <i class="bi bi-star-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="premium-rank-container">
+                                                        <i class="bi bi-award text-warning"></i>
+                                                        <span
+                                                            class="fw-bold premium-rank-number">{{ __('#1') }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="premium-banner-container position-relative"
+                                                    style="height: 70px; width: 400px;">
+                                                    <img src="{{ $premiumServer->banner_image_url }}" alt="Server Banner"
+                                                        class="rounded w-100 premium-banner h-100 w-100 object-fit-cover">
+                                                    <div class="premium-banner-overlay">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="badge premium-version me-2">
+                                                                    <i class="bi bi-gear me-1"></i>
+                                                                    {{ $premiumServer->version }}
+                                                                </span>
+                                                                <i class="bi bi-flag me-1"></i>
+                                                                <a class="text-white"
+                                                                    href="{{ $premiumServer->website_url }}"
+                                                                    target="_blank"><small>{{ removeHttpFromUrl($premiumServer->website_url) }}</small></a>
+                                                            </div>
+                                                            <button class="btn btn-sm premium-copy-button"
+                                                                onclick="copyIP('{{ $premiumServer->website_url }}')">
+                                                                <i class="bi bi-copy"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="text-center">
+                                                    <h5 class="mb-0 premium-player-number">
+                                                        {{ $premiumServer->current_players }}/{{ $premiumServer->max_players }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="text-center">
+                                                    <span class="badge premium-online-badge">
+                                                        <i
+                                                            class="bi bi-circle-fill me-1 premium-online-pulse"></i>{{ $premiumServer->online_label }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    @foreach (json_decode(json_decode($premiumServer->tags, true)[0], true) as $tag)
+                                                        <span
+                                                            class="badge {{ Arr::random(tagsBgColors()) }}">{{ $tag['value'] }}</span>
+                                                    @endforeach
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <!-- Additional premium servers would follow -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         {{-- Middle Description --}}
         <div class="row">
             <div class="col-12">
                 <div class="card shadow-sm bg-secondary text-white my-4">
                     <div class="card-body">
-                        <p class="m-0">Welcome on the top Minecraft server list. Find here all the best Minecraft
-                            servers with the most popular gamemodes such as Pixelmon, Skyblock, LifeSteal, Survival, Prison,
-                            Faction, Creative,
-                            Towny, McMMO and more. Navigate through the different categories in the menu above and find the
-                            perfect server to suit your Minecraft gameplay needs. Our server list supports Java and Bedrock
-                            cross-play servers.</p>
+                        <p class="m-0">
+                            {{ __('Welcome on the top Minecraft server list. Find here all the best Minecraft servers with the most popular gamemodes such as Pixelmon, Skyblock, LifeSteal, Survival, Prison, Faction, Creative, Towny, McMMO and more. Navigate through the different categories in the menu above and find the perfect server to suit your Minecraft gameplay needs. Our server list supports Java and Bedrock cross-play servers.') }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -319,88 +344,112 @@
                     <div class="server-card-header">
                         <div class="row align-items-center text-white">
                             <div class="col-md-2">
-                                <h5 class="mb-0 fw-bold"><i class="bi bi-trophy text-dark me-2"></i>Rank</h5>
+                                <h5 class="mb-0 fw-bold"><i class="bi bi-trophy text-dark me-2"></i>{{ __('Rank') }}
+                                </h5>
                             </div>
                             <div class="col-md-4">
-                                <h5 class="mb-0 fw-bold"><i class="bi bi-server text-dark me-2"></i>Servers</h5>
-                            </div>
-                            <div class="col-md-2">
-                                <h5 class="mb-0 fw-bold text-center"><i class="bi bi-people text-dark me-2"></i>Players
+                                <h5 class="mb-0 fw-bold"><i class="bi bi-server text-dark me-2"></i>{{ __('Server') }}
                                 </h5>
                             </div>
                             <div class="col-md-2">
-                                <h5 class="mb-0 fw-bold text-center"><i class="bi bi-circle text-dark me-2"></i>Status
+                                <h5 class="mb-0 fw-bold text-center"><i
+                                        class="bi bi-people text-dark me-2"></i>{{ __('Players') }}
                                 </h5>
                             </div>
                             <div class="col-md-2">
-                                <h5 class="mb-0 fw-bold"><i class="bi bi-tags text-dark me-2"></i>Features</h5>
+                                <h5 class="mb-0 fw-bold text-center"><i
+                                        class="bi bi-circle text-dark me-2"></i>{{ __('Status') }}
+                                </h5>
+                            </div>
+                            <div class="col-md-2">
+                                <h5 class="mb-0 fw-bold"><i class="bi bi-tags text-dark me-2"></i>{{ __('Features') }}
+                                </h5>
                             </div>
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        <div class="server-row border-bottom p-3 hover-bg">
-                            <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="server-logo me-3">
-                                            <img src="https://placehold.co/60" alt="Server Logo" class="rounded"
-                                                style="width: 60px; height: 60px;">
-                                        </div>
-                                        <div class="server-rank">
-                                            <div class="simple-server-badge">
-                                                <i class="bi bi-trophy text-white"></i>
-                                                <span class="fw-bold simple-server-text">#1</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="premium-banner-container position-relative">
-                                        <img src="https://placehold.co/400x70" alt="Server Banner"
-                                            class="rounded w-100 premium-banner">
-                                        <div class="premium-banner-overlay">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="badge premium-version me-2">
-                                                        <i class="bi bi-gear me-1"></i>1.21.7
-                                                    </span>
-                                                    <i class="bi bi-flag me-1"></i>
-                                                    <small class="text-white">mp.mc-complex.com</small>
+                        @if (isset($popularServers) && count($popularServers) > 0)
+
+                            @foreach ($popularServers as $popularServer)
+                                <div class="server-row border-bottom p-3 hover-bg">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="server-logo me-3" style="width: 60px; height: 60px;">
+                                                    <img src="{{ $popularServer->logo_image_url }}" alt="Server Logo"
+                                                        class="rounded h-100 w-100 object-fit-cover">
                                                 </div>
-                                                <button class="btn btn-sm premium-copy-button"
-                                                    onclick="copyIP('mp.mc-complex.com')">
-                                                    <i class="bi bi-copy"></i>
-                                                </button>
+                                                <div class="server-rank">
+                                                    <div class="simple-server-badge">
+                                                        <i class="bi bi-trophy text-white"></i>
+                                                        <span
+                                                            class="fw-bold simple-server-text">{{ __('#1') }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="premium-banner-container position-relative"
+                                                style="height: 70px; width: 400px;">
+                                                <img src="{{ $popularServer->banner_image_url }}" alt="Server Banner"
+                                                    class="rounded w-100 premium-banner h-100 w-100 object-fit-cover">
+                                                <div class="premium-banner-overlay">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="badge premium-version me-2">
+                                                                <i
+                                                                    class="bi bi-gear me-1"></i>{{ $popularServer->version }}
+                                                            </span>
+                                                            <i class="bi bi-flag me-1"></i>
+                                                            <a class="text-white"
+                                                                href="{{ $popularServer->website_url }}"
+                                                                target="_blank"><small>{{ removeHttpFromUrl($popularServer->website_url) }}</small></a>
+                                                        </div>
+                                                        <button class="btn btn-sm premium-copy-button"
+                                                            onclick="copyIP('{{ $popularServer->website_url }}')">
+                                                            <i class="bi bi-copy"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="text-center">
+                                                <h5 class="mb-0 premium-player-number">
+                                                    {{ $popularServer->current_players }}/{{ $popularServer->max_players }}
+                                                </h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="text-center">
+                                                <span class="badge premium-online-badge">
+                                                    <i
+                                                        class="bi bi-circle-fill me-1 premium-online-pulse"></i>{{ $popularServer->online_label }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                @foreach (json_decode(json_decode($popularServer->tags, true)[0], true) as $tag)
+                                                    <span
+                                                        class="badge {{ Arr::random(tagsBgColors()) }}">{{ $tag['value'] }}</span>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        <h5 class="mb-0 premium-player-number">1246/5000</h5>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        <span class="badge bg-success fs-6 px-3 py-2">
-                                            <i class="bi bi-circle me-1"></i>Online
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="d-flex flex-wrap gap-1">
-                                        <span class="badge bg-primary">Cobblemon</span>
-                                        <span class="badge bg-warning">Faction</span>
-                                        <span class="badge bg-info">LifeSteal</span>
-                                        <span class="badge bg-success">Pixelmon</span>
-                                        <span class="badge bg-secondary">Pokemon</span>
-                                        <span class="badge bg-dark">Skyblock</span>
-                                        <span class="badge bg-danger">SMP</span>
-                                        <span class="badge bg-primary">Survival</span>
+                            @endforeach
+                        @else
+                            <div class="server-row border-bottom p-3 hover-bg">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <div class="text-center">
+                                            <h5 class="mb-0 fw-bold">No servers found.</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
