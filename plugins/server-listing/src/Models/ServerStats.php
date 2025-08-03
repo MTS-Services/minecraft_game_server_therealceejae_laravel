@@ -2,11 +2,13 @@
 
 namespace Azuriom\Plugin\ServerListing\Models;
 
+use Azuriom\Models\Traits\HasTablePrefix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServerStats extends Model
 {
+    use HasTablePrefix;
     protected $table = 'server_listing_stats';
 
     protected $fillable = [

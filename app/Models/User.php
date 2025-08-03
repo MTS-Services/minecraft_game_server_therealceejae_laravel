@@ -11,6 +11,7 @@ use Azuriom\Notifications\ResetPassword as ResetPasswordNotification;
 use Azuriom\Notifications\VerifyEmail as VerifyEmailNotification;
 use Azuriom\Support\Discord\LinkedRoles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -71,8 +72,16 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'money', 'role_id', 'game_id', 'avatar',
-        'access_token', 'two_factor_secret', 'password_changed_at',
+        'name',
+        'email',
+        'password',
+        'money',
+        'role_id',
+        'game_id',
+        'avatar',
+        'access_token',
+        'two_factor_secret',
+        'password_changed_at',
     ];
 
     /**
@@ -81,7 +90,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $hidden = [
-        'password', 'remember_token', 'access_token', 'last_login_ip', 'two_factor_secret',
+        'password',
+        'remember_token',
+        'access_token',
+        'last_login_ip',
+        'two_factor_secret',
     ];
 
     /**
@@ -114,7 +127,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected array $searchable = [
-        'email', 'name', 'game_id', 'role.*', 'discordAccount.*',
+        'email',
+        'name',
+        'game_id',
+        'role.*',
+        'discordAccount.*',
     ];
 
     /**
@@ -217,7 +234,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasUploadedAvatar(): bool
     {
-        return $this->avatar !== null && ! Str::isUrl($this->avatar, ['http', 'https']);
+        return $this->avatar !== null && !Str::isUrl($this->avatar, ['http', 'https']);
     }
 
     public function canUploadAvatar(): bool
@@ -255,7 +272,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $this->forceFill([
-            'name' => 'Deleted #'.$this->id,
+            'name' => 'Deleted #' . $this->id,
             'email' => null,
             'avatar' => null,
             'password' => Str::random(),
@@ -314,5 +331,24 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerifyEmailNotification());
+    }
+
+    public function scopeAdmins(Builder $query): Builder
+    {
+        return $query->whereHas('role', function (Builder $query) {
+            $query->where('is_admin', true);
+        });
+    }
+
+    public function scopeNonAdmins(Builder $query): Builder
+    {
+        return $query->whereHas('role', function (Builder $query) {
+            $query->where('is_admin', false);
+        });
+    }
+
+    public function scopeVerified(Builder $query): Builder
+    {
+        return $query->whereNotNull('email_verified_at');
     }
 }

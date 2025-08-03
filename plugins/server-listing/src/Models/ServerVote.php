@@ -2,12 +2,14 @@
 
 namespace Azuriom\Plugin\ServerListing\Models;
 
+use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServerVote extends Model
 {
+    use HasTablePrefix;
     protected $table = 'server_listing_votes';
 
     protected $fillable = [

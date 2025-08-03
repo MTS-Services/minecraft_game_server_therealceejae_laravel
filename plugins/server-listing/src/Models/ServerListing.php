@@ -2,13 +2,16 @@
 
 namespace Azuriom\Plugin\ServerListing\Models;
 
+use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class ServerListing extends Model
 {
+    use HasTablePrefix;
     protected $table = 'server_listing_servers';
 
     protected $fillable = [
@@ -37,6 +40,13 @@ class ServerListing extends Model
         'sort_order',
     ];
 
+    protected $appends = [
+        'featured_label',
+        'featured_bg',
+        'logo_image_url',
+        'banner_image_url',
+    ];
+
     protected $casts = [
         'tags' => 'array',
         'is_online' => 'boolean',
@@ -51,6 +61,38 @@ class ServerListing extends Model
         'total_votes' => 'integer',
         'sort_order' => 'integer',
     ];
+
+    public const FEATURED = 1;
+    public const NOT_FEATURED = 0;
+
+    public function getFeaturedList(): array
+    {
+        return [
+            self::FEATURED => 'Featured',
+            self::NOT_FEATURED => 'Not Featured',
+        ];
+
+    }
+
+    public function getLogoImageUrlAttribute(): string
+    {
+        return $this->logo_image ? Storage::url($this->logo_image) : asset('themes/default/img/default-logo.png');
+    }
+
+    public function getBannerImageUrlAttribute(): string
+    {
+        return $this->banner_image ? Storage::url($this->banner_image) : asset('themes/default/img/default-banner.png');
+    }
+
+    public function getFeaturedLabelAttribute(): string
+    {
+        return $this->is_featured ? $this->getFeaturedList()[self::FEATURED] : $this->getFeaturedList()[self::NOT_FEATURED];
+    }
+
+    public function getFeaturedBgAttribute(): string
+    {
+        return $this->is_featured ? 'badge bg-success' : 'badge bg-danger';
+    }
 
     public function user(): BelongsTo
     {
@@ -84,9 +126,7 @@ class ServerListing extends Model
 
     public function getFullAddressAttribute(): string
     {
-        return $this->server_port === 25565
-            ? $this->server_ip
-            : $this->server_ip . ':' . $this->server_port;
+        return "{$this->server_ip}:{$this->server_port}";
     }
 
     public function getPlayersPercentageAttribute(): float

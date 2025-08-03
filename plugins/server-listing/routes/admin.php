@@ -1,6 +1,7 @@
 <?php
 
 use Azuriom\Plugin\ServerListing\Controllers\Admin\AdminController;
+use Azuriom\Plugin\ServerListing\Controllers\Admin\ServerListingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/servers', [AdminController::class, 'index'])->name('servers.index');
+Route::get('/index', [ServerListingController::class, 'index'])->name('servers.index');
+Route::get('/servers', [ServerListingController::class, 'create'])->name('servers.create');
+Route::post('/servers', [ServerListingController::class, 'store'])->name('servers.create');
+Route::get('/servers/{server}', [ServerListingController::class, 'edit'])->name('servers.edit');
+Route::put('/servers/{server}', [ServerListingController::class, 'update'])->name('servers.edit');
+Route::delete('/servers/{server}', [ServerListingController::class, 'destroy'])->name('servers.destroy');
