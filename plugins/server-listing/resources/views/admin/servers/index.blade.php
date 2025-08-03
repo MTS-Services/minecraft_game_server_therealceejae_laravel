@@ -41,6 +41,7 @@
                                         class="mx-1 text-danger" data-confirm="delete"
                                         title="{{ trans('server-listing::messages.actions.delete') }}"
                                         data-toggle="tooltip"><i class="bi bi-trash"></i></a>
+
                                 </td>
                             </tr>
                         @endforeach

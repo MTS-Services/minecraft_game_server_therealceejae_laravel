@@ -94,10 +94,13 @@ class ServerListingController extends Controller
             ->with('success', trans('messages.status.success'));
     }
 
-    public function destroy(ServerListing $server)
+    public function destroy(string $server_slug)
     {
+        $server = ServerListing::where('slug', $server_slug)->first();
+        Storage::disk('public')->delete($server->logo_image);
+        Storage::disk('public')->delete($server->banner_image);
         $server->delete();
-        return redirect()->route('servers.index');
+        return redirect()->route('server-listing.admin.servers.index')->with('success', trans('messages.status.success'));
     }
 
 
