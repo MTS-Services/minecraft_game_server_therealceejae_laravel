@@ -3,9 +3,11 @@
 namespace Azuriom\Plugin\ServerListing\Requests;
 
 use Azuriom\Http\Requests\Traits\ConvertCheckbox;
+use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Rules\Slug;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class ServerRequest extends FormRequest
 {
@@ -73,5 +75,22 @@ class ServerRequest extends FormRequest
             'last_ping' => ['nullable', 'date'],
             'sort_order' => ['nullable', 'integer'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            if ($this->boolean('is_featured')) {
+                $serverSlug = optional($this->route('server'))->id;
+
+                $featuredCount = ServerListing::where('is_featured', true)
+                    ->when($serverSlug, fn($q) => $q->where('slug', '!=', $serverSlug))
+                    ->count();
+
+                if ($featuredCount >= 10) {
+                    $validator->errors()->add('is_featured_limit', trans('Only a maximum of 10 servers can be featured at a time.'));
+                }
+            }
+        });
     }
 }

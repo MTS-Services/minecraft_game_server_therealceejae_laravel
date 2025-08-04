@@ -179,12 +179,16 @@
         <label class="form-label"
             for="isFeaturedSwitch">{{ trans('server-listing::messages.fields.is_featured') }}</label>
         <div class="mb-3 form-check form-switch">
-            <input type="checkbox" class="form-check-input" id="isFeaturedSwitch" name="is_featured"
-                @checked(old('is_featured', $server->is_featured ?? false))>
+            <input type="checkbox" class="form-check-input @error('is_featured_limit') is-invalid @enderror"
+                id="isFeaturedSwitch" name="is_featured" @checked(old('is_featured', $server->is_featured ?? false))>
             <label class="form-check-label"
                 for="isFeaturedSwitch">{{ trans('server-listing::messages.fields.make_featured') }}</label>
         </div>
+        @error('is_featured_limit')
+            <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
     </div>
+
     <div class="col-md-2 mb-3">
         <label class="form-label"
             for="isPremiumSwitch">{{ trans('server-listing::messages.fields.is_premium') }}</label>

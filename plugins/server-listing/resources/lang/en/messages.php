@@ -85,4 +85,7 @@ return [
         'featured' => 'Featured',
         'not_featured' => 'Not Featured',
     ],
+    'validation' => [
+        'featured_limit' => 'Only a maximum of 10 servers can be featured at a time.',
+    ],
 ];
