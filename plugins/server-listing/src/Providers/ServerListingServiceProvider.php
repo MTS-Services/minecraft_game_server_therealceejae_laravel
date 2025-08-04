@@ -47,9 +47,9 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
 
 
         Permission::registerPermissions([
+            'server-listing.category' => 'server-listing::admin.permissions.category',
             'server-listing.server' => 'server-listing::admin.permissions.server',
             'server-listing.votes' => 'server-listing::admin.permissions.votes',
-            'server-listing.category' => 'server-listing::admin.permissions.category',
             'server-listing.stats' => 'server-listing::admin.permissions.stats',
             'server-listing.settings' => 'server-listing::admin.permissions.settings',
         ]);
@@ -116,6 +116,10 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
                 'icon' => 'bi bi-server',
                 'route' => 'server-listing.admin.*',
                 'items' => [
+                    'server-listing.admin.categories.index' => [
+                        'name' => trans('server-listing::admin.nav.categories'),
+                        'permission' => 'server-listing.category',
+                    ],
                     'server-listing.admin.servers.index' => [
                         'name' => trans('server-listing::admin.nav.servers'),
                         'permission' => 'server-listing.server',

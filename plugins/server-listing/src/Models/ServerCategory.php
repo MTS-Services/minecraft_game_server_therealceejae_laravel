@@ -21,10 +21,38 @@ class ServerCategory extends Model
         'is_active',
     ];
 
+    protected const ACTIVE = true;
+    protected const INACTIVE = false;
+
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    protected $appends = [
+        'status_list',
+        'status_label',
+        'status_bg',
+    ];
+
+
+    public function getStatusList(): array
+    {
+        return [
+            self::ACTIVE => trans('server-listing::messages.status.active'),
+            self::INACTIVE => trans('server-listing::messages.status.inactive'),
+        ];
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return $this->is_active ? $this->getStatusList()[self::ACTIVE] : $this->getStatusList()[self::INACTIVE];
+    }
+
+    public function getStatusBgAttribute(): string
+    {
+        return $this->is_active ? 'badge bg-success' : 'badge bg-danger';
+    }
 
     public function servers(): HasMany
     {

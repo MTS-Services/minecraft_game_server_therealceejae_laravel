@@ -31,7 +31,6 @@ if (!function_exists('is_installed')) {
     function is_installed(): bool
     {
         $key = config('app.key');
-
         return !empty($key) && $key !== InstallController::TEMP_KEY;
     }
 }

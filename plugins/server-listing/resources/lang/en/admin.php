@@ -16,6 +16,7 @@ return [
         'variables' => 'Variables',
         'purchases' => 'Purchases',
         'statistics' => 'Statistics',
+        'categories' => 'Categories',
     ],
 
     'server' => [
@@ -24,7 +25,16 @@ return [
         'create' => 'Create Server',
         'edit' => 'Edit Server :server',
         'name' => 'Server Name',
-        
+
+    ],
+
+    'category' => [
+        'title' => 'Category',
+        'categories' => 'Categories',
+        'create' => 'Create Category',
+        'edit' => 'Edit Category :category',
+        'name' => 'Category Name',
+
     ],
 
     'permissions' => [

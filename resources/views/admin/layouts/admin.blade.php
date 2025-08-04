@@ -39,7 +39,8 @@
 
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
                     <div class="sidebar-brand-text mx-3">
-                        <img src="{{ asset('svg/azuriom-text-white.svg') }}" alt="Azuriom">
+                        {{-- <img src="{{ asset('svg/azuriom-text-white.svg') }}" alt="Azuriom"> --}}
+                        <strong>{{ __('The Real Ceejae') }}</strong>
 
                         <small class="d-block text-center font-weight-bold">
                             {{ game()->name() }} - v{{ Azuriom::version() }}
@@ -486,7 +487,7 @@
                     <p class="mb-0 py-2 text-center text-body-secondary">
                         @lang('admin.footer', [
                             'year' => '2019-' . now()->year,
-                            'azuriom' => '<a href="https://azuriom.com" target="_blank" rel="noopener noreferrer">Azuriom</a>',
+                            'the_real_ceejae' => '<a href="' . config('app.url') . '" target="_blank" rel="noopener noreferrer">' . config('app.name') . '</a>',
                             'startbootstrap' => '<a href="https://adminkit.io/" target="_blank" rel="noopener noreferrer">AdminKit</a>',
                         ])
                     </p>

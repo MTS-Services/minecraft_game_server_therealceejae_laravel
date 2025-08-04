@@ -46,6 +46,8 @@ return [
         'make_online' => 'Make Online',
         'make_approved' => 'Make Approved',
         'description' => 'Description',
+        'is_active' => 'Active',
+        'status' => 'Status',
     ],
     'placeholder' => [
         'name' => 'Enter name',
@@ -76,5 +78,11 @@ return [
 
     'home' => [
         'rank' => 'Rank',
+    ],
+    'status' => [
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'featured' => 'Featured',
+        'not_featured' => 'Not Featured',
     ],
 ];

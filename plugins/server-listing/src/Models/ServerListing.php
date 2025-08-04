@@ -69,8 +69,8 @@ class ServerListing extends Model
     public function getFeaturedList(): array
     {
         return [
-            self::FEATURED => 'Featured',
-            self::NOT_FEATURED => 'Not Featured',
+            self::FEATURED => trans('server-listing::messages.status.featured'),
+            self::NOT_FEATURED => trans('server-listing::messages.status.not_featured'),
         ];
 
     }
