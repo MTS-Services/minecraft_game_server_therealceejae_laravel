@@ -245,6 +245,7 @@
             border: 2px solid var(--border-primary);
             text-align: center;
             margin: var(--spacing-lg) 0;
+            margin-bottom: 2rem;
         }
 
         .premium-section-title {
