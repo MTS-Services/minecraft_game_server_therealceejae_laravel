@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [ServerListingHomeController::class, 'index']);
 
-Route::get('/', [ServerListingController::class, 'details']);
+Route::get('/{slug}', [ServerListingController::class, 'details'])->name('details');
