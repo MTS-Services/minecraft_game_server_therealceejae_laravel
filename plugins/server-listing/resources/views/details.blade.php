@@ -1,7 +1,720 @@
 @extends('layouts.base')
 @section('title', trans('messages.home'))
 @section('app')
-    <main>
-        This is the details demo page of your plugin.
-    </main>
+
+    @push('styles')
+        <style>
+            :root {
+                /* Primary Colors */
+                --primary-green: #4CAF50;
+                --primary-blue: #2196F3;
+                --primary-purple: #9C27B0;
+                --primary-gold: #FFD700;
+                --primary-orange: #FF9800;
+
+                /* Status Colors */
+                --status-online: #28A745;
+                --status-offline: #DC3545;
+                --status-warning: #FFC107;
+
+                /* Background Colors */
+                --bg-primary: #ffffff;
+                --bg-secondary: #f8f9fa;
+                --bg-dark: #343a40;
+                --bg-darker: #212529;
+
+                /* Border Colors */
+                --border-light: #dee2e6;
+                --border-primary: #e1bee7;
+                --border-dark: #495057;
+
+                /* Text Colors */
+                --text-primary: #212529;
+                --text-secondary: #6c757d;
+                --text-muted: #999;
+                --text-white: #ffffff;
+
+                /* Spacing */
+                --spacing-md: .5rem;
+
+                /* Border Radius */
+                --border-radius-sm: 0.375rem;
+
+                /* Shadows */
+                --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                --shadow-lg: 1rem 3rem rgba(0, 0, 0, 0.175);
+
+                /* Logo/Image Sizes */
+                --logo-size-lg: 60px;
+                --banner-height: 70px;
+            }
+
+            [data-bs-theme="dark"] {
+                --bg-primary: #212529;
+                --bg-secondary: #343a40;
+                --text-primary: #ffffff;
+                --text-secondary: #adb5bd;
+                --border-light: #495057;
+            }
+
+            body {
+                background-color: var(--bg-secondary);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .btn-orange {
+                background-color: var(--primary-green);
+                border-color: var(--primary-green);
+                color: white;
+            }
+
+            .btn-orange:hover {
+                background-color: #e55a2b;
+                border-color: #e55a2b;
+                color: white;
+            }
+
+            .server-rating {
+                color: var(--status-warning);
+            }
+
+            .status-online {
+                color: var(--status-online);
+                font-weight: bold;
+            }
+
+            .status-offline {
+                color: var(--status-offline);
+                font-weight: bold;
+            }
+
+            .discord-widget {
+                background: #7289da;
+                color: var(--text-white);
+                border-radius: 0 0 5px 5px;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .stats-item {
+                border-right: 1px solid var(--border-light);
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .stats-item:last-child {
+                border-right: none;
+            }
+
+            .stats-number {
+                font-size: 2rem;
+                font-weight: bold;
+                color: var(--primary-orange);
+            }
+
+            .minecraft-video {
+                position: relative;
+                width: 100%;
+                height: 300px;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300"><rect fill="%2332CD32" width="800" height="300"/><text x="50%" y="40%" font-family="Arial" font-size="48" font-weight="bold" fill="white" text-anchor="middle">HOW TO</text><text x="50%" y="60%" font-family="Arial" font-size="48" font-weight="bold" fill="yellow" text-anchor="middle">INSTALL</text><text x="50%" y="80%" font-family="Arial" font-size="36" font-weight="bold" fill="blue" text-anchor="middle">Pixelmon</text></svg>') center/cover;
+                border-radius: 10px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .play-button {
+                width: 80px;
+                height: 80px;
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+                color: var(--primary-orange);
+            }
+
+            .server-info-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .server-info-item:last-child {
+                border-bottom: none;
+            }
+
+            .version-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-top: 0.5rem;
+            }
+
+            .version-tag {
+                background-color: var(--text-secondary);
+                color: var(--text-white);
+                padding: 0.25rem 0.5rem;
+                border-radius: 3px;
+                font-size: 0.8rem;
+            }
+
+            .footer-custom {
+                background-color: var(--bg-darker);
+                color: var(--text-secondary);
+                padding: 3rem 0 1rem;
+                margin-top: 4rem;
+            }
+
+            .footer-links {
+                list-style: none;
+                padding: 0;
+            }
+
+            .footer-links li {
+                margin-bottom: 0.5rem;
+            }
+
+            .footer-links a {
+                color: var(--text-secondary);
+                text-decoration: none;
+            }
+
+            .footer-links a:hover {
+                color: var(--primary-orange);
+            }
+
+            .other-servers {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .server-thumb {
+                width: 64px;
+                height: 64px;
+                background: var(--border-light);
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-secondary);
+            }
+
+            .custom-design {
+                background: linear-gradient(135deg, #f3e5f5, #e3f2fd) !important;
+                padding: 10px;
+            }
+
+            body[data-bs-theme="dark"] .custom-design {
+                background: linear-gradient(135deg, #212529, #343a40) !important;
+            }
+
+            .custom-design-2 {
+                background: linear-gradient(135deg, #f8f9fa, #c5cdd4);
+                padding: 10px;
+                border-radius: 0 0 10px 10px;
+                overflow: hidden;
+            }
+
+            body[data-bs-theme="dark"] .custom-design-2 {
+                background: linear-gradient(135deg, #343a40, #212529);
+            }
+
+            .card-header-custom {
+                background: linear-gradient(135deg, var(--primary-purple), #673ab7);
+                border-radius: 10px 10px 0 0;
+                padding: 10px;
+                color: var(--text-white);
+            }
+
+            .server-logo-container {
+                width: 100px;
+                height: 100px;
+                background: var(--border-light);
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-secondary);
+                margin-right: 10px;
+                box-shadow: #96d7f54b 3px 3px 6px 0px inset, #9fddc380 -3px -3px 6px 1px inset;
+            }
+
+            .server-logo {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .server-banner-container {
+                width: 100%;
+                max-width: 500px;
+                height: 100%;
+                max-height: 400px;
+                background: var(--border-light);
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-secondary);
+                margin-right: 10px;
+                padding: 10px;
+                overflow: hidden;
+                box-shadow: #96d7f54b 3px 3px 6px 0px inset, #9fddc380 -3px -3px 6px 1px inset;
+            }
+
+            .server-banner-video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .title-color {
+                color: var(--primary-orange);
+            }
+
+            .server-title {
+                background: linear-gradient(135deg, var(--primary-orange), #673ab7);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .server-row {
+                transition: all 0.3s ease;
+                padding: var(--spacing-md);
+                border-bottom: 1px solid var(--border-light);
+                position: relative;
+            }
+
+            .server-row:hover {
+                background-color: var(--bg-secondary);
+                transform: translateX(5px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .server-row:last-child {
+                border-bottom: none;
+            }
+
+            /* Server Logos */
+            .server-logo {
+                width: var(--logo-size-lg);
+                height: var(--logo-size-lg);
+                border-radius: var(--border-radius-sm);
+                overflow: hidden;
+                border: 2px solid var(--border-light);
+                transition: border-color 0.2s ease;
+                position: relative;
+            }
+
+            .server-logo img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .server-row:hover .server-logo {
+                border-color: var(--primary-blue);
+            }
+
+            /* Server Banners */
+            .server-banner {
+                width: 100%;
+                max-width: 500px;
+                height: var(--banner-height);
+                border-radius: var(--border-radius-sm);
+                overflow: hidden;
+                position: relative;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .server-banner img,
+            .server-banner video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.2s ease;
+            }
+
+            .server-banner:hover img,
+            .server-banner:hover video {
+                transform: scale(1.02);
+            }
+
+            .banner-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+                padding: var(--spacing-sm) var(--spacing-md);
+                z-index: 2;
+            }
+
+            /* Responsive styles */
+            @media (max-width: 767.98px) {
+                .d-flex.flex-md-row {
+                    flex-direction: column !important;
+                }
+
+                .server-logo-container,
+                .server-banner-container {
+                    margin-right: 0;
+                }
+
+                .server-banner-container {
+                    width: 100%;
+                    max-width: 100%;
+                }
+
+                .server-logo-container {
+                    width: 80px;
+                    height: 80px;
+                    margin-bottom: 10px;
+                }
+
+                .server-logo {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .server-row .col-md-2,
+                .server-row .col-md-4 {
+                    margin-bottom: 10px;
+                }
+
+                .server-row .col-md-4 {
+                    width: 100%;
+                    max-width: none;
+                }
+
+                .server-row .server-banner {
+                    width: 100%;
+                    height: auto;
+                    max-width: none;
+                }
+
+                .server-row .row {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+            @media (max-width: 575.98px) {
+                .server-row .d-flex.align-items-center {
+                    flex-direction: column;
+                }
+
+                .server-row .server-logo {
+                    margin-bottom: 10px;
+                }
+            }
+        </style>
+    @endpush
+
+    <div class="container py-4">
+        <div aria-label="breadcrumb" class="custom-design card-header-custom py-2 px-3">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="#" class="text-decoration-none title-color">Minecraft Servers</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Complex Gaming</li>
+            </ol>
+        </div>
+
+        <div class="custom-design-2 py-4">
+            <div>
+                <h1 class="server-title fw-bold fs-4 mb-3">Complex Gaming</h1>
+                <div class="d-flex flex-column flex-md-row justify-content-start align-items-center mb-4 gap-3">
+                    <div class="server-logo-container">
+                        <img src="{{ asset('img/server-logo.png') }}" alt="Server Logo" class="img-fluid server-logo">
+                    </div>
+                    <div class="server-banner-container">
+                        <video src="{{ asset('img/server-banner.mp4') }}" class="server-banner-video" muted=""
+                            autoplay="" loop="" playsinline="" allowfullscreen="false"></video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-success">
+                    <i class="fas fa-thumbs-up me-1"></i> Vote
+                </button>
+                <button class="btn btn-warning"><i class="bi bi-house"></i></button>
+                <button class="btn btn-warning"><i class="bi bi-info-circle"></i></button>
+                <button class="btn btn-warning"><i class="bi bi-question-circle"></i></button>
+                <button class="btn btn-warning"><i class="bi bi-bar-chart"></i></button>
+                <button class="btn btn-warning"><i class="bi bi-heart"></i></button>
+                <button class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header card-header-custom fw-semibold">
+                            <i class="fas fa-info-circle me-2"></i> Server Information
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-play me-2"></i> Address</span>
+                                <span>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn me-2" title="Copy">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    mp.mc-complex.com
+                                </span>
+                            </div>
+
+                            <div class="border-bottom py-3">
+                                <i class="fas fa-comment me-2"></i> MOTD
+                                <div class="custom-design text-white p-2 mt-2 rounded" style="font-family: monospace;">
+                                    <span style="color: var(--primary-orange);">COMPLEX GAMING</span><br />
+                                    <small style="color: var(--text-secondary)">CLANS | #1 FACTIONS NETWORK | QUESTS</small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-circle me-2"></i> Server Status</span>
+                                <span class="text-success fw-semibold">
+                                    Online <small class="text-muted">Checked 1 minute ago</small>
+                                </span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-users me-2"></i> Players</span>
+                                <span>1141 / 5000</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-map-marker-alt me-2"></i> Location</span>
+                                <span><i class="fas fa-flag-usa me-1"></i> United States of America</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-cube me-2"></i> Minecraft Version</span>
+                                <span><span class="badge bg-primary">1.21.7</span></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-globe me-2"></i> Website</span>
+                                <span>
+                                    <a href="https://www.mc-complex.com/" class="text-decoration-none" target="_blank">
+                                        mc-complex.com
+                                    </a>
+                                </span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-user me-2"></i> Registered By</span>
+                                <span>FrankCG</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-calendar me-2"></i> Registered Since</span>
+                                <span>Nov 2, 2017 01:06 PM EST</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-clock me-2"></i> Last Update</span>
+                                <span>Apr 29, 2025 04:56 PM EST</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between border-bottom py-2">
+                                <span><i class="fas fa-palette me-2"></i> Theme</span>
+                                <span><span class="badge bg-secondary">Modern</span></span>
+                            </div>
+
+                            <div class="py-2">
+                                <i class="fas fa-tags me-2"></i> Tag(s):<br />
+                                <span class="badge bg-secondary me-1">Cobblemon</span>
+                                <span class="badge bg-secondary me-1">Factions</span>
+                                <span class="badge bg-secondary me-1">LifeSteal</span>
+                                <span class="badge bg-secondary me-1">Pixelmon</span>
+                                <span class="badge bg-secondary me-1">Reforged</span>
+                                <span class="badge bg-secondary me-1">Pokemon</span>
+                                <span class="badge bg-secondary me-1">Skyblock</span>
+                                <span class="badge bg-secondary me-1">SMP</span>
+                                <span class="badge bg-secondary me-1">Survival</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header card-header-custom fw-semibold">
+                            <i class="fas fa-chart-line me-2"></i> Statistics
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between py-2 border-bottom">
+                                <span><i class="fas fa-clock me-2"></i> Uptime</span>
+                                <span class="text-success fw-bold">100%</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between py-2 border-bottom">
+                                <span><i class="fas fa-thumbs-up me-2"></i> Vote(s)</span>
+                                <span>6828</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between py-2 border-bottom">
+                                <span><i class="fas fa-trophy me-2"></i> Rank</span>
+                                <span>1</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between py-2 border-bottom">
+                                <span><i class="fas fa-star me-2"></i> Score</span>
+                                <span>13131</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between pt-2">
+                                <span><i class="fas fa-heart me-2"></i> Favorited</span>
+                                <span>52</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header card-header-custom">
+                <i class="fab fa-discord me-2"></i>Discord Server
+            </div>
+            <div class="card-body discord-widget">
+                <i class="fab fa-discord" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h5>Complex Pixelmon</h5>
+                <p>Minecraft Server</p>
+                <button class="btn btn-light">Join Discord</button>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <div class="card-header-custom">
+                <i class="fas fa-play me-2"></i>Server Video
+            </div>
+            <div style="border-radius: 0 0 10px 10px; overflow: hidden">
+                <iframe width="100%" height="641" src="https://www.youtube.com/embed/0sE_whDkO7c"
+                    title="How to INSTALL PIXELMON! *FASTEST GUIDE* | Minecraft Pokemon Mod" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header card-header-custom">
+                <i class="fas fa-file-alt me-2"></i>About This Server
+            </div>
+            <div class="card-body">
+                <p>Welcome to Complex Gaming Minecraft server with a wide selection of servers ranging from
+                    Pokemon, Skyblock, Survival, Factions and more! Please read below for more information.</p>
+
+                <h6>Pixelmon Reforged - Latest Version</h6>
+                <p>Adults and Kids. Pixelmon on Minecraft! This version of Pixelmon was on Minecraft 1.16.5.
+                    It's the also you get Pokemon service player who are not new member feedback, so Good
+                    purchase experience through forge.</p>
+
+                <h6>Modpacks</h6>
+                <ul>
+                    <li>Modpacks - We introduce our complex server</li>
+                    <li>Download Technic legit and it uses complex server</li>
+                    <li>Use ATlauncher - No launcher complex server</li>
+                </ul>
+
+                <h6>Vanilla Servers</h6>
+                <p>Vanilla Survival - Regular Minecraft survival with fun times. Complex Gaming has given its
+                    biggest network at this revised time 1.16.5.</p>
+
+                <h6>What is the server IP for Complex Gaming?</h6>
+                <p>The IP address of Complex Gaming Minecraft server is play.complex-gaming.com</p>
+
+                <h6>How do I play on the Complex Gaming Minecraft server?</h6>
+                <p>Open the Minecraft launcher, select the "Play" button, then select "Multiplayer" from the
+                    main menu.</p>
+
+                <h6>What Minecraft game version does Complex Gaming server support?</h6>
+                <p>Complex Gaming supports Minecraft version 1.16.5. We also accept older and newer versions of
+                    Minecraft.</p>
+
+                <h6>Where is the Complex Gaming Minecraft Server being hosted?</h6>
+                <p>The Complex Gaming server is currently hosted in United States of America with uptime of
+                    100%.</p>
+
+                <h6>What gamemodes can I play on the Complex Gaming Minecraft Server?</h6>
+                <p>You can play Cobblemon, Prison, Survival, Luckblock, Pixelmon, Pokemon, Skyblock, SMP.
+                    Similar on the Complex Gaming server.</p>
+
+                <h6>What is the website for the Complex Gaming Minecraft Server?</h6>
+                <p>The website for the Complex Gaming is https://www.complex-gaming.com/</p>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header card-header-custom">
+                <i class="fas fa-server me-2"></i>Other Servers
+            </div>
+            <div class="card-body">
+                <div class="server-row">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <div class="d-flex align-items-center">
+                                <div class="server-logo me-3">
+                                    <img src="{{ asset('img/server-logo.png') }}" alt="Server Logo">
+                                </div>
+                                <div class="server-rank">
+                                    <div class="simple-server-badge">
+                                        <i class="bi bi-trophy text-white"></i>
+                                        <span class="fw-bold simple-server-text">#3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="server-banner">
+                                <video src="{{ asset('img/server-banner.mp4') }}" autoplay loop muted
+                                    class="w-100"></video>
+                                <div class="banner-overlay">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge version-badge me-2">
+                                                <i class="bi bi-gear me-1"></i> 1.16.5
+                                            </span>
+                                            <i class="bi bi-flag me-1"></i>
+                                            <a class="text-white text-decoration-none" href="" target="_blank">
+                                                <small>play.dynamic-craft.com</small>
+                                            </a>
+                                        </div>
+                                        <button class="btn btn-sm copy-btn" onclick="copyIP('play.dynamic-craft.com')">
+                                            <i class="bi bi-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center">
+                                <span class="player-count">
+                                    500/1000
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-center">
+                                <span class="badge status-badge">
+                                    <i class="bi bi-circle-fill me-1 pulse"></i> Online
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

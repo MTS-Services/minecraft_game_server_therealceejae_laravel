@@ -321,6 +321,7 @@
             transition: all 0.3s ease;
             padding: var(--spacing-md);
             border-bottom: 1px solid var(--border-light);
+            position: relative;
         }
 
         .server-row:hover {
@@ -397,6 +398,7 @@
             right: 0;
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
             padding: var(--spacing-sm) var(--spacing-md);
+            z-index: 2;
         }
 
         /* Badges */
@@ -659,6 +661,16 @@
                 opacity: 0.5;
             }
         }
+
+        .details-link {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: transparent;
+        }
     </style>
 
     <!-- Minecraft Landscape Header -->
@@ -776,6 +788,8 @@
                                 <div class="card-body p-0 premium-top10-body">
                                     @foreach ($topServers as $index => $topServer)
                                         <div class="premium-top10-row">
+                                            <a href="{{ route('server-listing.details', $topServer->slug ?? '') }}"
+                                                class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
                                                     <div class="d-flex align-items-center">
