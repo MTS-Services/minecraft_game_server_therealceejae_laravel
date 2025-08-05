@@ -831,7 +831,7 @@
                                                         <span
                                                             class="badge premium-status-badge {{ $topServer->is_online ?: 'offline' }}">
                                                             <i
-                                                                class=" me-1 {{ $popularServer->is_online ? 'premium-pulse bi bi-circle-fill' : '' }}"></i>
+                                                                class=" me-1 {{ $topServer->is_online ? 'premium-pulse bi bi-circle-fill' : '' }}"></i>
                                                             {{ __($topServer->online_label) }}
                                                         </span>
                                                     </div>
