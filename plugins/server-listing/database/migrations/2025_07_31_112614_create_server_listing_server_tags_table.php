@@ -22,6 +22,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('server_listing_servers');
+        Schema::dropIfExists('server_listing_server_tags');
     }
 };
