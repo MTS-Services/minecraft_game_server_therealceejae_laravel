@@ -1,0 +1,15 @@
+{
+    "id": "test-new-plugin",
+    "name": "test_new_plugin",
+    "description": "Plugin for Azuriom",
+    "version": "1.0.0",
+    "url": "https://azuriom.com",
+    "authors": [
+        "Azuriom"
+    ],
+    "azuriom_api": "1.1.0",
+    "providers": [
+        "\\Azuriom\\Plugin\\TestNewPlugin\\Providers\\TestNewPluginServiceProvider",
+        "\\Azuriom\\Plugin\\TestNewPlugin\\Providers\\RouteServiceProvider"
+    ]
+}

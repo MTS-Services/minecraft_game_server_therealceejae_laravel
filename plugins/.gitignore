@@ -1,4 +1,6 @@
 *
 !.gitignore
+!test-new-plugin
+!test-new-plugin/****
 !server-listing
 !server-listing/****
