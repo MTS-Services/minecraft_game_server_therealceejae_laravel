@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('server_id')->nullable();
             $table->unsignedBigInteger('tag_id')->nullable();
-            $table->foreign('server_id')->references('id')->on('server_listing_servers')->nullOnDelete()->cascadeOnUpdate();
-            $table->foreign('tag_id')->references('id')->on('server_listing_tags')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreign('server_id', 'tag_server_id')->references('id')->on('server_listing_servers')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreign('tag_id', 'server_tag_id')->references('id')->on('server_listing_tags')->nullOnDelete()->cascadeOnUpdate();
             $table->integer('position')->default(0);
             $table->timestamps();
 
