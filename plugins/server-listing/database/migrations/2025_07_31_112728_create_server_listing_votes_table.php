@@ -18,7 +18,10 @@ return new class extends Migration {
             $table->integer('position')->default(0);
             $table->timestamps();
 
-            $table->index(['server_id', 'voted_at', 'expires_at', 'user_id', 'ip_address', 'position']);
+            $table->index(
+                ['server_id', 'voted_at', 'expires_at', 'user_id', 'ip_address', 'position'],
+                'server_votes_main_index'
+            );
         });
     }
 

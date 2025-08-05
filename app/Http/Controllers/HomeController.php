@@ -47,7 +47,7 @@ class HomeController extends Controller
                 $query->where('version', request()->get('version'));
             }
             if ($search) {
-                $data['servers'] = $query->approved()->orderBy('is_featured', 'desc')->orderBy('is_premium', 'desc')->orderBy('sort_order')->orderBy('name');
+                $data['servers'] = $query->approved()->orderBy('is_featured', 'desc')->orderBy('is_premium', 'desc')->orderBy('position', 'asc')->orderBy('name');
             } else {
                 $data['servers'] = $query->approved()->notPremium()->orderByPopularity();
             }
@@ -66,7 +66,7 @@ class HomeController extends Controller
                     ->featured()
                     ->premium()
                     ->approved()
-                    ->orderBy('sort_order', 'asc')
+                    ->orderBy('position', 'asc')
                     ->take(10)
                     ->get();
 
@@ -77,13 +77,10 @@ class HomeController extends Controller
                     ->notFeatured()
                     ->premium()
                     ->approved()
-                    ->orderBy('sort_order', 'asc')
+                    ->orderBy('position', 'asc')
                     // Use 'premium_page' as the pagination parameter
                     ->paginate(1, ['*'], 'premium_page', $premiumPage);
             }
-
-
-
         }
 
         $data['message'] = new HtmlString(setting('home_message'));

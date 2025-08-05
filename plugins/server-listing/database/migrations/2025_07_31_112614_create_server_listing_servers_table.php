@@ -34,7 +34,20 @@ return new class extends Migration {
             $table->integer('position')->default(0);
             $table->timestamps();
 
-            $table->index(['is_approved', 'is_featured', 'is_premium', 'is_online', 'category_id', 'position', 'user_id','server_ip','website_url']);
+            $table->index(
+                [
+                    'is_approved',
+                    'is_featured',
+                    'is_premium',
+                    'is_online',
+                    'category_id',
+                    'position',
+                    'user_id',
+                    'server_ip',
+                    'website_url'
+                ],
+                'server_listing_servers_long_index' // Use a shorter, more descriptive name
+            );
             $table->fullText(['name', 'description']);
         });
     }
