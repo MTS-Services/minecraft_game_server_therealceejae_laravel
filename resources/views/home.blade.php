@@ -697,12 +697,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <select class="form-select" name="category">
-                                        <option value="all">{{ __('All Categories') }}</option>
-                                        @foreach ($server_categories as $server_category)
-                                            <option value="{{ $server_category->slug }}"
-                                                {{ request('category') == $server_category->slug ? 'selected' : '' }}>
-                                                {{ $server_category->name }}
+                                    <select class="form-select" name="country">
+                                        <option value="all">{{ __('All Countries') }}</option>
+                                        @foreach ($server_countries as $server_country)
+                                            <option value="{{ $server_country->slug }}"
+                                                {{ request('country') == $server_country->slug ? 'selected' : '' }}>
+                                                {{ $server_country->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -828,20 +828,22 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="text-center">
-                                                        <span class="badge premium-status-badge">
-                                                            <i class="bi bi-circle-fill me-1 premium-pulse"></i>
+                                                        <span
+                                                            class="badge premium-status-badge {{ $topServer->is_online ?: 'offline' }}">
+                                                            <i
+                                                                class=" me-1 {{ $popularServer->is_online ? 'premium-pulse bi bi-circle-fill' : '' }}"></i>
                                                             {{ __($topServer->online_label) }}
                                                         </span>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-md-2">
+                                                <div class="col-md-2">
                                                     <div class="d-flex flex-wrap gap-1">
-                                                        @foreach (json_decode(json_decode($topServer->tags, true)[0], true) as $tag)
+                                                        @foreach ($topServer->serverTags as $tag)
                                                             <span
-                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
+                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                                         @endforeach
                                                     </div>
-                                                </div> --}}
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -955,20 +957,21 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="text-center">
-                                                        <span class="badge premium-online-badge">
+                                                        <span
+                                                            class="badge premium-online-badge {{ $premiumServer->is_online ?: 'offline' }}">
                                                             <i
-                                                                class="bi bi-circle-fill me-1 premium-online-pulse"></i>{{ __($premiumServer->online_label) }}
+                                                                class=" me-1 {{ $premiumServer->is_online ? 'premium-online-pulse bi bi-circle-fill' : '' }} "></i>{{ __($premiumServer->online_label) }}
                                                         </span>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-md-2">
+                                                <div class="col-md-2">
                                                     <div class="d-flex flex-wrap gap-1">
-                                                        @foreach (json_decode(json_decode($premiumServer->tags, true)[0], true) as $tag)
+                                                        @foreach ($premiumServer->serverTags as $tag)
                                                             <span
-                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
+                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                                         @endforeach
                                                     </div>
-                                                </div> --}}
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -1080,20 +1083,21 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="text-center">
-                                                    <span class="badge status-badge">
+                                                    <span
+                                                        class="badge status-badge {{ $popularServer->is_online ?: 'offline' }}">
                                                         <i
-                                                            class="bi bi-circle-fill me-1 pulse"></i>{{ __($popularServer->online_label) }}
+                                                            class=" me-1 {{ $popularServer->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($popularServer->online_label) }}
                                                     </span>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-2">
+                                            <div class="col-md-2">
                                                 <div class="d-flex flex-wrap gap-1">
-                                                    @foreach (json_decode(json_decode($popularServer->tags, true)[0], true) as $tag)
+                                                    @foreach ($popularServer->serverTags as $tag)
                                                         <span
-                                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
+                                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                                     @endforeach
                                                 </div>
-                                            </div> --}}
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach

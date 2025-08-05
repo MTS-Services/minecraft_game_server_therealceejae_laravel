@@ -3,7 +3,7 @@
 namespace Azuriom\Http\Controllers;
 
 use Azuriom\Models\Post;
-use Azuriom\Plugin\ServerListing\Models\ServerCategory;
+use Azuriom\Plugin\ServerListing\Models\ServerCountry;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
@@ -17,10 +17,10 @@ class HomeController extends Controller
 
 
         if (plugins()->isEnabled('server-listing')) {
-            $data['server_categories'] = ServerCategory::active()->latest()->get();
+            $data['server_countries'] = ServerCountry::active()->latest()->get();
             $data['server_versions'] = ServerListing::pluck('version')->unique()->toArray();
 
-            $query = ServerListing::with(['category', 'user']);
+            $query = ServerListing::with(['country', 'user']);
             $search = false;
             if ($request->has('search') && $request->get('search') != '') {
                 $search = $request->get('search');
@@ -31,16 +31,18 @@ class HomeController extends Controller
                         ->orWhereJsonContains('tags', $search)
                         ->orWhere('version', 'like', '%' . $search . '%')
                         ->orWhere('website_url', 'like', '%' . $search . '%')
-                        ->orWhereHas('category', function ($subQuery) use ($search) {
+                        ->orWhereHas('country', function ($subQuery) use ($search) {
                             $subQuery->where('name', 'like', '%' . $search . '%');
                         });
                 });
                 $search = true;
             }
-            if (request()->has('category') && request()->get('category') !== 'all') {
+            if (request()->has('country') && request()->get('country') !== 'all') {
                 $search = true;
-                $server_category = ServerCategory::where('slug', request()->get('category'))->first();
-                $query->where('category_id', $server_category->id);
+                $query->whereHas('country', function ($q) {
+                    $q->where('slug', request()->get('country'));
+
+                });
             }
             if (request()->has('version') && request()->get('version') !== 'all') {
                 $search = true;
@@ -62,7 +64,7 @@ class HomeController extends Controller
 
 
             if (!$search) {
-                $data['topServers'] = ServerListing::with(['category', 'user'])
+                $data['topServers'] = ServerListing::with(['country', 'user', 'serverTags'])
                     ->featured()
                     ->premium()
                     ->approved()
@@ -73,7 +75,7 @@ class HomeController extends Controller
                 // --- Premium Servers Pagination ---
                 // Get 'premium_page' from the request, default to 1
                 $premiumPage = request()->query('premium_page', 1);
-                $data['premiumServers'] = ServerListing::with(['category', 'user'])
+                $data['premiumServers'] = ServerListing::with(['country', 'user', 'serverTags'])
                     ->notFeatured()
                     ->premium()
                     ->approved()
