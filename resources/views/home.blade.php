@@ -834,14 +834,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
+                                                {{-- <div class="col-md-2">
                                                     <div class="d-flex flex-wrap gap-1">
                                                         @foreach (json_decode(json_decode($topServer->tags, true)[0], true) as $tag)
                                                             <span
                                                                 class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
                                                         @endforeach
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     @endforeach
@@ -851,6 +851,7 @@
                     </div>
                 </div>
             @endif
+
 
             {{-- Premium Servers - Premium Design --}}
             @if (isset($premiumServers) && count($premiumServers) > 0)
@@ -960,14 +961,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
+                                                {{-- <div class="col-md-2">
                                                     <div class="d-flex flex-wrap gap-1">
                                                         @foreach (json_decode(json_decode($premiumServer->tags, true)[0], true) as $tag)
                                                             <span
                                                                 class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
                                                         @endforeach
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     @endforeach
@@ -982,18 +983,19 @@
             @endif
 
             {{-- Middle Description --}}
-            @if (isset($popularServers) && count($popularServers) > 0)
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card shadow-sm middle-description my-4">
-                            <div class="card-body">
-                                <p class="m-0">
-                                    {{ __('Welcome on the top Minecraft server list. Find here all the best Minecraft servers with the most popular gamemodes such as Pixelmon, Skyblock, LifeSteal, Survival, Prison, Faction, Creative, Towny, McMMO and more. Navigate through the different categories in the menu above and find the perfect server to suit your Minecraft gameplay needs. Our server list supports Java and Bedrock cross-play servers.') }}
-                                </p>
-                            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm middle-description my-4">
+                        <div class="card-body">
+                            <p class="m-0">
+                                {{ __('Welcome on the top Minecraft server list. Find here all the best Minecraft servers with the most popular gamemodes such as Pixelmon, Skyblock, LifeSteal, Survival, Prison, Faction, Creative, Towny, McMMO and more. Navigate through the different categories in the menu above and find the perfect server to suit your Minecraft gameplay needs. Our server list supports Java and Bedrock cross-play servers.') }}
+                            </p>
                         </div>
                     </div>
                 </div>
+            </div>
+            @if (isset($popularServers) && count($popularServers) > 0)
+
 
                 {{-- Popular Servers --}}
                 <div class="row">
@@ -1084,14 +1086,14 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                            {{-- <div class="col-md-2">
                                                 <div class="d-flex flex-wrap gap-1">
                                                     @foreach (json_decode(json_decode($popularServer->tags, true)[0], true) as $tag)
                                                         <span
                                                             class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
                                                     @endforeach
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 @endforeach
@@ -1125,7 +1127,8 @@
                         <div class="card-body text-center py-5">
                             <h2 class="fw-bold mb-3">{{ __('Want to promote your server?') }}</h2>
                             <p class="lead mb-4">
-                                {{ __('Get your Minecraft server listed and reach thousands of potential players!') }}</p>
+                                {{ __('Get your Minecraft server listed and reach thousands of potential players!') }}
+                            </p>
                             <button class="btn btn-light btn-lg px-5">
                                 <i class="bi bi-plus me-2"></i>{{ __('Add Your Server') }}
                             </button>
