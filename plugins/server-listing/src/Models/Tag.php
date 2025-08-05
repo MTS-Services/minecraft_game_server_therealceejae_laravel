@@ -52,6 +52,6 @@ class Tag extends Model
     }
     public function scopeOrdered($query)
     {
-        return $query->orderBy('position')->orderBy('name');
+        return $query->latest()->orderBy('position')->orderBy('name');
     }
 }
