@@ -18,6 +18,7 @@ class ServerVote extends Model
         'ip_address',
         'voted_at',
         'expires_at',
+        'position',
     ];
 
     protected $casts = [
@@ -25,6 +26,7 @@ class ServerVote extends Model
         'expires_at' => 'datetime',
         'server_id' => 'integer',
         'user_id' => 'integer',
+        'position' => 'integer',
     ];
 
     public function server(): BelongsTo

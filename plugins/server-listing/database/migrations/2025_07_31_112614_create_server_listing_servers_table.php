@@ -28,17 +28,13 @@ return new class extends Migration {
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_approved')->default(false);
-            $table->json('tags')->nullable();
             $table->integer('vote_count')->default(0);
             $table->integer('total_votes')->default(0);
             $table->timestamp('last_ping')->nullable();
-            $table->integer('sort_order')->default(0);
+            $table->integer('position')->default(0);
             $table->timestamps();
 
-            $table->index(['is_approved', 'is_featured', 'vote_count']);
-            $table->index(['category_id', 'is_approved']);
-            $table->index(['is_online', 'is_approved']);
-            $table->index('user_id');
+            $table->index(['is_approved', 'is_featured', 'is_premium', 'is_online', 'category_id', 'position', 'user_id','server_ip','website_url']);
             $table->fullText(['name', 'description']);
         });
     }

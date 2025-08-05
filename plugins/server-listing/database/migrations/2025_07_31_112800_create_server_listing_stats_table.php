@@ -16,11 +16,11 @@ return new class extends Migration {
             $table->integer('avg_players')->default(0);
             $table->integer('max_players_reached')->default(0);
             $table->decimal('uptime_percentage', 5, 2)->default(0.00);
+            $table->integer('position')->default(0);
             $table->timestamps();
 
             $table->unique(['server_id', 'date']);
-            $table->index(['server_id', 'date']);
-            $table->index('date');
+            $table->index(['server_id', 'date', 'position']);
         });
     }
 

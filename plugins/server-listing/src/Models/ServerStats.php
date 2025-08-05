@@ -19,6 +19,7 @@ class ServerStats extends Model
         'avg_players',
         'max_players_reached',
         'uptime_percentage',
+        'position',
     ];
 
     protected $casts = [
@@ -29,6 +30,7 @@ class ServerStats extends Model
         'avg_players' => 'integer',
         'max_players_reached' => 'integer',
         'uptime_percentage' => 'decimal:2',
+        'position' => 'integer',
     ];
 
     public function server(): BelongsTo
@@ -83,4 +85,5 @@ class ServerStats extends Model
             ], $data)
         );
     }
+    
 }

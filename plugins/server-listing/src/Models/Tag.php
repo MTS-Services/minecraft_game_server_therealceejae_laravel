@@ -6,17 +6,14 @@ use Azuriom\Models\Traits\HasTablePrefix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ServerCategory extends Model
+class Tag extends Model
 {
     use HasTablePrefix;
-    protected $table = 'server_listing_categories';
+    protected $table = 'server_listing_tags';
 
     protected $fillable = [
         'name',
         'slug',
-        'description',
-        'icon',
-        'color',
         'position',
         'is_active',
     ];
@@ -53,29 +50,6 @@ class ServerCategory extends Model
     {
         return $this->is_active ? 'badge bg-success' : 'badge bg-danger';
     }
-
-    public function servers(): HasMany
-    {
-        return $this->hasMany(ServerListing::class, 'category_id');
-    }
-
-    public function activeServers(): HasMany
-    {
-        return $this->hasMany(ServerListing::class, 'category_id')
-            ->where('is_approved', true)
-            ->where('is_active', true);
-    }
-
-    public function getServerCountAttribute(): int
-    {
-        return $this->activeServers()->count();
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
     public function scopeOrdered($query)
     {
         return $query->orderBy('position')->orderBy('name');

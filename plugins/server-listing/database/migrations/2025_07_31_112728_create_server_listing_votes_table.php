@@ -15,12 +15,10 @@ return new class extends Migration {
             $table->string('ip_address', 45);
             $table->timestamp('voted_at');
             $table->timestamp('expires_at');
+            $table->integer('position')->default(0);
             $table->timestamps();
 
-            $table->index(['server_id', 'voted_at']);
-            $table->index(['user_id', 'expires_at']);
-            $table->index(['ip_address', 'expires_at']);
-            $table->index('voted_at');
+            $table->index(['server_id', 'voted_at', 'expires_at', 'user_id', 'ip_address', 'position']);
         });
     }
 

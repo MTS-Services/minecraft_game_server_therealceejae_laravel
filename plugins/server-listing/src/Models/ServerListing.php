@@ -37,7 +37,7 @@ class ServerListing extends Model
         'vote_count',
         'total_votes',
         'last_ping',
-        'sort_order',
+        'position',
     ];
 
     protected $appends = [
@@ -60,7 +60,7 @@ class ServerListing extends Model
         'current_players' => 'integer',
         'vote_count' => 'integer',
         'total_votes' => 'integer',
-        'sort_order' => 'integer',
+        'position' => 'integer',
     ];
 
     public const FEATURED = 1;
@@ -238,7 +238,7 @@ class ServerListing extends Model
         return $query->orderByDesc('is_featured')
             ->orderByDesc('is_premium')
             ->orderByDesc('vote_count')
-            ->orderBy('sort_order')
+            ->orderBy('position')
             ->orderBy('name');
     }
 
