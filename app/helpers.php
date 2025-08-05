@@ -300,9 +300,9 @@ if (!function_exists('scheduler_running')) {
 }
 
 if (!function_exists('removeHttpFromUrl')) {
-    function removeHttpFromUrl(string $url): string
+    function removeHttpFromUrl($url): string | null
     {
-        return str_replace(['https://', 'http://'], '', $url);
+        return $url ? str_replace(['https://', 'http://'], '', $url) : $url;
     }
 }
 
@@ -323,3 +323,4 @@ if (!function_exists('tagsBgColors')) {
         ];
     }
 }
+

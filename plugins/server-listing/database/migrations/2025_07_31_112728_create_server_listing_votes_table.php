@@ -9,12 +9,13 @@ return new class extends Migration {
     {
         Schema::create('server_listing_votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('server_id')->constrained('server_listing_servers')->onDelete('cascade');
+            $table->unsignedBigInteger('server_id')->nullable();
+            $table->foreign('server_id', 'vote_server_id')->references('id')->on('server_listing_servers')->nullOnDelete()->cascadeOnUpdate();
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete()->cascadeOnUpdate();
             $table->string('ip_address', 45);
             $table->timestamp('voted_at');
-            $table->timestamp('expires_at');
+            $table->timestamp('expires_at')->nullable();
             $table->integer('position')->default(0);
             $table->timestamps();
 

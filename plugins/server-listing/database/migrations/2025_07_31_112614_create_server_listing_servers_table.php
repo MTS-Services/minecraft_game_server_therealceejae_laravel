@@ -3,7 +3,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration {
     public function up(): void
@@ -55,6 +58,82 @@ return new class extends Migration {
             );
             $table->fullText(['name', 'description']);
         });
+
+
+        $now = now();
+        DB::table('users')->insert([
+            [
+                'name' => 'admin',
+                'email' => 'admin@dev.com',
+                'password' => Hash::make('admin@dev.com'),
+                'game_id' => '1d48a98741ab3104b55e4225f1db5c77',
+                'email_verified_at' => $now,
+                'last_login_ip' => '127.0.0.1',
+                'password_changed_at' => $now,
+                'last_login_at' => $now,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'user',
+                'email' => 'user@dev.com',
+                'last_login_ip' => '127.0.0.1',
+                'password_changed_at' => $now,
+                'last_login_at' => $now,
+                'password' => Hash::make('user@dev.com'),
+                'game_id' => '1d48a98741ab3104b55e4225f1db5c76',
+                'email_verified_at' => $now,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        $generateServers = function ($count, $attributes) use ($now) {
+            $servers = [];
+
+            for ($i = 1; $i <= $count; $i++) {
+                $name = 'Server ' . Str::random(6);
+                $servers[] = array_merge([
+                    'user_id' => 2,
+                    'country_id' => $i,
+                    'name' => $name,
+                    'slug' => Str::slug($name) . '-' . Str::random(4),
+                    'description' => 'This is a sample description for ' . $name,
+                    'server_ip' => '127.0.0.' . rand(1, 254),
+                    'server_port' => 25565,
+                    'website_url' => 'https://'.Str::random(6).'.com',
+                    'discord_url' => null,
+                    'banner_image' => 'https://placehold.co/400x70',
+                    'logo_image' => 'https://placehold.co/60',
+                    'version' => '1.20',
+                    'max_players' => 100,
+                    'current_players' => rand(0, 100),
+                    'is_online' => (bool)rand(0, 1),
+                    'is_approved' => true,
+                    'vote_count' => rand(0, 100),
+                    'total_votes' => rand(0, 1000),
+                    'last_ping' => $now,
+                    'youtube_video' => null,
+                    'server_rank' => rand(1, 1000),
+                    'position' => rand(0, 100),
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ], $attributes);
+            }
+
+            return $servers;
+        };
+
+        // Insert servers
+        $featuredPremiumServers = $generateServers(10, ['is_featured' => true, 'is_premium' => true]);
+        $premiumServers = $generateServers(15, ['is_featured' => false, 'is_premium' => true]);
+        $regularServers = $generateServers(15, ['is_featured' => false, 'is_premium' => false]);
+
+        $allServers = array_merge($featuredPremiumServers, $premiumServers, $regularServers);
+
+        DB::table('server_listing_servers')->insert($allServers);
+
+
     }
 
     public function down(): void

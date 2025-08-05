@@ -17,7 +17,7 @@ class HomeController extends Controller
 
 
         if (plugins()->isEnabled('server-listing')) {
-            $data['server_countries'] = ServerCountry::active()->latest()->get();
+            $data['server_countries'] = ServerCountry::active()->latest()->orderBy('name')->get();
             $data['server_versions'] = ServerListing::pluck('version')->unique()->toArray();
 
             $query = ServerListing::with(['country', 'user']);
@@ -59,7 +59,7 @@ class HomeController extends Controller
             // --- Popular Servers Pagination ---
             // Get 'popular_page' from the request, default to 1
             $popularPage = request()->query('popular_page', 1);
-            $data['popularServers'] = $query->paginate(2, ['*'], 'popular_page', $popularPage);
+            $data['popularServers'] = $query->paginate(10, ['*'], 'popular_page', $popularPage);
 
 
 
@@ -81,7 +81,7 @@ class HomeController extends Controller
                     ->approved()
                     ->orderBy('position', 'asc')
                     // Use 'premium_page' as the pagination parameter
-                    ->paginate(1, ['*'], 'premium_page', $premiumPage);
+                    ->paginate(10, ['*'], 'premium_page', $premiumPage);
             }
         }
 

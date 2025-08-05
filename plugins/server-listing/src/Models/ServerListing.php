@@ -85,12 +85,12 @@ class ServerListing extends Model
 
     public function getLogoImageUrlAttribute(): string
     {
-        return $this->logo_image ? Storage::url($this->logo_image) : asset('themes/default/img/default-logo.png');
+        return $this->logo_image ? (filter_var($this->logo_image , FILTER_VALIDATE_URL) ? $this->logo_image : Storage::url($this->logo_image)) : asset('themes/default/img/default-logo.png');
     }
 
     public function getBannerImageUrlAttribute(): string
     {
-        return $this->banner_image ? Storage::url($this->banner_image) : asset('themes/default/img/default-banner.png');
+        return $this->banner_image  ? (filter_var($this->banner_image , FILTER_VALIDATE_URL) ? $this->banner_image : Storage::url($this->banner_image)) : asset('themes/default/img/default-banner.png');
     }
 
     public function getFeaturedLabelAttribute(): string
