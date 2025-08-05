@@ -6,6 +6,7 @@ use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,6 @@ class ServerListing extends Model
 
     protected $fillable = [
         'user_id',
-        'category_id',
         'name',
         'slug',
         'description',
@@ -33,11 +33,13 @@ class ServerListing extends Model
         'is_premium',
         'is_featured',
         'is_approved',
-        'tags',
         'vote_count',
         'total_votes',
         'last_ping',
         'position',
+        'country_id',
+        'server_rank',
+        'youtube_video',
     ];
 
     protected $appends = [
@@ -46,10 +48,15 @@ class ServerListing extends Model
         'logo_image_url',
         'banner_image_url',
         'online_label',
+        'full_address',
+        'premium_label',
+        'online_bg',
+        'approved_label',
+        'approved_bg',
+        'premium_bg',
     ];
 
     protected $casts = [
-        'tags' => 'array',
         'is_online' => 'boolean',
         'is_premium' => 'boolean',
         'is_featured' => 'boolean',
@@ -61,6 +68,7 @@ class ServerListing extends Model
         'vote_count' => 'integer',
         'total_votes' => 'integer',
         'position' => 'integer',
+        'server_rank' => 'integer',
     ];
 
     public const FEATURED = 1;
@@ -100,11 +108,6 @@ class ServerListing extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(ServerCategory::class, 'category_id');
-    }
-
     public function votes(): HasMany
     {
         return $this->hasMany(ServerVote::class);
@@ -114,20 +117,9 @@ class ServerListing extends Model
     {
         return $this->hasMany(ServerStats::class);
     }
-
-    public function getStatusColorAttribute(): string
-    {
-        return $this->is_online ? 'text-green-400' : 'text-red-400';
-    }
-
-    public function getStatusTextAttribute(): string
-    {
-        return $this->is_online ? 'Online' : 'Offline';
-    }
-
     public function getFullAddressAttribute(): string
     {
-        return "{$this->server_ip}:{$this->server_port}";
+        return $this->server_port ? "{$this->server_ip}:{$this->server_port}" : $this->server_ip . ':25565';
     }
 
     public function getPlayersPercentageAttribute(): float
@@ -211,18 +203,13 @@ class ServerListing extends Model
         return $query->where('is_premium', false);
     }
 
-    public function scopeByCategory($query, $categoryId)
-    {
-        return $query->where('category_id', $categoryId);
-    }
-
     public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%")
-                ->orWhere('server_ip', 'like', "%{$search}%")
-                ->orWhereJsonContains('tags', $search);
+                ->orWhere('server_ip', 'like', "%{$search}%");
+
         });
     }
 
@@ -245,6 +232,41 @@ class ServerListing extends Model
     public function getOnlineLabelAttribute(): string
     {
         return $this->is_online ? 'Online' : 'Offline';
+    }
+    public function getPremiumLabelAttribute(): string
+    {
+        return $this->is_premium ? 'Premium' : 'Free';
+    }
+    public function getOnlineBgAttribute(): string
+    {
+        return $this->is_online ? 'badge bg-success' : 'badge bg-secondary';
+    }
+    public function getPremiumBgAttribute(): string
+    {
+        return $this->is_premium ? 'badge bg-success' : 'badge bg-info';
+    }
+
+    public function getApprovedLabelAttribute(): string
+    {
+        return $this->is_approved ? 'Approved' : 'Pending';
+    }
+    public function getApprovedBgAttribute(): string
+    {
+        return $this->is_approved ? 'badge bg-success' : 'badge bg-primary';
+    }
+
+    public function serverTags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'server_listing_server_tags', 'server_id', 'tag_id');
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('is_featured')->orderBy('is_premium')->orderBy('position')->latest()->orderBy('name');
+    }
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(ServerCountry::class, 'country_id');
     }
 
 }

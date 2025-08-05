@@ -30,13 +30,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
 @endpush
 @push('footer-scripts')
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const input = document.querySelector('#tagsInput');
             new Tagify(input);
         });
-    </script>
+    </script> --}}
 @endpush
+
+
+
 
 
 <div class="row gx-3">
@@ -55,18 +58,17 @@
         @enderror
     </div>
     <div class="col-md-4 mb-3">
-        <label class="form-label" for="categorySelect">{{ trans('server-listing::messages.fields.category') }}</label>
-        <select class="form-select @error('category_id') is-invalid @enderror" id="categorySelect" name="category_id"
-            accesskey="{{ trans('server-listing::messages.fields.category-select') }}">
-            <option value="" hidden selected>{{ trans('server-listing::messages.fields.category-select') }}
+        <label class="form-label" for="countrySelect">{{ trans('server-listing::messages.fields.country') }}</label>
+        <select class="form-select @error('country_id') is-invalid @enderror" id="countrySelect" name="country_id">
+            <option value="" hidden selected>{{ trans('server-listing::messages.fields.country-select') }}
             </option>
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}" @selected(old('category_id', $server->category_id ?? '') == $category->id)>
-                    {{ $category->name }}
+            @foreach ($countries as $country)
+                <option value="{{ $country->id }}" @selected(old('country_id', $server->country_id ?? '') == $country->id)>
+                    {{ $country->name }}
                 </option>
             @endforeach
         </select>
-        @error('category_id')
+        @error('country_id')
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
     </div>
@@ -156,25 +158,27 @@
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
     </div>
-
-    {{-- <div class="col-md-4 mb-3">
-        @php
-            $tagsValue = old('tags', isset($server->tags) ? json_decode($server->tags, true) : []);
-            $tagsValue = is_array($tagsValue) ? implode(',', $tagsValue) : $tagsValue;
-            $hasTagError = $errors->has('tags') || $errors->has('tags.*');
-        @endphp
+    <div class="col-md-4 mb-3">
         <label for="tagsInput">{{ trans('server-listing::messages.fields.tags') }}</label>
-        <input name="tags[]" id="tagsInput" class="form-control {{ $hasTagError ? 'is-invalid' : '' }}"
-            value="{{ $tagsValue }}" placeholder="{{ trans('server-listing::messages.placeholder.tags') }}">
+        <select class="form-select @error('tags') is-invalid @enderror" id="tagsInput" name="tags[]" multiple>
+            <option value="" hidden selected>{{ trans('server-listing::messages.fields.tags-select') }}
+            </option>
+            @foreach ($tags as $tag)
+                <option value="{{ $tag->id }}"
+                    {{ in_array($tag->id, old('tags', isset($server->serverTags) ? $server->serverTags->pluck('id')->toArray() : [])) ? 'selected' : '' }}>
+                    {{ $tag->name }}
+                </option>
+            @endforeach
+        </select>
         @error('tags')
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
         @foreach ($errors->get('tags.*') as $tagErrors)
             @foreach ($tagErrors as $message)
-                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
             @endforeach
         @endforeach
-    </div> --}}
+    </div>
     <div class="col-md-2 mb-3">
         <label class="form-label"
             for="isFeaturedSwitch">{{ trans('server-listing::messages.fields.is_featured') }}</label>
@@ -200,6 +204,39 @@
         </div>
     </div>
 
+
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label"
+            for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }}</label>
+        <input type="file" class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput"
+            name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
+            data-image-preview="bannerImagePreview">
+
+        @error('banner_image')
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+
+        <img src="{{ isset($server->banner_image_url) ? $server->banner_image_url : '#' }}"
+            class="mt-2 img-fluid rounded img-preview {{ isset($server->banner_image_url) ? '' : 'd-none' }}"
+            alt="banner image" id="bannerImagePreview">
+    </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label"
+            for="logoImageInput">{{ trans('server-listing::messages.fields.logo_image') }}</label>
+        <input type="file" class="form-control @error('logo_image') is-invalid @enderror" id="logoImageInput"
+            name="logo_image" accept="image/jpg,image/jpeg,image/png,image/gif"
+            data-image-preview="logoImagePreview">
+
+        @error('logo_image')
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+
+        <img src="{{ isset($server->logo_image_url) ? $server->logo_image_url : '#' }}"
+            class="mt-2 img-fluid rounded img-preview {{ isset($server->logo_image_url) ? '' : 'd-none' }}"
+            alt="banner image" id="logoImagePreview">
+    </div>
+
     <div class="col-md-2 mb-3">
         <label class="form-label"
             for="isApprovedSwitch">{{ trans('server-listing::messages.fields.is_approved') }}</label>
@@ -222,36 +259,18 @@
         </div>
     </div>
 
-    <div class="col-md-6 mb-3">
-        <label class="form-label"
-            for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }}</label>
-        <input type="file" class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput"
-            name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
-            data-image-preview="bannerImagePreview">
+    <div class="col-md-12 mb-3">
+        <label for="youtubeVideoInput">{{ trans('server-listing::messages.fields.youtube_video') }}</label>
+        <input type="url" class="form-control @error('youtube_video') is-invalid @enderror"
+            id="youtubeVideoInput" name="youtube_video"
+            placeholder="{{ trans('server-listing::messages.placeholder.youtube_video') }}"
+            value="{{ old('youtube_video', $server->youtube_video ?? '') }}">
 
-        @error('banner_image')
+        @error('youtube_video')
             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
         @enderror
-
-        <img src="{{ isset($server->banner_image_url) ? $server->banner_image_url : '#' }}"
-            class="mt-2 img-fluid rounded img-preview {{ isset($server->banner_image_url) ? '' : 'd-none' }}"
-            alt="banner image" id="bannerImagePreview">
     </div>
-    <div class="col-md-6 mb-3">
-        <label class="form-label"
-            for="logoImageInput">{{ trans('server-listing::messages.fields.logo_image') }}</label>
-        <input type="file" class="form-control @error('logo_image') is-invalid @enderror" id="logoImageInput"
-            name="logo_image" accept="image/jpg,image/jpeg,image/png,image/gif"
-            data-image-preview="logoImagePreview">
 
-        @error('logo_image')
-            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-        @enderror
-
-        <img src="{{ isset($server->logo_image_url) ? $server->logo_image_url : '#' }}"
-            class="mt-2 img-fluid rounded img-preview {{ isset($server->logo_image_url) ? '' : 'd-none' }}"
-            alt="banner image" id="logoImagePreview">
-    </div>
 
 
 

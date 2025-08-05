@@ -2,57 +2,141 @@
 
 @section('title', trans('server-listing::admin.server.title'))
 
+@push('footer-scripts')
+    <script src="{{ asset('vendor/sortablejs/Sortable.min.js') }}"></script>
+    <script>
+        const sortable = document.getElementById('sortable');
+
+        function serialize(sortable) {
+            return [].slice.call(sortable.children).map(function(child) {
+                const nested = child.querySelector('.sortable');
+                return {
+                    id: parseInt(child.dataset['id']),
+                    children: nested ? serialize(nested) : [],
+                };
+            });
+        }
+
+        function updateOrder() {
+            axios.post('{{ route('server-listing.admin.servers.update-order') }}', {
+                'order': serialize(sortable),
+                'page': '{{ $servers->currentPage() }}',
+                'per_page': '{{ $per_page }}',
+            }).then(function(json) {
+                createAlert('success', json.data.message, true);
+            }).catch(function(error) {
+                createAlert('danger', error.response.data.message || 'Something went wrong.', true);
+            });
+        }
+
+        document.querySelectorAll('.sortable-list').forEach(function(el) {
+            Sortable.create(el, {
+                animation: 150,
+                fallbackOnBody: true,
+                swapThreshold: 0.65,
+                onEnd: function() {
+                    updateOrder(); // call axios automatically after reorder
+                }
+            });
+        });
+    </script>
+@endpush
+
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">{{ trans('server-listing::messages.fields.logo') }}</th>
-                            <th scope="col">{{ trans('server-listing::messages.fields.name') }}</th>
-                            <th scope="col">{{ trans('server-listing::messages.fields.category') }}</th>
-                            <th scope="col">{{ trans('server-listing::messages.fields.server_ip') }}</th>
-                            <th scope="col">{{ trans('server-listing::messages.fields.featured') }}</th>
-                            <th scope="col">{{ trans('server-listing::messages.fields.action') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach ($servers as $server)
-                            <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
-                                <td><img src="{{ $server->logo_image_url }}" class="img-small rounded" height="40"
-                                        width="40" alt="{{ $server->name }}"></td>
-                                <td>{{ $server->name }}</td>
-                                <td>{{ $server->category->name }}</td>
-                                <td>{{ $server->server_ip }}</td>
-                                <td>
+            <a class="btn btn-primary" href="{{ route('server-listing.admin.servers.create') }}">
+                <i class="bi bi-plus-lg"></i> {{ trans('messages.actions.add') }}
+            </a>
+            <ol class="list-unstyled sortable sortable-list mb-2" id="sortable">
+                <li class="default-item">
+                    <div class="card">
+                        <div class="card-body row ">
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.name') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.server') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.country') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.server_address') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.featured') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.server_status') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.premium_status') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.fields.status') }}
+                            </span>
+                            <span class="col-1">
+                                {{ trans('server-listing::messages.fields.actions') }}
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                @foreach ($servers as $server)
+                    <li class="sortable-item  sortable-parent" data-id="{{ $server->id }}">
+                        <div class="card">
+                            <div class="card-body row ">
+                                <span class="col">
+                                    <i class="bi bi-arrows-move sortable-handle"></i>
+                                    {{ $server->user->name }}
+                                </span>
+                                <span class="col">
+                                    {{ $server->name }}
+                                </span>
+                                <span class="col">
+                                    {{ $server->country?->name }}
+                                </span>
+                                <span class="col">
+                                    {{ $server->full_address }}
+                                </span>
+                                <span class="col">
                                     <span class="{{ $server->featured_bg }}">
                                         {{ $server->featured_label }}
                                     </span>
-                                </td>
-                                <td>
+                                </span>
+                                <span class="col">
+                                    <span class="{{ $server->online_bg }}">
+                                        {{ $server->online_label }}
+                                    </span>
+                                </span>
+                                <span class="col">
+                                    <span class="{{ $server->premium_bg }}">
+                                        {{ $server->premium_label }}
+                                    </span>
+                                </span>
+                                <span class="col">
+                                    <span class="{{ $server->approved_bg }}">
+                                        {{ $server->approved_label }}
+                                    </span>
+                                </span>
+                                <span class="col-1">
                                     <a href="{{ route('server-listing.admin.servers.edit', $server->slug) }}"
-                                        class="mx-1" title="{{ trans('server-listing::messages.actions.edit') }}"
-                                        data-toggle="tooltip"><i class="bi bi-pencil-square"></i></a>
+                                        class="m-1" title="{{ trans('server_listing::messages.actions.edit') }}"
+                                        data-bs-toggle="tooltip"><i class="bi bi-pencil-square"></i></a>
                                     <a href="{{ route('server-listing.admin.servers.destroy', $server->slug) }}"
-                                        class="mx-1 text-danger" data-confirm="delete"
-                                        title="{{ trans('server-listing::messages.actions.delete') }}"
-                                        data-toggle="tooltip"><i class="bi bi-trash"></i></a>
-
-                                </td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-
-            <a class="btn btn-primary" href="{{ route('server-listing.admin.servers.create') }}">
-                <i class="bi bi-plus-lg"></i> {{ trans('server-listing::messages.actions.add') }}
-            </a>
+                                        class="m-1" title="{{ trans('server_listing::messages.actions.delete') }}"
+                                        data-bs-toggle="tooltip" data-confirm="delete"><i class="bi bi-trash"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ol>
+            {{ $servers->links() }}
+            {{-- <a class="btn btn-primary" href="{{ route('server-listing.admin.servers.create') }}">
+                <i class="bi bi-plus-lg"></i> {{ trans('messages.actions.add') }}
+            </a> --}}
         </div>
+
     </div>
 @endsection

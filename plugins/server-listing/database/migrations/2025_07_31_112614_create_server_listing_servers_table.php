@@ -11,8 +11,9 @@ return new class extends Migration {
         Schema::create('server_listing_servers', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete()->cascadeOnUpdate();
-            $table->foreignId('category_id')->constrained('server_listing_categories')->onDelete('cascade');
+            $table->foreign('country_id', 'server_country_id')->references('id')->on('server_listing_countries')->nullOnDelete()->cascadeOnUpdate();
             $table->string('name', 100);
             $table->string('slug', 100)->unique();
             $table->text('description');
@@ -32,6 +33,8 @@ return new class extends Migration {
             $table->integer('vote_count')->default(0);
             $table->integer('total_votes')->default(0);
             $table->timestamp('last_ping')->nullable();
+            $table->string('youtube_video')->nullable();
+            $table->bigInteger('server_rank')->default(0);
             $table->integer('position')->default(0);
             $table->timestamps();
 
@@ -41,11 +44,12 @@ return new class extends Migration {
                     'is_featured',
                     'is_premium',
                     'is_online',
-                    'category_id',
                     'position',
                     'user_id',
                     'server_ip',
-                    'website_url'
+                    'website_url',
+                    'country_id',
+
                 ],
                 'server_listing_servers_long_index' // Use a shorter, more descriptive name
             );

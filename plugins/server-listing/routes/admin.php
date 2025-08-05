@@ -1,8 +1,6 @@
 <?php
-
-use Azuriom\Plugin\ServerListing\Controllers\Admin\AdminController;
-use Azuriom\Plugin\ServerListing\Controllers\Admin\CategoryController;
 use Azuriom\Plugin\ServerListing\Controllers\Admin\ServerListingController;
+use Azuriom\Plugin\ServerListing\Controllers\Admin\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,18 +17,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ServerListingController::class)->name('servers.')->group(function () {
     Route::get('/index', 'index')->name('index');
+    Route::post('/servers/update-order', 'updateOrder')->name('update-order');
     Route::get('/servers', 'create')->name('create');
     Route::post('/servers', 'store')->name('create');
     Route::get('/servers/{server}', 'edit')->name('edit');
     Route::put('/servers/{server}', 'update')->name('edit');
     Route::delete('/servers/{server}', 'destroy')->name('destroy');
 });
-Route::controller(CategoryController::class)->name('categories.')->prefix('categories')->group(function () {
+
+
+Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(function () {
     Route::get('/index', 'index')->name('index');
-    Route::get('/categories', 'create')->name('create');
-    Route::post('/categories', 'store')->name('create');
-    Route::get('/categories/{category}', 'edit')->name('edit');
-    Route::put('/categories/{category}', 'update')->name('edit');
-    Route::delete('/categories/{category}', 'destroy')->name('destroy');
+    Route::post('/tags/update-order', 'updateOrder')->name('update-order');
+    Route::get('/tags', 'create')->name('create');
+    Route::post('/tags', action: 'store')->name('create');
+    Route::get('/tags/{tag}', 'edit')->name('edit');
+    Route::put('/tags/{tag}', 'update')->name('edit');
+    Route::delete('/tags/{tag}', 'destroy')->name('destroy');
 });
 

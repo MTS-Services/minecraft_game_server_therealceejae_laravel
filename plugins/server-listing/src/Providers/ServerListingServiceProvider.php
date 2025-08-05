@@ -5,7 +5,6 @@ namespace Azuriom\Plugin\ServerListing\Providers;
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\ActionLog;
 use Azuriom\Models\Permission;
-use Azuriom\Plugin\ServerListing\Models\ServerCategory;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Plugin\ServerListing\Models\ServerStats;
 use Azuriom\Plugin\ServerListing\Models\ServerVote;
@@ -47,7 +46,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
 
 
         Permission::registerPermissions([
-            'server-listing.category' => 'server-listing::admin.permissions.category',
+            'server-listing.tag' => 'server-listing::admin.permissions.tag',
             'server-listing.server' => 'server-listing::admin.permissions.server',
             'server-listing.votes' => 'server-listing::admin.permissions.votes',
             'server-listing.stats' => 'server-listing::admin.permissions.stats',
@@ -56,7 +55,6 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
 
         ActionLog::registerLogModels([
             ServerListing::class,
-            ServerCategory::class,
             ServerVote::class,
             ServerStats::class,
         ], 'server-listing::admin.logs');
@@ -116,9 +114,9 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
                 'icon' => 'bi bi-server',
                 'route' => 'server-listing.admin.*',
                 'items' => [
-                    'server-listing.admin.categories.index' => [
-                        'name' => trans('server-listing::admin.nav.categories'),
-                        'permission' => 'server-listing.category',
+                    'server-listing.admin.tags.index' => [
+                        'name' => trans('server-listing::admin.nav.tags'),
+                        'permission' => 'server-listing.tag',
                     ],
                     'server-listing.admin.servers.index' => [
                         'name' => trans('server-listing::admin.nav.servers'),

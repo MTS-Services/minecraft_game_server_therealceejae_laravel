@@ -3,6 +3,8 @@
 return [
     'nav' => [
         'title' => 'Server Listing',
+        'tags' => 'Tags',
+        'tag' => 'Tag',
         'servers' => 'Servers',
         'settings' => 'Settings',
         'packages' => 'Packages',
@@ -34,6 +36,14 @@ return [
         'create' => 'Create Category',
         'edit' => 'Edit Category :category',
         'name' => 'Category Name',
+
+    ],
+    'tag' => [
+        'title' => 'Tag',
+        'tags' => 'Tags',
+        'create' => 'Create Tag',
+        'edit' => 'Edit Tag :tag',
+        'name' => 'Tag Name',
 
     ],
 

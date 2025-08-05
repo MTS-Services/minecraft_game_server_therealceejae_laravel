@@ -45,7 +45,7 @@ class ServerRequest extends FormRequest
 
         return [
             'user_id' => 'required|sometimes|exists:users,id',
-            'category_id' => ['required', 'exists:server_listing_categories,id'],
+            'country_id' => ['required', 'exists:server_listing_countries,id'],
             'name' => ['required', 'string', 'max:100'],
             'slug' => [
                 'required',
@@ -68,12 +68,13 @@ class ServerRequest extends FormRequest
             'is_premium' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
             'is_approved' => ['nullable', 'boolean'],
-            // 'tags' => ['nullable', 'array'],
-            // 'tags.*' => ['string'],
+            'tags' => ['required', 'array'],
+            'tags.*' => ['nullable', 'exists:server_listing_tags,id'],
             'vote_count' => ['nullable', 'integer', 'min:0'],
             'total_votes' => ['nullable', 'integer', 'min:0'],
             'last_ping' => ['nullable', 'date'],
             'position' => ['nullable', 'integer'],
+            'youtube_video' => ['nullable', 'url'],
         ];
     }
 

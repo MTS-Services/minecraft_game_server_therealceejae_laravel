@@ -3,6 +3,7 @@
 namespace Azuriom\Plugin\ServerListing\Models;
 
 use Azuriom\Models\Traits\HasTablePrefix;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -52,6 +53,16 @@ class Tag extends Model
     }
     public function scopeOrdered($query)
     {
-        return $query->latest()->orderBy('position')->orderBy('name');
+        return $query->orderBy('position')->latest()->orderBy('name');
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('is_active', true);
+    }
+
+    public function scopeInactive(Builder $query): void
+    {
+        $query->where('is_active', false);
     }
 }

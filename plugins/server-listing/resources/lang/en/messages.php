@@ -48,6 +48,14 @@ return [
         'description' => 'Description',
         'is_active' => 'Active',
         'status' => 'Status',
+        'country-select' => 'Select Country',
+        'country' => 'Country',
+        'youtube_video' => 'Youtube Video',
+        'server' => 'Server',
+        'server_address' => 'Server Address',
+        'server_status' => 'Server Status',
+        'premium_status' => 'Premium Status',
+        'actions' => 'Actions',
     ],
     'placeholder' => [
         'name' => 'Enter name',
@@ -60,6 +68,7 @@ return [
         'current_players' => 'Enter current players',
         'tags' => 'Enter tags',
         'description' => 'Enter description',
+        'youtube_video' => 'Enter youtube video example: https://www.youtube.com/watch?v=dQw4w9WgXcQ',
 
     ],
 
