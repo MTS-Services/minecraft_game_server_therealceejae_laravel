@@ -12,7 +12,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $data['categories'] = ServerCategory::orderBy('sort_order', 'asc')
+        $data['categories'] = ServerCategory::orderBy('position', 'asc')
             ->paginate(10);
         return view('server-listing::admin.categories.index', $data);
     }

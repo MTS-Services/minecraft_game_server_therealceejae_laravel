@@ -68,12 +68,12 @@ class ServerRequest extends FormRequest
             'is_premium' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
             'is_approved' => ['nullable', 'boolean'],
-            'tags' => ['nullable', 'array'],
-            'tags.*' => ['string'],
+            // 'tags' => ['nullable', 'array'],
+            // 'tags.*' => ['string'],
             'vote_count' => ['nullable', 'integer', 'min:0'],
             'total_votes' => ['nullable', 'integer', 'min:0'],
             'last_ping' => ['nullable', 'date'],
-            'sort_order' => ['nullable', 'integer'],
+            'position' => ['nullable', 'integer'],
         ];
     }
 
@@ -84,8 +84,8 @@ class ServerRequest extends FormRequest
                 $serverSlug = optional($this->route('server'))->id;
 
                 $featuredCount = ServerListing::where('is_featured', true)
-                    ->when($serverSlug, fn($q) => $q->where('slug', '!=', $serverSlug))
                     ->count();
+                // ->when($serverSlug, fn($q) => $q->where('slug', '!=', $serverSlug))
 
                 if ($featuredCount >= 10) {
                     $validator->errors()->add('is_featured_limit', trans('Only a maximum of 10 servers can be featured at a time.'));

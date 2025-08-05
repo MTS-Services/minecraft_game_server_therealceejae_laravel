@@ -1,6 +1,7 @@
 <?php
 
-use Azuriom\Plugin\ServerListing\Controllers\ServerListingHomeController;
+use Azuriom\Plugin\ServerListing\Controllers\ServerListingController;
+// use Azuriom\Plugin\ServerListing\Controllers\ServerListingHomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ServerListingHomeController::class, 'index']);
+// Route::get('/', [ServerListingHomeController::class, 'index']);
+
+Route::get('/', [ServerListingController::class, 'details']);

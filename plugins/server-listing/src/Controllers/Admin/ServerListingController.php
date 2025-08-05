@@ -18,7 +18,7 @@ class ServerListingController extends Controller
     public function index()
     {
         $data['servers'] = ServerListing::with('category')
-            ->orderBy('sort_order', 'asc')
+            ->orderBy('position', 'asc')
             ->paginate(10);
         return view('server-listing::admin.servers.index', $data);
     }
@@ -33,7 +33,7 @@ class ServerListingController extends Controller
     public function store(ServerRequest $request)
     {
         $validated = $request->validated();
-        $validated['tags'] = json_encode($validated['tags']);
+        // $validated['tags'] = json_encode($validated['tags']);
         // Upload logo image if present
         if ($request->hasFile('logo_image')) {
             $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');
@@ -66,7 +66,7 @@ class ServerListingController extends Controller
         $server = ServerListing::where('slug', $server_slug)->first();
 
         // Encode tags as JSON
-        $validated['tags'] = json_encode($validated['tags'] ?? []);
+        // $validated['tags'] = json_encode($validated['tags'] ?? []);
 
         // Handle logo image upload
         if ($request->hasFile('logo_image')) {
@@ -102,6 +102,4 @@ class ServerListingController extends Controller
         $server->delete();
         return redirect()->route('server-listing.admin.servers.index')->with('success', trans('messages.status.success'));
     }
-
-
 }

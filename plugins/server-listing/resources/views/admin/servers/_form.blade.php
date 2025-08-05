@@ -157,7 +157,7 @@
         @enderror
     </div>
 
-    <div class="col-md-4 mb-3">
+    {{-- <div class="col-md-4 mb-3">
         @php
             $tagsValue = old('tags', isset($server->tags) ? json_decode($server->tags, true) : []);
             $tagsValue = is_array($tagsValue) ? implode(',', $tagsValue) : $tagsValue;
@@ -174,7 +174,7 @@
                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
             @endforeach
         @endforeach
-    </div>
+    </div> --}}
     <div class="col-md-2 mb-3">
         <label class="form-label"
             for="isFeaturedSwitch">{{ trans('server-listing::messages.fields.is_featured') }}</label>
@@ -200,7 +200,29 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-2 mb-3">
+        <label class="form-label"
+            for="isApprovedSwitch">{{ trans('server-listing::messages.fields.is_approved') }}</label>
+        <div class="mb-3 form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="isApprovedSwitch" name="is_approved"
+                @checked(old('is_approved', $server->is_approved ?? false))>
+            <label class="form-check-label"
+                for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_approved') }}</label>
+        </div>
+    </div>
+
+    <div class="col-md-2 mb-3">
+        <label class="form-label"
+            for="isOnlineSwitch">{{ trans('server-listing::messages.fields.is_online') }}</label>
+        <div class="mb-3 form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="isOnlineSwitch" name="is_online"
+                @checked(old('is_online', $server->is_online ?? false))>
+            <label class="form-check-label"
+                for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_online') }}</label>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
         <label class="form-label"
             for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }}</label>
         <input type="file" class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput"
@@ -215,7 +237,7 @@
             class="mt-2 img-fluid rounded img-preview {{ isset($server->banner_image_url) ? '' : 'd-none' }}"
             alt="banner image" id="bannerImagePreview">
     </div>
-    <div class="col-md-4 mb-3">
+    <div class="col-md-6 mb-3">
         <label class="form-label"
             for="logoImageInput">{{ trans('server-listing::messages.fields.logo_image') }}</label>
         <input type="file" class="form-control @error('logo_image') is-invalid @enderror" id="logoImageInput"
@@ -230,26 +252,9 @@
             class="mt-2 img-fluid rounded img-preview {{ isset($server->logo_image_url) ? '' : 'd-none' }}"
             alt="banner image" id="logoImagePreview">
     </div>
-    <div class="col-md-2 mb-3">
-        <label class="form-label"
-            for="isApprovedSwitch">{{ trans('server-listing::messages.fields.is_approved') }}</label>
-        <div class="mb-3 form-check form-switch">
-            <input type="checkbox" class="form-check-input" id="isApprovedSwitch" name="is_approved"
-                @checked(old('is_approved', $server->is_approved ?? false))>
-            <label class="form-check-label"
-                for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_approved') }}</label>
-        </div>
-    </div>
-    <div class="col-md-2 mb-3">
-        <label class="form-label"
-            for="isOnlineSwitch">{{ trans('server-listing::messages.fields.is_online') }}</label>
-        <div class="mb-3 form-check form-switch">
-            <input type="checkbox" class="form-check-input" id="isOnlineSwitch" name="is_online"
-                @checked(old('is_online', $server->is_online ?? false))>
-            <label class="form-check-label"
-                for="isPremiumSwitch">{{ trans('server-listing::messages.fields.make_online') }}</label>
-        </div>
-    </div>
+
+
+
     <div class="col mb-3">
         <label class="form-label" for="textArea">{{ trans('server-listing::messages.fields.description') }}</label>
         <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="textArea"
