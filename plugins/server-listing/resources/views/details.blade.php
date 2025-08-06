@@ -421,7 +421,7 @@
         <div aria-label="breadcrumb" class="custom-design card-header-custom py-2 px-3">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a href="#" class="text-decoration-none title-color">Minecraft Servers</a>
+                    <a href="#" class="text-decoration-none title-color">Minecraft Servers List</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Complex Gaming</li>
             </ol>
