@@ -673,13 +673,9 @@
         }
     </style>
 
-    <div>
-        dsflkdsjlk sjlk
-    </div>
-
     <!-- Minecraft Landscape Header -->
     <div class="minecraft-header position-relative overflow-hidden">
-        <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape1" alt="Minecraft Landscape1" class="w-100">
+        <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape" alt="Minecraft Landscape" class="w-100">
         <div class="position-absolute top-0 start-0 w-100 h-100"></div>
     </div>
 
