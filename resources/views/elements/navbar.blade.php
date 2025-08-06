@@ -18,7 +18,6 @@
                                 href="{{ $element->getLink() }}"
                                 @if ($element->new_tab) target="_blank" rel="noopener noreferrer" @endif>
                                 {{ $element->name }}
-                                {{-- {{ __('The Real Ceejae') }} --}}
                             </a>
                         </li>
                     @else
