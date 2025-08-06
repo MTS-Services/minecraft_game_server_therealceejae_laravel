@@ -20,5 +20,9 @@
         "psr/http-message": "*",
         "psr/log": "*",
         "psr/simple-cache": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform-check": false
     }
 }
