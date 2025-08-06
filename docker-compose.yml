@@ -8,14 +8,14 @@ services:
         networks:
             - azuriom
         environment:
-            - DB_CONNECTION=pgsql
-            - DB_HOST=db
-            - DB_PORT=5432
-            - DB_DATABASE=azuriom
-            - DB_USERNAME=azuriom
-            - DB_PASSWORD=password
-        depends_on:
-            - db
+            - DB_CONNECTION=${DB_CONNECTION}
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_DATABASE=${DB_DATABASE}
+            - DB_USERNAME=${DB_USERNAME}
+            - DB_PASSWORD=${DB_PASSWORD}
+        # depends_on:
+        #     - db
 
     nginx:
         image: nginx:latest
@@ -30,20 +30,21 @@ services:
         depends_on:
             - app
 
-    db:
-        image: postgres:latest
-        container_name: azuriom_db
-        environment:
-            POSTGRES_DB: azuriom
-            POSTGRES_USER: azuriom
-            POSTGRES_PASSWORD: password
-        volumes:
-            - db_data:/var/lib/postgresql/data
-        networks:
-            - azuriom
+    # db:
+    #     image: postgres:latest
+    #     container_name: azuriom_db
+    #     environment:
+    #         POSTGRES_DB: azuriom
+    #         POSTGRES_USER: azuriom
+    #         POSTGRES_PASSWORD: password
+    #     volumes:
+    #         - db_data:/var/lib/postgresql/data
+    #     networks:
+    #         - azuriom
 
 networks:
     azuriom:
 
-volumes:
-    db_data:
+
+# volumes:
+#     db_data:
