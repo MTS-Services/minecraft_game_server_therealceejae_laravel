@@ -423,7 +423,7 @@
                 <li class="breadcrumb-item">
                     <a href="#" class="text-decoration-none title-color">Minecraft Servers List</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Mahfuz Ahmed Zisan</li>
+                <li class="breadcrumb-item active" aria-current="page">Mahfuz Ahmed Zisan </li>
             </ol>
         </div>
 
