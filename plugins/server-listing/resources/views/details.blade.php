@@ -254,7 +254,7 @@
                 width: 100%;
                 max-width: 500px;
                 height: 100%;
-                max-height: 400px;
+                max-height: 80px;
                 background: var(--border-light);
                 border-radius: 5px;
                 display: flex;
@@ -267,9 +267,11 @@
                 box-shadow: #96d7f54b 3px 3px 6px 0px inset, #9fddc380 -3px -3px 6px 1px inset;
             }
 
+            .server-banner-img,
             .server-banner-video {
                 width: 100%;
                 height: 100%;
+                max-height: 65px;
                 object-fit: cover;
             }
 
@@ -423,20 +425,23 @@
                 <li class="breadcrumb-item">
                     <a href="#" class="text-decoration-none title-color">Minecraft Servers</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Complex Gaming</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $serverDetail->name }}</li>
             </ol>
         </div>
 
         <div class="custom-design-2 py-4">
             <div>
-                <h1 class="server-title fw-bold fs-4 mb-3">Complex Gaming</h1>
+                <h1 class="server-title fw-bold fs-4 mb-3">{{ $serverDetail->name }}</h1>
                 <div class="d-flex flex-column flex-md-row justify-content-start align-items-center mb-4 gap-3">
                     <div class="server-logo-container">
-                        <img src="{{ asset('img/server-logo.png') }}" alt="Server Logo" class="img-fluid server-logo">
+                        <img src="{{ $serverDetail->logo_image_url }}" alt="{{ $serverDetail->name }}"
+                            class="img-fluid server-logo">
                     </div>
                     <div class="server-banner-container">
                         <video src="{{ asset('img/server-banner.mp4') }}" class="server-banner-video" muted=""
                             autoplay="" loop="" playsinline="" allowfullscreen="false"></video>
+                        {{-- <img src="{{ $serverDetail->banner_image_url }}" class="server-banner-img"
+                            alt="{{ $serverDetail->name }}"> --}}
                     </div>
                 </div>
             </div>
@@ -465,10 +470,11 @@
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-play me-2"></i> Address</span>
                                 <span>
-                                    <button class="btn btn-sm btn-outline-secondary copy-btn me-2" title="Copy">
-                                        <i class="fas fa-copy"></i>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn me-2" title="Copy"
+                                        onclick="copyIP('{{ $serverDetail->server_ip }}:{{ $serverDetail->server_port }}')">
+                                        <i class="bi bi-clipboard-check"></i>
                                     </button>
-                                    mp.mc-complex.com
+                                    {{ $serverDetail->server_ip }}:{{ $serverDetail->server_port }}
                                 </span>
                             </div>
 
@@ -483,7 +489,7 @@
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-circle me-2"></i> Server Status</span>
                                 <span class="text-success fw-semibold">
-                                    Online <small class="text-muted">Checked 1 minute ago</small>
+                                    {{ $serverDetail->online_label }} <small class="text-muted">Checked 1 minute ago</small>
                                 </span>
                             </div>
 
@@ -499,21 +505,21 @@
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-cube me-2"></i> Minecraft Version</span>
-                                <span><span class="badge bg-primary">1.21.7</span></span>
+                                <span><span class="badge bg-primary">{{ $serverDetail->version }}</span></span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-globe me-2"></i> Website</span>
                                 <span>
-                                    <a href="https://www.mc-complex.com/" class="text-decoration-none" target="_blank">
-                                        mc-complex.com
+                                    <a href="{{ $serverDetail->website_url }}" class="text-decoration-none" target="_blank">
+                                        {{$serverDetail->website_url}}
                                     </a>
                                 </span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-user me-2"></i> Registered By</span>
-                                <span>FrankCG</span>
+                                <span>{{ $serverDetail->user?->name }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
@@ -612,46 +618,7 @@
                 <i class="fas fa-file-alt me-2"></i>About This Server
             </div>
             <div class="card-body">
-                <p>Welcome to Complex Gaming Minecraft server with a wide selection of servers ranging from
-                    Pokemon, Skyblock, Survival, Factions and more! Please read below for more information.</p>
-
-                <h6>Pixelmon Reforged - Latest Version</h6>
-                <p>Adults and Kids. Pixelmon on Minecraft! This version of Pixelmon was on Minecraft 1.16.5.
-                    It's the also you get Pokemon service player who are not new member feedback, so Good
-                    purchase experience through forge.</p>
-
-                <h6>Modpacks</h6>
-                <ul>
-                    <li>Modpacks - We introduce our complex server</li>
-                    <li>Download Technic legit and it uses complex server</li>
-                    <li>Use ATlauncher - No launcher complex server</li>
-                </ul>
-
-                <h6>Vanilla Servers</h6>
-                <p>Vanilla Survival - Regular Minecraft survival with fun times. Complex Gaming has given its
-                    biggest network at this revised time 1.16.5.</p>
-
-                <h6>What is the server IP for Complex Gaming?</h6>
-                <p>The IP address of Complex Gaming Minecraft server is play.complex-gaming.com</p>
-
-                <h6>How do I play on the Complex Gaming Minecraft server?</h6>
-                <p>Open the Minecraft launcher, select the "Play" button, then select "Multiplayer" from the
-                    main menu.</p>
-
-                <h6>What Minecraft game version does Complex Gaming server support?</h6>
-                <p>Complex Gaming supports Minecraft version 1.16.5. We also accept older and newer versions of
-                    Minecraft.</p>
-
-                <h6>Where is the Complex Gaming Minecraft Server being hosted?</h6>
-                <p>The Complex Gaming server is currently hosted in United States of America with uptime of
-                    100%.</p>
-
-                <h6>What gamemodes can I play on the Complex Gaming Minecraft Server?</h6>
-                <p>You can play Cobblemon, Prison, Survival, Luckblock, Pixelmon, Pokemon, Skyblock, SMP.
-                    Similar on the Complex Gaming server.</p>
-
-                <h6>What is the website for the Complex Gaming Minecraft Server?</h6>
-                <p>The website for the Complex Gaming is https://www.complex-gaming.com/</p>
+                {!! $serverDetail->description !!}
             </div>
         </div>
 
@@ -716,5 +683,58 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        // Copy IP functionality
+        function copyIP(ip) {
+            navigator.clipboard.writeText(ip).then(function() {
+                showToast(`Server IP "${ip}" copied to clipboard!`, 'success');
+            }).catch(function(err) {
+                showToast('Failed to copy IP address', 'error');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // Toast notification system
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className =
+                `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+
+            // Remove toast element after it's hidden
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+
+        // Create toast container if it doesn't exist
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '9999';
+            document.body.appendChild(container);
+            return container;
+        }
+    </script>
 
 @endsection
