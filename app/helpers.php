@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
-if (! function_exists('add_active')) {
+if (!function_exists('add_active')) {
     /**
      * Return the active class if the current route match the given patterns, or
      * an empty string otherwise.
@@ -24,15 +24,14 @@ if (! function_exists('add_active')) {
     }
 }
 
-if (! function_exists('is_installed')) {
+if (!function_exists('is_installed')) {
     /**
      * Determine whether the application is installed or not.
      */
     function is_installed(): bool
     {
         $key = config('app.key');
-
-        return ! empty($key) && $key !== InstallController::TEMP_KEY;
+        return !empty($key) && $key !== InstallController::TEMP_KEY;
     }
 }
 
@@ -40,19 +39,19 @@ if (! function_exists('is_installed')) {
  * Translation related helpers
  */
 
-if (! function_exists('format_date')) {
+if (!function_exists('format_date')) {
     /**
      * Format a date using with the format corresponding to the current locale.
      */
     function format_date(Carbon $date, bool $fullTime = false): string
     {
-        $format = trans('messages.date.'.($fullTime ? 'full' : 'default'));
+        $format = trans('messages.date.' . ($fullTime ? 'full' : 'default'));
 
         return $date->translatedFormat($format);
     }
 }
 
-if (! function_exists('format_date_compact')) {
+if (!function_exists('format_date_compact')) {
     /**
      * Format a date using with the compact format corresponding to the current locale.
      */
@@ -62,17 +61,17 @@ if (! function_exists('format_date_compact')) {
     }
 }
 
-if (! function_exists('trans_bool')) {
+if (!function_exists('trans_bool')) {
     /**
      * Translate a boolean value in the current locale.
      */
     function trans_bool(bool $bool): string
     {
-        return trans('messages.'.($bool ? 'yes' : 'no'));
+        return trans('messages.' . ($bool ? 'yes' : 'no'));
     }
 }
 
-if (! function_exists('money_name')) {
+if (!function_exists('money_name')) {
     /**
      * Return the money name for the given amount.
      */
@@ -84,20 +83,20 @@ if (! function_exists('money_name')) {
     }
 }
 
-if (! function_exists('format_money')) {
+if (!function_exists('format_money')) {
     /**
      * Format the given money amount with the money name.
      */
     function format_money(float $money)
     {
-        return $money.' '.money_name($money);
+        return $money . ' ' . money_name($money);
     }
 }
 
 /*
  * Settings/Config helpers
  */
-if (! function_exists('setting')) {
+if (!function_exists('setting')) {
     /**
      * Return the value of the given setting name, or the default value if the
      * setting doesn't exist.
@@ -115,7 +114,7 @@ if (! function_exists('setting')) {
     }
 }
 
-if (! function_exists('favicon')) {
+if (!function_exists('favicon')) {
     /**
      * Return the URL to configured favicon, or the default favicon.
      */
@@ -127,7 +126,7 @@ if (! function_exists('favicon')) {
     }
 }
 
-if (! function_exists('site_logo')) {
+if (!function_exists('site_logo')) {
     /**
      * Return the URL to configured logo, or the default favicon.
      */
@@ -139,7 +138,7 @@ if (! function_exists('site_logo')) {
     }
 }
 
-if (! function_exists('site_name')) {
+if (!function_exists('site_name')) {
     /**
      * Return the name of the website.
      */
@@ -149,17 +148,17 @@ if (! function_exists('site_name')) {
     }
 }
 
-if (! function_exists('image_url')) {
+if (!function_exists('image_url')) {
     /**
      * Get the URL of the given image, in the public storage.
      */
     function image_url(string $name = ''): string
     {
-        return url(Storage::disk('public')->url(rtrim('img/'.$name, '/')));
+        return url(Storage::disk('public')->url(rtrim('img/' . $name, '/')));
     }
 }
 
-if (! function_exists('social_links')) {
+if (!function_exists('social_links')) {
     function social_links(): Collection
     {
         return Cache::remember(SocialLink::CACHE_KEY, now()->addDay(), function () {
@@ -172,7 +171,7 @@ if (! function_exists('social_links')) {
  * Extensions helpers
  */
 
-if (! function_exists('plugins')) {
+if (!function_exists('plugins')) {
     /**
      * Get the plugins' manager.
      */
@@ -182,7 +181,7 @@ if (! function_exists('plugins')) {
     }
 }
 
-if (! function_exists('themes')) {
+if (!function_exists('themes')) {
     /**
      * Get the themes' manager.
      */
@@ -192,7 +191,7 @@ if (! function_exists('themes')) {
     }
 }
 
-if (! function_exists('plugin_path')) {
+if (!function_exists('plugin_path')) {
     /**
      * Get the path to a plugin directory.
      */
@@ -202,7 +201,7 @@ if (! function_exists('plugin_path')) {
     }
 }
 
-if (! function_exists('themes_path')) {
+if (!function_exists('themes_path')) {
     /**
      * Get the path of the 'themes' directory.
      */
@@ -212,7 +211,7 @@ if (! function_exists('themes_path')) {
     }
 }
 
-if (! function_exists('theme_path')) {
+if (!function_exists('theme_path')) {
     /**
      * Get the path of a theme. If no theme is specified the current theme
      * is used.
@@ -223,7 +222,7 @@ if (! function_exists('theme_path')) {
     }
 }
 
-if (! function_exists('plugin_asset')) {
+if (!function_exists('plugin_asset')) {
     /**
      * Generate an asset path for the current theme.
      */
@@ -233,30 +232,30 @@ if (! function_exists('plugin_asset')) {
     }
 }
 
-if (! function_exists('theme_asset')) {
+if (!function_exists('theme_asset')) {
     /**
      * Generate an asset path for the current theme.
      */
     function theme_asset(string $path): string
     {
-        return asset('themes/'.themes()->currentTheme().'/'.$path);
+        return asset('themes/' . themes()->currentTheme() . '/' . $path);
     }
 }
 
-if (! function_exists('theme_config')) {
+if (!function_exists('theme_config')) {
     /**
      * Generate an asset path for the current theme.
      */
     function theme_config(?string $key = null, mixed $default = null): mixed
     {
-        return $key === null ? config('theme') : config('theme.'.$key, $default);
+        return $key === null ? config('theme') : config('theme.' . $key, $default);
     }
 }
 
 /*
  * Other helpers
  */
-if (! function_exists('game')) {
+if (!function_exists('game')) {
     /**
      * Get the current game bridge implementation.
      */
@@ -266,7 +265,7 @@ if (! function_exists('game')) {
     }
 }
 
-if (! function_exists('oauth_login')) {
+if (!function_exists('oauth_login')) {
     /**
      * Determine whether the app use OAuth login.
      */
@@ -276,7 +275,7 @@ if (! function_exists('oauth_login')) {
     }
 }
 
-if (! function_exists('dark_theme')) {
+if (!function_exists('dark_theme')) {
     /**
      * Determine whether the user should have the dark theme.
      */
@@ -288,7 +287,7 @@ if (! function_exists('dark_theme')) {
     }
 }
 
-if (! function_exists('scheduler_running')) {
+if (!function_exists('scheduler_running')) {
     /**
      * Verify if the scheduler is configured and running.
      */
@@ -299,3 +298,29 @@ if (! function_exists('scheduler_running')) {
         return $last !== null && Carbon::parse($last)->diffInHours() < 1;
     }
 }
+
+if (!function_exists('removeHttpFromUrl')) {
+    function removeHttpFromUrl($url): string | null
+    {
+        return $url ? str_replace(['https://', 'http://'], '', $url) : $url;
+    }
+}
+
+if (!function_exists('tagsBgColors')) {
+    function tagsBgColors(): array
+    {
+        return [
+            'bg-success',
+            'bg-info',
+            'bg-warning',
+            'bg-danger',
+            'bg-secondary',
+            'bg-dark',
+            'bg-primary',
+            'bg-black',
+
+
+        ];
+    }
+}
+

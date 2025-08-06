@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Azuriom\Models\Role;
 use Azuriom\Models\Setting;
+use Azuriom\Models\User;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -31,6 +32,13 @@ class RoleSeeder extends Seeder
             'color' => 'e10d11',
             'is_admin' => true,
             'power' => 10,
+        ]);
+
+        User::where('id', 1)->update([
+            'role_id' => 2,
+        ]);
+        User::where('id', 2)->update([
+            'role_id' => 1,
         ]);
     }
 }

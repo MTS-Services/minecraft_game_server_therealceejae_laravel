@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 @include('elements.base')
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,32 +56,34 @@
     </style>
 </head>
 
-<body class="d-flex flex-column bg-body-secondary" @if(dark_theme()) data-bs-theme="dark" @endif>
-<div id="app" class="flex-shrink-0">
-    <header>
-        @include('elements.navbar')
-    </header>
+<body class="d-flex flex-column bg-body-secondary" @if (dark_theme()) data-bs-theme="dark" @endif>
+    <div id="app" class="flex-shrink-0">
+        <header>
+            @include('elements.navbar')
+        </header>
 
-    @yield('app')
-</div>
-
-<footer class="text-center text-bg-dark mt-auto py-4">
-    <div class="copyright">
-        <div class="container">
-            <p>{{ setting('copyright') }} | @lang('messages.copyright')</p>
-
-            @foreach(social_links() as $link)
-                <a href="{{ $link->value }}" title="{{ $link->title }}" target="_blank" rel="noopener noreferrer"
-                   data-bs-toggle="tooltip"
-                   class="d-inline-block mx-1 p-2 rounded-circle" style="background: {{ $link->color }}">
-                    <i class="{{ $link->icon }} text-white"></i>
-                </a>
-            @endforeach
-        </div>
+        @yield('app')
     </div>
-</footer>
 
-@stack('footer-scripts')
+    <footer class="text-center text-bg-dark mt-auto py-4">
+        <div class="copyright">
+            <div class="container">
+                <p>{{ __('Copyright © ' . date('Y') . ' The Real Ceejae - All Rights Reserved.') }} | @lang('messages.copyright')
+                </p>
+
+                @foreach (social_links() as $link)
+                    <a href="{{ $link->value }}" title="{{ $link->title }}" target="_blank"
+                        rel="noopener noreferrer" data-bs-toggle="tooltip"
+                        class="d-inline-block mx-1 p-2 rounded-circle" style="background: {{ $link->color }}">
+                        <i class="{{ $link->icon }} text-white"></i>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </footer>
+
+    @stack('footer-scripts')
 
 </body>
+
 </html>

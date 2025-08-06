@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedInteger('role_id')->default(1);
+            $table->unsignedInteger('role_id')->nullable();
             $table->decimal('money', 14)->default(0);
             $table->string('game_id')->nullable();
             $table->text('avatar')->nullable();
