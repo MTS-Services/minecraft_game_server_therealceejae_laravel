@@ -16,7 +16,8 @@ RUN apk add --no-cache \
 # Install Composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-# Copy the entire application code into the container
+# Create and set ownership of the working directory
+RUN mkdir -p /var/www/azuriom && chown -R www-data:www-data /var/www/azuriom
 WORKDIR /var/www/azuriom
 COPY --chown=www-data:www-data . /var/www/azuriom/
 
