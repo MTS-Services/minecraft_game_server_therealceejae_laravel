@@ -38,7 +38,8 @@ WORKDIR /var/www/azuriom
 # ----------------------------------------
 # 5. Copy Laravel app source
 # ----------------------------------------
-COPY . .
+# COPY . .
+COPY --chown=www-data:www-data . /var/www/azuriom/
 
 # ----------------------------------------
 # 6. Prepare Laravel cache paths & permissions
