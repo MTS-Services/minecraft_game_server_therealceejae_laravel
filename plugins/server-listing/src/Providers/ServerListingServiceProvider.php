@@ -8,7 +8,9 @@ use Azuriom\Models\Permission;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Plugin\ServerListing\Models\ServerStats;
 use Azuriom\Plugin\ServerListing\Models\ServerVote;
+use Azuriom\Plugin\ServerListing\View\Composers\ServerListingAdminDashboardComposer;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\View;
 
 class ServerListingServiceProvider extends BasePluginServiceProvider
 {
@@ -42,7 +44,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
         ]);
 
 
-
+        View::composer('admin.dashboard', ServerListingAdminDashboardComposer::class);
 
 
         Permission::registerPermissions([

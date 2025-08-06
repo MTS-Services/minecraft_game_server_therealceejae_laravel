@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', trans('messages.home'))
+@section('title', trans('server-listing::messages.server_details.title'))
 @section('app')
 
     @push('styles')

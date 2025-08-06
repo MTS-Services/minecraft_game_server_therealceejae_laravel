@@ -10,4 +10,9 @@ class ServerListingController extends Controller
     {
         return view('server-listing::details');
     }
+
+    public function submission()
+    {
+        return view('server-listing::user.server_submission');
+    }
 }

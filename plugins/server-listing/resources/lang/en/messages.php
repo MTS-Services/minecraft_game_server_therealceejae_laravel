@@ -7,6 +7,14 @@ return [
     'buy' => 'Buy',
 
     'free' => 'Free',
+    'discord' => 'Discord',
+    'additional_info' => 'Additional Information',
+    'warning' => 'Warning',
+    'additional_settings' => 'Additional Settings',
+    'settings' => 'Settings',
+    'premium_listing' => 'Premium Listing',
+    'premium_listing_text' => '- Get featured placement and enhanced visibility for your server.',
+    'premium_listing_text2' => 'Premium listings appear at the top of search results and include additional features.',
 
     'periods' => [
         'hours' => 'hours',
@@ -50,12 +58,28 @@ return [
         'status' => 'Status',
         'country-select' => 'Select Country',
         'country' => 'Country',
-        'youtube_video' => 'Youtube Video',
+        'youtube_video' => 'YouTube Video',
         'server' => 'Server',
         'server_address' => 'Server Address',
         'server_status' => 'Server Status',
         'premium_status' => 'Premium Status',
         'actions' => 'Actions',
+        'server_name' => 'Server Name',
+        'java_server_ip' => 'Java Server IP',
+        'bedrock_server_ip' => 'Bedrock Server IP:Port',
+        'minecraft_version' => 'Minecraft Version',
+        'minecraft_version_select' => 'Select Minecraft Version',
+        'maximum_player_slots' => 'Maximum Player Slots',
+        'support_email' => 'Support Email',
+        'optional' => 'Optional',
+        'host_address' => 'Host Address',
+        'votifier_port' => 'Votifier Port',
+        'votifier_public_key' => 'Votifier Public Key',
+        'votifier_host' => 'Votifier Host',
+        'teamspeak_server_api_key' => 'TeamSpeak Server API Key',
+        'discord_server_id' => 'Discord Server ID',
+
+
     ],
     'placeholder' => [
         'name' => 'Enter name',
@@ -69,7 +93,48 @@ return [
         'tags' => 'Enter tags',
         'description' => 'Enter description',
         'youtube_video' => 'Enter youtube video example: https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        'java_server_ip' => 'Enter java server IP',
+        'server_name' => 'Enter server name',
+        'bedrock_server_ip' => 'Enter bedrock server IP:Port',
+        'maximum_player_slots' => 'Enter maximum number of player slots',
+        'support_email' => 'Enter support email',
+        'host_address' => 'Enter host address',
+        'votifier_port' => 'Enter votifier port',
+        'votifier_public_key' => 'Enter votifier public key',
+        'votifier_host' => 'Enter votifier host',
+        'teamspeak_server_api_key' => 'Enter teamspeak server api key',
+        'teamspeak_server_api_key_text' => 'We need to verify your server. Set the displayed code as your TS nickname.',
+        'discord_server_id' => 'Enter discord server ID. Example: 123456789012345678',
+        'discord_server_id_text' => 'We need to verify your server. Set the displayed code as your TS nickname.',
+        'discord_server_id_instractions' => 'Go to Settings → Widget → Enable Server Widget and copy the Server ID from the widget settings. The server widget needs to be enabled for verification.',
+        'banner_image_text' => 'Upload your server banner (recommended size: 468x60)',
+        'tags_text' => 'Select tags that describe your server to help players find it',
+        'tags_warning' => 'Select the most relevant tags. Excess tagging is not allowed and can result in immediate removal of servers if not related with your server.',
+        'logo_image_text' => 'Upload your server logo (recommended size: 100x100)',
 
+
+
+    ],
+    'submission_card' => [
+        'requirements' => 'Requirements',
+        'requirement_text_regular' => 'To successfully add your server, please ensure it meets our requirements which includes having a valid IP address and port.',
+        'requirement_text_strong' => 'Your server needs to accept TCP connections',
+        'requirement_text_regular2' => ' on the specified port so we can check stats.',
+        'server_info' => 'Server Information',
+        'notice' => 'NOTICE',
+        'notice_text' => 'Register a server, if you don\'t have the authorization code to recommendation, your server will not be accepted. Please check our recommendation guide for more info.',
+        'votifier' => 'Votifier',
+        'votifier_text' => 'Allow players to vote for your server and receive rewards',
+        'teamspeak' => 'TeamSpeak',
+
+
+    ],
+
+    'server_details' => [
+        'title' => 'Server Details',
+    ],
+    'server_submission' => [
+        'title' => 'Server Submission',
     ],
 
     'actions' => [
@@ -83,6 +148,7 @@ return [
         'update' => 'Update',
         'save' => 'Save',
         'add' => 'Add',
+        'submit_server' => 'Submit Server',
     ],
 
     'home' => [

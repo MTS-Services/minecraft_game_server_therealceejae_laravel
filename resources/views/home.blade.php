@@ -73,11 +73,6 @@
         }
 
         /* Base Styles */
-        body {
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 14px;
-        }
 
         /* Minecraft Landscape Header */
         .minecraft-header {
@@ -421,6 +416,11 @@
             padding: 0.3rem 0.6rem;
             border-radius: 15px;
             font-weight: 600;
+        }
+
+        .premium-online-badge.offline,
+        .premium-status-badge.offline {
+            background: var(--status-offline);
         }
 
         .status-badge.offline {
@@ -1147,9 +1147,9 @@
                             <p class="lead mb-4">
                                 {{ __('Get your Minecraft server listed and reach thousands of potential players!') }}
                             </p>
-                            <button class="btn btn-light btn-lg px-5">
+                            <a href="{{ route('server-listing.submission') }}" class="btn btn-light btn-lg px-5">
                                 <i class="bi bi-plus me-2"></i>{{ __('Add Your Server') }}
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

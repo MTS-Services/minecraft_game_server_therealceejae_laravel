@@ -18,4 +18,6 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [ServerListingHomeController::class, 'index']);
 
-Route::get('/{slug}', [ServerListingController::class, 'details'])->name('details');
+Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
+
+Route::get('/submission', [ServerListingController::class, 'submission'])->name('submission')->middleware('auth:web');
