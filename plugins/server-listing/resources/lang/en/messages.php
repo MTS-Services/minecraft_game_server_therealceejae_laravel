@@ -78,7 +78,7 @@ return [
         'votifier_host' => 'Votifier Host',
         'teamspeak_server_api_key' => 'TeamSpeak Server API Key',
         'discord_server_id' => 'Discord Server ID',
-
+        'motd' => 'MOTD',
 
     ],
     'placeholder' => [
@@ -111,8 +111,7 @@ return [
         'tags_text' => 'Select tags that describe your server to help players find it',
         'tags_warning' => 'Select the most relevant tags. Excess tagging is not allowed and can result in immediate removal of servers if not related with your server.',
         'logo_image_text' => 'Upload your server logo (recommended size: 100x100)',
-
-
+        'motd' => 'Enter MOTD or short notes',
 
     ],
     'submission_card' => [

@@ -16,30 +16,43 @@ class ServerListing extends Model
     protected $table = 'server_listing_servers';
 
     protected $fillable = [
+
         'user_id',
+        'country_id',
         'name',
         'slug',
+        'motd',
         'description',
-        'server_ip',
-        'server_port',
+        'java_server_ip',
+        'bedrock_server_ip',
         'website_url',
         'discord_url',
+        'discord_server_id',
         'banner_image',
         'logo_image',
-        'version',
+        'minecraft_version',
+        'support_email',
+        'votifier_host',
+        'votifier_port',
+        'votifier_public_key',
+        'teamspeak_server_api_key',
         'max_players',
         'current_players',
         'is_online',
         'is_premium',
         'is_featured',
         'is_approved',
+        'hide_voters',
+        'hide_players_list',
+        'block_ping',
+        'block_version_detection',
+        'terms_accepted',
         'vote_count',
         'total_votes',
         'last_ping',
-        'position',
-        'country_id',
-        'server_rank',
         'youtube_video',
+        'server_rank',
+        'position',
     ];
 
     protected $appends = [
@@ -58,17 +71,22 @@ class ServerListing extends Model
 
     protected $casts = [
         'is_online' => 'boolean',
-        'is_premium' => 'boolean',
-        'is_featured' => 'boolean',
-        'is_approved' => 'boolean',
+        'is_premium'  => 'boolean',
+        'is_featured'  => 'boolean',
+        'is_approved'  => 'boolean',
+        'hide_voters'  => 'boolean',
+        'hide_players_list'  => 'boolean',
+        'block_ping'  => 'boolean',
+        'block_version_detection'  => 'boolean',
+        'terms_accepted'  => 'boolean',
         'last_ping' => 'datetime',
-        'server_port' => 'integer',
         'max_players' => 'integer',
         'current_players' => 'integer',
         'vote_count' => 'integer',
         'total_votes' => 'integer',
-        'position' => 'integer',
         'server_rank' => 'integer',
+        'position' => 'integer',
+
     ];
 
     public const FEATURED = 1;
@@ -80,17 +98,16 @@ class ServerListing extends Model
             self::FEATURED => trans('server-listing::messages.status.featured'),
             self::NOT_FEATURED => trans('server-listing::messages.status.not_featured'),
         ];
-
     }
 
     public function getLogoImageUrlAttribute(): string
     {
-        return $this->logo_image ? (filter_var($this->logo_image , FILTER_VALIDATE_URL) ? $this->logo_image : Storage::url($this->logo_image)) : asset('themes/default/img/default-logo.png');
+        return $this->logo_image ? (filter_var($this->logo_image, FILTER_VALIDATE_URL) ? $this->logo_image : Storage::url($this->logo_image)) : asset('themes/default/img/default-logo.png');
     }
 
     public function getBannerImageUrlAttribute(): string
     {
-        return $this->banner_image  ? (filter_var($this->banner_image , FILTER_VALIDATE_URL) ? $this->banner_image : Storage::url($this->banner_image)) : asset('themes/default/img/default-banner.png');
+        return $this->banner_image  ? (filter_var($this->banner_image, FILTER_VALIDATE_URL) ? $this->banner_image : Storage::url($this->banner_image)) : asset('themes/default/img/default-banner.png');
     }
 
     public function getFeaturedLabelAttribute(): string
@@ -209,7 +226,6 @@ class ServerListing extends Model
             $q->where('name', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%")
                 ->orWhere('server_ip', 'like', "%{$search}%");
-
         });
     }
 
@@ -268,5 +284,4 @@ class ServerListing extends Model
     {
         return $this->belongsTo(ServerCountry::class, 'country_id');
     }
-
 }

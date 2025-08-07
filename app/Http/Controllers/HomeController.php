@@ -15,10 +15,9 @@ class HomeController extends Controller
     {
 
 
-
         if (plugins()->isEnabled('server-listing')) {
             $data['server_countries'] = ServerCountry::active()->latest()->orderBy('name')->get();
-            $data['server_versions'] = ServerListing::pluck('version')->unique()->toArray();
+            $data['server_versions'] = ServerListing::pluck('minecraft_version')->unique()->toArray();
 
             $query = ServerListing::with(['country', 'user']);
             $search = false;
@@ -29,7 +28,7 @@ class HomeController extends Controller
                         ->orWhere('description', 'like', '%' . $search . '%')
                         ->orWhere('server_ip', 'like', '%' . $search . '%')
                         ->orWhereJsonContains('tags', $search)
-                        ->orWhere('version', 'like', '%' . $search . '%')
+                        ->orWhere('minecraft_version', 'like', '%' . $search . '%')
                         ->orWhere('website_url', 'like', '%' . $search . '%')
                         ->orWhereHas('country', function ($subQuery) use ($search) {
                             $subQuery->where('name', 'like', '%' . $search . '%');
@@ -44,9 +43,9 @@ class HomeController extends Controller
 
                 });
             }
-            if (request()->has('version') && request()->get('version') !== 'all') {
+            if (request()->has('minecraft_version') && request()->get('minecraft_version') !== 'all') {
                 $search = true;
-                $query->where('version', request()->get('version'));
+                $query->where('minecraft_version', request()->get('minecraft_version'));
             }
             if ($search) {
                 $data['servers'] = $query->approved()->orderBy('is_featured', 'desc')->orderBy('is_premium', 'desc')->orderBy('position', 'asc')->orderBy('name');

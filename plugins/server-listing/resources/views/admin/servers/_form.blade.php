@@ -211,7 +211,7 @@
             </div>
             <div class="col-md-4 mb-3">
                 <label for="supportEmailInput">{{ trans('server-listing::messages.fields.support_email') }}</label>
-                <input type="url" class="form-control @error('support_email') is-invalid @enderror"
+                <input type="email" class="form-control @error('support_email') is-invalid @enderror"
                     id="supportEmailInput" name="support_email"
                     placeholder="{{ trans('server-listing::messages.placeholder.support_email') }}"
                     value="{{ old('support_email', $server->support_email ?? '') }}">
@@ -219,7 +219,16 @@
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
             </div>
-            <div class="col mb-3">
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="textArea">{{ trans('server-listing::messages.fields.motd') }}
+                    <span class="text-danger">*</span></label>
+                <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="textArea"
+                    placeholder="{{ trans('server-listing::messages.placeholder.motd') }}" name="description" rows="5">{{ old('description', $server->description ?? '') }}</textarea>
+                @error('description')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="col-md-6 mb-3">
                 <label class="form-label" for="textArea">{{ trans('server-listing::messages.fields.description') }}
                     <span class="text-danger">*</span></label>
                 <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="textArea"
@@ -385,7 +394,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="votifierPortInput">{{ trans('server-listing::messages.fields.votifier_port') }}</label>
-                <input type="url" class="form-control @error('votifier_port') is-invalid @enderror"
+                <input type="number" class="form-control @error('votifier_port') is-invalid @enderror"
                     id="votifierPortInput" name="votifier_port"
                     placeholder="{{ trans('server-listing::messages.placeholder.votifier_port') }}"
                     value="{{ old('votifier_port', $server->votifier_port ?? '') }}">
@@ -420,7 +429,7 @@
             <div class="mb-3">
                 <div class="form-check">
                     <input class="form-check-input" name="hide_voters" type="checkbox" value="1"
-                        id="hideVoters" required>
+                        id="hideVoters">
                     <label class="form-check-label" for="hideVoters">
                         Hide Top Voters
                     </label>
@@ -434,7 +443,7 @@
             <div class="mb-3">
                 <div class="form-check">
                     <input class="form-check-input" name="hide_players_list" value="1" type="checkbox"
-                        id="hidePlayer" required>
+                        id="hidePlayer">
                     <label class="form-check-label" for="hidePlayer">
                         Hide Player List
                     </label>
@@ -447,8 +456,8 @@
             </div>
             <div class="mb-3">
                 <div class="form-check">
-                    <input class="form-check-input" name="block_ping" value="1" type="checkbox" id="blockPing"
-                        required>
+                    <input class="form-check-input" name="block_ping" value="1" type="checkbox"
+                        id="blockPing">
                     <label class="form-check-label" for="blockPing">
                         Block Ping
                     </label>
@@ -462,7 +471,7 @@
             <div class="mb-3">
                 <div class="form-check">
                     <input class="form-check-input" name="block_version_detection" value="1" type="checkbox"
-                        id="blockVersionDetection" required>
+                        id="blockVersionDetection">
                     <label class="form-check-label" for="blockVersionDetection">
                         Block Version Detection
                     </label>
