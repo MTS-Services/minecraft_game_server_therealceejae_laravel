@@ -80,7 +80,8 @@
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="userSelect">{{ trans('server-listing::messages.fields.user') }} <span
                         class="text-danger">*</span></label>
-                <select class="form-select @error('user_id') is-invalid @enderror" id="userSelect" name="user_id" required>
+                <select class="form-select @error('user_id') is-invalid @enderror" id="userSelect" name="user_id"
+                    required>
                     <option value="" hidden selected>{{ trans('server-listing::messages.fields.user-select') }}
                     </option>
                     @foreach ($users as $user)
@@ -90,23 +91,6 @@
                     @endforeach
                 </select>
                 @error('user_id')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
-            </div>
-            <div class="col-md-4 mb-3">
-                <label class="form-label" for="countrySelect">{{ trans('server-listing::messages.fields.country') }}
-                    <span class="text-danger">*</span></label>
-                <select class="form-select @error('country_id') is-invalid @enderror" id="countrySelect"
-                    name="country_id" required>
-                    <option value="" hidden selected>{{ trans('server-listing::messages.fields.country-select') }}
-                    </option>
-                    @foreach ($countries as $country)
-                        <option value="{{ $country->id }}" @selected(old('country_id', $server->country_id ?? '') == $country->id)>
-                            {{ $country->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('country_id')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
             </div>
@@ -272,8 +256,8 @@
             <div class="col-md-4 mb-3">
                 <label for="tagsInput">{{ trans('server-listing::messages.fields.tags') }} <span
                         class="text-danger">*</span></label>
-                <select class="form-select @error('tags') is-invalid @enderror" id="tagsInput" name="tags[]" required
-                    multiple>
+                <select class="form-select @error('tags') is-invalid @enderror" id="tagsInput" name="tags[]"
+                    required multiple>
                     <option value="" hidden selected>{{ trans('server-listing::messages.fields.tags-select') }}
                     </option>
                     @foreach ($tags as $tag)

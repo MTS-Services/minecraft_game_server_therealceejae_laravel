@@ -46,8 +46,8 @@ class ServerRequest extends FormRequest
     public function rules(): array
     {
         $server = $this->route('server'); // route binding for update
-        $imageRules = ['image', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
-
+        $logoRules =  ['image', 'dimensions:width=60,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
+        $bannerRules =  ['image', 'dimensions:width=468,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
         return [
             'user_id' => 'required|sometimes|exists:users,id',
             'country_id' => ['required', 'exists:server_listing_countries,id'],
@@ -66,8 +66,8 @@ class ServerRequest extends FormRequest
             'website_url' => ['required', 'url'],
             'discord_url' => ['nullable', 'url'],
             'discord_server_id' => ['nullable'],
-            'banner_image' =>  array_merge($server ? ['nullable'] : ['required'], $imageRules),
-            'logo_image' => array_merge($server ? ['nullable'] : ['required'], $imageRules),
+            'banner_image' =>  array_merge($server ? ['nullable'] : ['required'], $bannerRules),
+            'logo_image' => array_merge($server ? ['nullable'] : ['required'], $logoRules),
             'minecraft_version' => ['required', 'string', 'max:50'],
             'support_email' => ['nullable', 'email'],
             'votifier_host' => ['nullable'],
