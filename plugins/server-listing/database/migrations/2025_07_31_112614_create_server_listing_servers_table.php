@@ -133,7 +133,7 @@ return new class extends Migration {
                     'server_rank' => rand(1, 1000),
                     'is_premium' => rand(0, 1),
                     'is_featured' => rand(0, 1),
-                    'is_approved' => rand(0, 1),
+                    'is_approved' => true,
                     'hide_voters' => rand(0, 1),
                     'hide_players_list' => rand(0, 1),
                     'block_ping' => rand(0, 1),
