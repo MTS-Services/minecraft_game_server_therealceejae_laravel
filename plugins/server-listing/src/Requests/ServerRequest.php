@@ -46,11 +46,9 @@ class ServerRequest extends FormRequest
     public function rules(): array
     {
         $server = $this->route('server'); // route binding for update
-        $logoRules =  ['image', 'dimensions:width=60,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
         $bannerRules =  ['image', 'dimensions:width=468,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
         return [
             'user_id' => 'required|sometimes|exists:users,id',
-            'country_id' => ['required', 'exists:server_listing_countries,id'],
             'name' => ['required', 'string', 'max:100'],
             'slug' => [
                 'required',
@@ -59,23 +57,18 @@ class ServerRequest extends FormRequest
                 new Slug,
                 Rule::unique('server_listing_servers', 'slug')->ignore($server, 'slug'),
             ],
-            'description' => ['required', 'string'],
-            'motd' => ['nullable', 'string', 'max:150'],
-            'java_server_ip' => ['required'],
-            'bedrock_server_ip' => ['nullable'],
-            'website_url' => ['required', 'url'],
+            'description' => ['required', 'string', 'min:100', 'max:1000'],
+            'server_ip' => ['required'],
+            'server_port' => ['nullable', 'integer', 'min:1', 'max:65535'],
+            'website_url' => ['nullable', 'url'],
             'discord_url' => ['nullable', 'url'],
             'discord_server_id' => ['nullable'],
             'banner_image' =>  array_merge($server ? ['nullable'] : ['required'], $bannerRules),
-            'logo_image' => array_merge($server ? ['nullable'] : ['required'], $logoRules),
-            'minecraft_version' => ['required', 'string', 'max:50'],
             'support_email' => ['nullable', 'email'],
             'votifier_host' => ['nullable'],
             'votifier_port' => ['nullable', 'integer'],
             'votifier_public_key' => ['nullable'],
             'teamspeak_server_api_key' => ['nullable'],
-            'max_players' => ['nullable', 'integer', 'min:1'],
-            'current_players' => ['nullable', 'integer', 'min:0'],
             'is_online' => ['nullable', 'boolean'],
             'is_premium' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],

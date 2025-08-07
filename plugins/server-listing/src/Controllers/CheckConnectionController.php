@@ -8,68 +8,6 @@ use Illuminate\Support\Facades\Http;
 
 class CheckConnectionController extends Controller
 {
-    // public function checkConnection(Request $request)
-    // {
-    //     // Get the serverIp and serverPort from the request body
-    //     $serverIp = $request->input('serverIp');
-    //     $serverPort = $request->input('serverPort');
-
-    //     // Check if serverIp is provided and not empty
-    //     if (empty($serverIp)) {
-    //         return response()->json(['success' => false, 'message' => 'Server IP cannot be empty.'], 400);
-    //     }
-
-    //     $baseUrl = "https://api.mcsrvstat.us/3/";
-
-    //     // Construct the URL. Append the port if it's provided and not the default (25565).
-    //     $url = $baseUrl . $serverIp;
-    //     if (!empty($serverPort) && $serverPort != '25565') {
-    //         $url .= ':' . $serverPort;
-    //     }
-
-    //     $response = Http::get($url);
-
-    //     // Check for HTTP errors (e.g., 404, 500) from the API
-    //     if ($response->failed()) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Failed to connect to the server status API.',
-    //             'status' => $response->status(),
-    //             'data' => $response->json()
-    //         ], $response->status());
-    //     }
-
-    //     // Decode the JSON response from the API
-    //     $responseData = $response->json();
-
-    //     // Check the `online` key in the API response
-    //     // Note: The API returns `online: true` even if the server is offline, but it provides `version: "Offline"`.
-    //     if (isset($responseData['online']) && $responseData['online'] === true) {
-    //         // Check if the server is actually online by looking at the version string.
-    //         if (str_contains(strtolower($responseData['version']), 'offline')) {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'Make sure the server is online.',
-    //                 'server_data' => $responseData
-    //             ]);
-    //         }
-
-    //         // Server is online, return a success response with the data
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Connection successful.',
-    //             'server_data' => $responseData
-    //         ]);
-    //     } else {
-    //         $errorMessage = $responseData['offline'] ?? 'Server is offline';
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => $errorMessage,
-    //             'server_data' => $responseData
-    //         ]);
-    //     }
-    // }
-
     public function checkConnection(Request $request)
     {
         // Get the serverIp and serverPort from the request body

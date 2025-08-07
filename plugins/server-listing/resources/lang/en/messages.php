@@ -15,6 +15,14 @@ return [
     'premium_listing' => 'Premium Listing',
     'premium_listing_text' => '- Get featured placement and enhanced visibility for your server.',
     'premium_listing_text2' => 'Premium listings appear at the top of search results and include additional features.',
+    'server_connection' => [
+        'success' => 'Server Connection Successful',
+        'failed' => 'Server Connection Failed',
+        'supported' => 'Bedrock Support',
+        'unknown' => 'N/A',
+        'players' => 'Players',
+        'version' => 'Server Version',
+    ],
 
     'periods' => [
         'hours' => 'hours',

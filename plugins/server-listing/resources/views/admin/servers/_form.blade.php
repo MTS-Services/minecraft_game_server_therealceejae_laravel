@@ -97,6 +97,16 @@
 
 @include('admin.elements.editor')
 
+<div>
+    @if ($errors->any())
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="text-danger">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+</div>
+
 <div id="connectionStatusSection" class="col-12 mb-3 d-none">
     {{-- Success Message Card (Initially Hidden) --}}
     <div id="successCard" class="card mb-3 status-card border-success shadow-sm d-none">
@@ -105,7 +115,7 @@
                 <i class="bi bi-check-circle-fill"></i>
             </div>
             <div>
-                <h5 class="card-title mb-0">Server Connection Successful</h5>
+                <h5 class="card-title mb-0">{{ trans('server-listing::messages.server_connection.success') }}</h5>
                 <p class="mb-0 text-success" id="successMessage"></p>
             </div>
         </div>
@@ -118,7 +128,7 @@
                 <i class="bi bi-exclamation-triangle-fill"></i>
             </div>
             <div>
-                <h5 class="card-title mb-0">Server Connection Failed</h5>
+                <h5 class="card-title mb-0">{{ trans('server-listing::messages.server_connection.failed') }}</h5>
                 <p class="mb-0 text-danger" id="errorMessage"></p>
             </div>
         </div>
@@ -133,20 +143,23 @@
         </div>
         <div class="col-md-3">
             <div class="info-card info-card-success h-100 p-3">
-                <p class="label">Bedrock Support</p>
-                <p class="value" id="serverBedrockSupportedValue">N/A</p>
+                <p class="label">{{ trans('server-listing::messages.server_connection.supported') }}</p>
+                <p class="value" id="serverBedrockSupportedValue">
+                    {{ trans('server-listing::messages.server_connection.unknown') }}</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="info-card info-card-success h-100 p-3">
-                <p class="label">Players</p>
-                <p class="value" id="playersOnlineValue">N/A</p>
+                <p class="label">{{ trans('server-listing::messages.server_connection.players') }}</p>
+                <p class="value" id="playersOnlineValue">
+                    {{ trans('server-listing::messages.server_connection.unknown') }}</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="info-card info-card-success h-100 p-3">
-                <p class="label">Server Version</p>
-                <p class="value" id="serverVersionValue">N/A</p>
+                <p class="label">{{ trans('server-listing::messages.server_connection.version') }}</p>
+                <p class="value" id="serverVersionValue">
+                    {{ trans('server-listing::messages.server_connection.unknown') }}</p>
             </div>
         </div>
     </div>
@@ -159,6 +172,32 @@
     </div>
     <div class="card-body">
         <div class="row gx-3">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="serverIpInput">{{ trans('server-listing::messages.fields.server_ip') }}
+                    <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('server_ip') is-invalid @enderror" id="serverIpInput"
+                    name="server_ip" required
+                    placeholder="{{ trans('server-listing::messages.placeholder.server_ip') }}"
+                    value="{{ old('server_ip', $server->server_ip ?? '') }}">
+                @error('server_ip')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label"
+                    for="serverPortInput">{{ trans('server-listing::messages.fields.server_port') }}</label>
+                <div class="btn-group w-100">
+                    <input type="text" class="form-control @error('server_port') is-invalid @enderror"
+                        id="serverPortInput" name="server_port"
+                        placeholder="{{ trans('server-listing::messages.placeholder.server_port') }}"
+                        value="{{ old('server_port', $server->server_port ?? '') }}">
+                    <button class="btn btn-primary text-nowrap" type="button">Check Connection</button>
+                </div>
+                @error('server_port')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+
+            </div>
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="userSelect">{{ trans('server-listing::messages.fields.user') }} <span
                         class="text-danger">*</span></label>
@@ -199,32 +238,6 @@
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
                 </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label class="form-label" for="serverIpInput">{{ trans('server-listing::messages.fields.server_ip') }}
-                    <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('server_ip') is-invalid @enderror" id="serverIpInput"
-                    name="server_ip" required
-                    placeholder="{{ trans('server-listing::messages.placeholder.server_ip') }}"
-                    value="{{ old('server_ip', $server->server_ip ?? '') }}">
-                @error('server_ip')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
-            </div>
-            <div class="col-md-4 mb-3">
-                <label class="form-label"
-                    for="serverPortInput">{{ trans('server-listing::messages.fields.server_port') }}</label>
-                <div class="btn-group w-100">
-                    <input type="text" class="form-control @error('server_port') is-invalid @enderror"
-                        id="serverPortInput" name="server_port"
-                        placeholder="{{ trans('server-listing::messages.placeholder.server_port') }}"
-                        value="{{ old('server_port', $server->server_port ?? '') }}">
-                    <button class="btn btn-primary text-nowrap" type="button">Check Connection</button>
-                </div>
-                @error('server_port')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
-
             </div>
             <div class="col-md-4 mb-3">
                 <label for="websiteUrlInput" class="form-label">
@@ -386,7 +399,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <label class="form-label"
                     for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }} <span
                         class="text-danger">*</span></label>
@@ -399,21 +412,7 @@
                 <img src="{{ isset($server->banner_image_url) ? $server->banner_image_url : '#' }}"
                     class="mt-2 img-fluid rounded img-preview {{ isset($server->banner_image_url) ? '' : 'd-none' }}"
                     alt="banner image" id="bannerImagePreview">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label"
-                    for="logoImageInput">{{ trans('server-listing::messages.fields.logo_image') }} <span
-                        class="text-danger">*</span></label>
-                <input type="file" class="form-control @error('logo_image') is-invalid @enderror" required
-                    id="logoImageInput" name="logo_image" accept="image/jpg,image/jpeg,image/png,image/gif"
-                    data-image-preview="logoImagePreview">
-                @error('logo_image')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
-                <img src="{{ isset($server->logo_image_url) ? $server->logo_image_url : '#' }}"
-                    class="mt-2 img-fluid rounded img-preview {{ isset($server->logo_image_url) ? '' : 'd-none' }}"
-                    alt="banner image" id="logoImagePreview">
-            </div>
+            </div>           
 
         </div>
     </div>
@@ -685,7 +684,8 @@
             checkConnectionButton.addEventListener('click', function() {
                 // Show loading state and hide previous messages
                 checkConnectionButton.disabled = true;
-                checkConnectionButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking...`;
+                checkConnectionButton.innerHTML =
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking...`;
                 statusSection.classList.add('d-none');
                 successCard.classList.add('d-none');
                 errorCard.classList.add('d-none');
@@ -711,13 +711,15 @@
                             // Update server details
                             const serverData = data.server_data;
                             // serverBedrockSupportedValue.innerHTML = serverData.motd.clean.join('<br>');
-                            serverBedrockSupportedValue.innerHTML = serverData.debug.bedrock ? 'Yes' : 'No';
-                            playersOnlineValue.innerText = `${serverData.players.online} / ${serverData.players.max}`;
+                            serverBedrockSupportedValue.innerHTML = serverData.debug.bedrock ? 'Yes' :
+                                'No';
+                            playersOnlineValue.innerText =
+                                `${serverData.players.online} / ${serverData.players.max}`;
                             serverVersionValue.innerText = serverData.version;
 
                             // Update server logo
                             if (serverData.icon) {
-                                serverLogoPreview.src = `{{base64_encode('')}}${serverData.icon}`;
+                                serverLogoPreview.src = `{{ base64_encode('') }}${serverData.icon}`;
                                 serverLogoPreview.classList.remove('d-none');
                             } else {
                                 serverLogoPreview.classList.add('d-none');
@@ -737,7 +739,8 @@
                         if (error.response && error.response.status === 400) {
                             // This is for invalid input (e.g., empty IP)
                             errorMessage.innerText = error.response.data.message;
-                        } else if (error.response && error.response.data && error.response.data.message) {
+                        } else if (error.response && error.response.data && error.response.data
+                            .message) {
                             // This is for the "offline" reason from the API
                             errorMessage.innerText = error.response.data.message;
                         } else {
