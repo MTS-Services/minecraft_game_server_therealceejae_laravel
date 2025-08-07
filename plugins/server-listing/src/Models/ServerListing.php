@@ -23,8 +23,9 @@ class ServerListing extends Model
         'slug',
         'motd',
         'description',
-        'java_server_ip',
-        'bedrock_server_ip',
+        'server_ip',
+        'server_port',
+        'is_bedrock_supported',
         'website_url',
         'discord_url',
         'discord_server_id',
@@ -70,6 +71,7 @@ class ServerListing extends Model
     ];
 
     protected $casts = [
+        'is_bedrock_supported' => 'boolean',
         'is_online' => 'boolean',
         'is_premium'  => 'boolean',
         'is_featured'  => 'boolean',

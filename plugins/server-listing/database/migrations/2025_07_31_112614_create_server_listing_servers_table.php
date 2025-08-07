@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->string('slug', 100)->unique();
             $table->text('motd')->nullable();
             $table->text('description');
-            $table->string('java_server_ip')->nullable();
-            $table->string('bedrock_server_ip')->nullable();
+            $table->string('server_ip')->nullable();
+            $table->string('server_port')->nullable();
             $table->string('website_url')->nullable();
             $table->string('discord_url')->nullable();
             $table->string('discord_server_id')->nullable();
@@ -37,6 +37,7 @@ return new class extends Migration {
 
             $table->integer('max_players')->default(100);
             $table->integer('current_players')->default(0);
+            $table->boolean('is_bedrock_supported')->default(false);
             $table->boolean('is_online')->default(false);
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_featured')->default(false);
@@ -62,8 +63,8 @@ return new class extends Migration {
                     'is_online',
                     'position',
                     'user_id',
-                    'java_server_ip',
-                    'bedrock_server_ip',
+                    'server_ip',
+                    'server_port',
                     'website_url',
                     'country_id',
 
@@ -106,7 +107,7 @@ return new class extends Migration {
             $servers = [];
 
             for ($i = 1; $i <= $count; $i++) {
-                $name = 'Server ' . Str::random(6);
+                $name = 'Bangladesh Craft ' . Str::random(6);
                 $servers[] = array_merge([
                     'user_id' => 2,
                     'country_id' => $i,
@@ -114,8 +115,8 @@ return new class extends Migration {
                     'slug' => Str::slug($name) . '-' . Str::random(4),
                     'description' => 'This is a sample description for ' . $name,
                     'motd' => 'This is a sample MOTD for ' . $name,
-                    'java_server_ip' => '127.0.0.1',
-                    'bedrock_server_ip' => '127.0.0.1:19132',
+                    'server_ip' => 'BangladeshCraft.aternos.me',
+                    'server_port' => '25565',
                     'website_url' => 'https://' . $name . '.example.com',
                     'discord_url' => 'https://discord.gg/' . Str::random(6),
                     'discord_server_id' => '123456789012345678',
@@ -142,7 +143,7 @@ return new class extends Migration {
                     'vote_count' => rand(0, 100),
                     'total_votes' => rand(0, 100),
                     'last_ping' => $now,
-                    'youtube_video' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',                    
+                    'youtube_video' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
                     'position' => rand(0, 100),
                     'created_at' => $now,
                     'updated_at' => $now,

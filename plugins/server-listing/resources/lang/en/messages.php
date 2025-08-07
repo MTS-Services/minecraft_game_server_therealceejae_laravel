@@ -60,7 +60,7 @@ return [
         'country' => 'Country',
         'youtube_video' => 'YouTube Video',
         'server' => 'Server',
-        'server_address' => 'Server Address',
+        'website' => 'Website URL',
         'server_status' => 'Server Status',
         'premium_status' => 'Premium Status',
         'actions' => 'Actions',
