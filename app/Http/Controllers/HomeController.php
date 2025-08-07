@@ -37,7 +37,7 @@ class HomeController extends Controller
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
                         ->orWhere('description', 'like', '%' . $search . '%')
-                        // ->orWhere('server_ip', 'like', '%' . $search . '%')
+                        ->orWhere('server_ip', 'like', '%' . $search . '%')
                         ->orWhere('minecraft_version', 'like', '%' . $search . '%')
                         ->orWhere('website_url', 'like', '%' . $search . '%')
                         ->orWhereHas('country', function ($subQuery) use ($search) {
