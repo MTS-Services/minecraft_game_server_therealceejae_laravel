@@ -19,20 +19,33 @@ return new class extends Migration {
             $table->foreign('country_id', 'server_country_id')->references('id')->on('server_listing_countries')->nullOnDelete()->cascadeOnUpdate();
             $table->string('name', 100);
             $table->string('slug', 100)->unique();
+            $table->text('motd')->nullable();
             $table->text('description');
-            $table->string('server_ip');
-            $table->integer('server_port')->default(25565);
+            $table->string('java_server_ip')->nullable();
+            $table->string('bedrock_server_ip')->nullable();
             $table->string('website_url')->nullable();
             $table->string('discord_url')->nullable();
+            $table->string('discord_server_id')->nullable();
             $table->string('banner_image')->nullable();
             $table->string('logo_image')->nullable();
-            $table->string('version', 50);
+            $table->string('minecraft_version', 50);
+            $table->string('support_email', 50)->nullable();
+            $table->string('votifier_host')->nullable();
+            $table->string('votifier_port')->nullable();
+            $table->text('votifier_public_key')->nullable();
+            $table->text('teamspeak_server_api_key')->nullable();
+
             $table->integer('max_players')->default(100);
             $table->integer('current_players')->default(0);
             $table->boolean('is_online')->default(false);
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_approved')->default(false);
+            $table->boolean('hide_voters')->default(false);
+            $table->boolean('hide_players_list')->default(false);
+            $table->boolean('block_ping')->default(false);
+            $table->boolean('block_version_detection')->default(false);
+            $table->boolean('terms_accepted')->default(false);
             $table->integer('vote_count')->default(0);
             $table->integer('total_votes')->default(0);
             $table->timestamp('last_ping')->nullable();
@@ -49,7 +62,8 @@ return new class extends Migration {
                     'is_online',
                     'position',
                     'user_id',
-                    'server_ip',
+                    'java_server_ip',
+                    'bedrock_server_ip',
                     'website_url',
                     'country_id',
 
@@ -99,22 +113,36 @@ return new class extends Migration {
                     'name' => $name,
                     'slug' => Str::slug($name) . '-' . Str::random(4),
                     'description' => 'This is a sample description for ' . $name,
-                    'server_ip' => '127.0.0.' . rand(1, 254),
-                    'server_port' => 25565,
-                    'website_url' => Str::random(3) . '.' . Str::random(6) . '.com',
-                    'discord_url' => null,
+                    'motd' => 'This is a sample MOTD for ' . $name,
+                    'java_server_ip' => '127.0.0.1',
+                    'bedrock_server_ip' => '127.0.0.1:19132',
+                    'website_url' => 'https://' . $name . '.example.com',
+                    'discord_url' => 'https://discord.gg/' . Str::random(6),
+                    'discord_server_id' => '123456789012345678',
                     'banner_image' => 'https://placehold.co/400x70',
                     'logo_image' => 'https://placehold.co/60',
-                    'version' => '1.20',
-                    'max_players' => 100,
-                    'current_players' => rand(0, 100),
-                    'is_online' => (bool) rand(0, 1),
-                    'is_approved' => true,
-                    'vote_count' => rand(0, 100),
-                    'total_votes' => rand(0, 1000),
-                    'last_ping' => $now,
-                    'youtube_video' => null,
+                    'minecraft_version' => '1.18.2',
+                    'support_email' => $name . '@example.com',
+                    'votifier_host' => '127.0.0.1',
+                    'votifier_port' => '25565',
+                    'votifier_public_key' => 'public_key',
+                    'teamspeak_server_api_key' => 'teamspeak_api_key',
+                    'max_players' => rand(1, 1000),
+                    'current_players' => rand(0, 1000),
+                    'is_online' => rand(0, 1),
                     'server_rank' => rand(1, 1000),
+                    'is_premium' => rand(0, 1),
+                    'is_featured' => rand(0, 1),
+                    'is_approved' => rand(0, 1),
+                    'hide_voters' => rand(0, 1),
+                    'hide_players_list' => rand(0, 1),
+                    'block_ping' => rand(0, 1),
+                    'block_version_detection' => rand(0, 1),
+                    'terms_accepted' => rand(0, 1),
+                    'vote_count' => rand(0, 100),
+                    'total_votes' => rand(0, 100),
+                    'last_ping' => $now,
+                    'youtube_video' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',                    
                     'position' => rand(0, 100),
                     'created_at' => $now,
                     'updated_at' => $now,
@@ -132,8 +160,6 @@ return new class extends Migration {
         $allServers = array_merge($featuredPremiumServers, $premiumServers, $regularServers);
 
         DB::table('server_listing_servers')->insert($allServers);
-
-
     }
 
     public function down(): void

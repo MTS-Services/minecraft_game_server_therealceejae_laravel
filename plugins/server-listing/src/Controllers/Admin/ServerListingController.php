@@ -9,11 +9,11 @@ use Azuriom\Plugin\ServerListing\Models\Tag;
 use Azuriom\Plugin\ServerListing\Requests\ServerRequest;
 use Azuriom\Models\User;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
-use DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ServerListingController extends Controller
@@ -100,6 +100,7 @@ class ServerListingController extends Controller
 
     public function store(ServerRequest $request)
     {
+        dd($request->all());
         DB::transaction(function () use ($request) {
             $validated = $request->validated();
             if ($request->hasFile('logo_image')) {
@@ -119,7 +120,6 @@ class ServerListingController extends Controller
                     'created_at' => now(),
                 ]);
             }
-
         });
 
         return to_route('server-listing.admin.servers.index')
