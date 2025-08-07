@@ -710,7 +710,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <select class="form-select" name="country">
-                                        <option value="all">{{ __('All Countries') }}</option>
+                                        <option value="all">{{ __('Countries') }}</option>
                                         @foreach ($server_countries as $server_country)
                                             <option value="{{ $server_country->slug }}"
                                                 {{ request('country') == $server_country->slug ? 'selected' : '' }}>
@@ -720,20 +720,31 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <select class="form-select" name="version">
-                                        <option value="all">{{ __('All Versions') }}</option>
-                                        @foreach ($server_versions as $server_version)
-                                            <option value="{{ $server_version }}"
-                                                {{ request('version') == $server_version ? 'selected' : '' }}>
-                                                {{ $server_version }}
+                                    <select class="form-select" name="tag">
+                                        <option value="all">{{ __('Game Modes') }}</option>
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag->slug }}"
+                                                {{ request('tag') == $tag->slug ? 'selected' : '' }}>
+                                                {{ $tag->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-2">
+                                    <select class="form-select" name="minecraft_version">
+                                        <option value="all">{{ __('Minecraft Versions') }}</option>
+                                        @foreach ($minecraft_versions as $server_version)
+                                            <option value="{{ $server_version }}"
+                                                {{ request('minecraft_version') == $server_version ? 'selected' : '' }}>
+                                                {{ $server_version }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
                                     <button type="submit" class="btn filter_button w-100">{{ __('Filter') }}</button>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <a href="{{ route('home') }}" class="btn reset_button w-100">{{ __('Reset') }}</a>
                                 </div>
                             </form>
@@ -810,13 +821,14 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="premium-server-banner">
-                                                        <img src="{{ $topServer->banner_image_url }}" alt="Server Banner">
+                                                        <img src="{{ $topServer->banner_image_url }}"
+                                                            alt="Server Banner">
                                                         <div class="premium-server-overlay">
                                                             <div class="d-flex align-items-center justify-content-between">
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version-badge me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $topServer->version }}
+                                                                            class="bi bi-gear me-1"></i>{{ $topServer->minecraft_version }}
                                                                     </span>
                                                                     <i class="bi bi-flag me-1 text-warning"></i>
                                                                     <a class="text-white fw-bold text-decoration-none"
@@ -945,7 +957,8 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $premiumServer->version }}
+                                                                            class="bi bi-gear me-1"></i>{{ $premiumServer->minecraft_version }}
+
                                                                     </span>
                                                                     <i class="bi bi-flag me-1"></i>
                                                                     <a class="text-white text-decoration-none"
@@ -1071,7 +1084,7 @@
                                                             <div class="d-flex align-items-center">
                                                                 <span class="badge version-badge me-2">
                                                                     <i
-                                                                        class="bi bi-gear me-1"></i>{{ $popularServer->version }}
+                                                                        class="bi bi-gear me-1"></i>{{ $popularServer->minecraft_version }}
                                                                 </span>
                                                                 <i class="bi bi-flag me-1"></i>
                                                                 <a class="text-white text-decoration-none"
