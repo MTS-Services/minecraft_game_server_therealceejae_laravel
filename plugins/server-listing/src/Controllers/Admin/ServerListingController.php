@@ -24,7 +24,7 @@ class ServerListingController extends Controller
     public function index()
     {
         $data['per_page'] = 10;
-        $data['servers'] = ServerListing::with(['user', 'country'])->ordered()
+        $data['servers'] = ServerListing::with(['user', 'country'])->latest()
             ->paginate($data['per_page']);
         return view('server-listing::admin.servers.index', $data);
     }
@@ -100,9 +100,10 @@ class ServerListingController extends Controller
 
     public function store(ServerRequest $request)
     {
-        dd($request->all());
+
         DB::transaction(function () use ($request) {
             $validated = $request->validated();
+
             if ($request->hasFile('logo_image')) {
                 $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');
             }
@@ -111,6 +112,8 @@ class ServerListingController extends Controller
             if ($request->hasFile('banner_image')) {
                 $validated['banner_image'] = $request->file('banner_image')->store('uploads/server_banners', 'public');
             }
+
+            $validated['terms_accepted'] = true;
             $server = ServerListing::create($validated);
 
             foreach ($validated['tags'] as $tag) {
