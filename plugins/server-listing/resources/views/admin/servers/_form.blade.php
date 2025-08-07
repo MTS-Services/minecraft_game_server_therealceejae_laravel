@@ -93,7 +93,7 @@
                 @error('user_id')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
-            </div>            
+            </div>
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="nameInput">{{ trans('server-listing::messages.fields.name') }} <span
                         class="text-danger">*</span></label>

@@ -61,8 +61,8 @@
                             <span class="col">
                                 {{ trans('server-listing::messages.fields.country') }}
                             </span>
-                            <span class="col">
-                                {{ trans('server-listing::messages.fields.website') }}
+                            <span class="col-2">
+                                {{ trans('server-listing::messages.fields.server_ip') }}
                             </span>
                             <span class="col">
                                 {{ trans('server-listing::messages.fields.featured') }}
@@ -96,11 +96,9 @@
                                 <span class="col">
                                     {{ $server->country?->name }}
                                 </span>
-                                <span class="col">
-                                    <a href="{{ $server->website_url ?? '#' }}"
-                                        target="{{ $server->website_url ? '_blank' : '_self' }}">
-                                        {{ $server->website_url ?? '-' }}
-                                    </a>
+                                <span class="col-2">
+                                    {{ $server->server_ip }}
+
                                 </span>
                                 <span class="col">
                                     <span class="{{ $server->featured_bg }}">

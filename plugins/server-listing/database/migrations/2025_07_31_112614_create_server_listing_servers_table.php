@@ -37,7 +37,6 @@ return new class extends Migration {
 
             $table->integer('max_players')->default(100);
             $table->integer('current_players')->default(0);
-            $table->boolean('is_bedrock_supported')->default(false);
             $table->boolean('is_online')->default(false);
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_featured')->default(false);
