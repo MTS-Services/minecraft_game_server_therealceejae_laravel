@@ -87,6 +87,8 @@ class ServerRequest extends FormRequest
             'terms_accepted' => ['sometimes', 'required', 'boolean'],
             'youtube_video' => ['nullable', 'url'],
             'position' => ['nullable', 'integer'],
+            'tags' => ['required', 'array'],
+            'tags.*' => ['nullable', 'integer', 'exists:server_listing_tags,id'],
         ];
     }
 

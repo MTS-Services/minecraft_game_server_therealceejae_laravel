@@ -49,6 +49,11 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+    <style>
+        .motdInput .tox.tox-tinymce {
+            height: 250px !important;
+        }
+    </style>
 @endpush
 
 @push('footer-scripts')
@@ -75,7 +80,7 @@
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="userSelect">{{ trans('server-listing::messages.fields.user') }} <span
                         class="text-danger">*</span></label>
-                <select class="form-select @error('user_id') is-invalid @enderror" id="userSelect" name="user_id">
+                <select class="form-select @error('user_id') is-invalid @enderror" id="userSelect" name="user_id" required>
                     <option value="" hidden selected>{{ trans('server-listing::messages.fields.user-select') }}
                     </option>
                     @foreach ($users as $user)
@@ -92,7 +97,7 @@
                 <label class="form-label" for="countrySelect">{{ trans('server-listing::messages.fields.country') }}
                     <span class="text-danger">*</span></label>
                 <select class="form-select @error('country_id') is-invalid @enderror" id="countrySelect"
-                    name="country_id">
+                    name="country_id" required>
                     <option value="" hidden selected>{{ trans('server-listing::messages.fields.country-select') }}
                     </option>
                     @foreach ($countries as $country)
@@ -109,7 +114,7 @@
                 <label class="form-label" for="nameInput">{{ trans('server-listing::messages.fields.name') }} <span
                         class="text-danger">*</span></label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="nameInput"
-                    name="name" value="{{ old('name', $server->name ?? '') }}"
+                    name="name" value="{{ old('name', $server->name ?? '') }}" required
                     placeholder="{{ trans('server-listing::messages.placeholder.name') }}">
                 @error('name')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -120,7 +125,7 @@
                         class="text-danger">*</span></label>
                 <div class="input-group @error('slug') has-validation @enderror">
                     <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slugInput"
-                        name="slug" value="{{ old('slug', $server->slug ?? '') }}">
+                        name="slug" value="{{ old('slug', $server->slug ?? '') }}" required>
                     <button type="button" class="btn btn-outline-secondary" onclick="generateSlug()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
@@ -134,7 +139,7 @@
                     for="javaServerIpInput">{{ trans('server-listing::messages.fields.java_server_ip') }} <span
                         class="text-danger">*</span></label>
                 <input type="text" class="form-control @error('java_server_ip') is-invalid @enderror"
-                    id="javaServerIpInput" name="java_server_ip"
+                    id="javaServerIpInput" name="java_server_ip" required
                     placeholder="{{ trans('server-listing::messages.placeholder.java_server_ip') }}"
                     value="{{ old('java_server_ip', $server->java_server_ip ?? '') }}">
                 @error('java_server_ip')
@@ -156,7 +161,7 @@
                 <label for="websiteUrlInput">{{ trans('server-listing::messages.fields.website_url') }} <span
                         class="text-danger">*</span></label>
                 <input type="url" class="form-control @error('website_url') is-invalid @enderror"
-                    id="websiteUrlInput" name="website_url"
+                    id="websiteUrlInput" name="website_url" required
                     placeholder="{{ trans('server-listing::messages.placeholder.website_url') }}"
                     value="{{ old('website_url', $server->website_url ?? '') }}">
                 @error('website_url')
@@ -176,7 +181,7 @@
             <div class="col-md-4 mb-3">
                 <label for="minecraftVersionInput">{{ trans('server-listing::messages.fields.minecraft_version') }}
                     <span class="text-danger">*</span></label>
-                <select name="minecraft_version" id="minecraftVersionInput"
+                <select name="minecraft_version" id="minecraftVersionInput" required
                     class="form-select @error('minecraft_version') is-invalid @enderror">
                     <option value="" hidden selected>
                         {{ trans('server-listing::messages.fields.minecraft_version_select') }}
@@ -219,19 +224,22 @@
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="textArea">{{ trans('server-listing::messages.fields.motd') }}
-                    <span class="text-danger">*</span></label>
-                <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="textArea"
-                    placeholder="{{ trans('server-listing::messages.placeholder.motd') }}" name="description" rows="5">{{ old('description', $server->description ?? '') }}</textarea>
-                @error('description')
+            <div class="col-md-12 mb-3 motdInput">
+                <label class="form-label" for="motdInput">
+                    {{ trans('server-listing::messages.fields.motd') }}
+                </label>
+                <textarea class="form-control html-editor @error('motd') is-invalid @enderror" id="motdInput"
+                    placeholder="{{ trans('server-listing::messages.placeholder.motd') }}" name="motd" rows="2">{{ old('motd', $server->motd ?? '') }}</textarea>
+                @error('motd')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                 @enderror
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="textArea">{{ trans('server-listing::messages.fields.description') }}
-                    <span class="text-danger">*</span></label>
-                <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="textArea"
+            <div class="col-md-12 mb-3">
+                <label class="form-label" for="descriptionInput">
+                    {{ trans('server-listing::messages.fields.description') }}
+                    <span class="text-danger">*</span>
+                </label>
+                <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="descriptionInput"
                     placeholder="{{ trans('server-listing::messages.placeholder.description') }}" name="description" rows="5">{{ old('description', $server->description ?? '') }}</textarea>
                 @error('description')
                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -264,7 +272,7 @@
             <div class="col-md-4 mb-3">
                 <label for="tagsInput">{{ trans('server-listing::messages.fields.tags') }} <span
                         class="text-danger">*</span></label>
-                <select class="form-select @error('tags') is-invalid @enderror" id="tagsInput" name="tags[]"
+                <select class="form-select @error('tags') is-invalid @enderror" id="tagsInput" name="tags[]" required
                     multiple>
                     <option value="" hidden selected>{{ trans('server-listing::messages.fields.tags-select') }}
                     </option>
@@ -345,7 +353,7 @@
                 <label class="form-label"
                     for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }} <span
                         class="text-danger">*</span></label>
-                <input type="file" class="form-control @error('banner_image') is-invalid @enderror"
+                <input type="file" class="form-control @error('banner_image') is-invalid @enderror" required
                     id="bannerImageInput" name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
                     data-image-preview="bannerImagePreview">
                 @error('banner_image')
@@ -359,7 +367,7 @@
                 <label class="form-label"
                     for="logoImageInput">{{ trans('server-listing::messages.fields.logo_image') }} <span
                         class="text-danger">*</span></label>
-                <input type="file" class="form-control @error('logo_image') is-invalid @enderror"
+                <input type="file" class="form-control @error('logo_image') is-invalid @enderror" required
                     id="logoImageInput" name="logo_image" accept="image/jpg,image/jpeg,image/png,image/gif"
                     data-image-preview="logoImagePreview">
                 @error('logo_image')
