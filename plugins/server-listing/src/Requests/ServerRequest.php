@@ -48,6 +48,8 @@ class ServerRequest extends FormRequest
         $server = $this->route('server'); // route binding for update
         $bannerRules =  ['image', 'dimensions:width=468,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
         return [
+            'server_ip' => ['required', 'string', Rule::unique('server_listing_servers', 'server_ip')->ignore($server, 'server_ip')],
+            'server_port' => ['nullable', 'integer', 'min:1'],
             'user_id' => 'required|sometimes|exists:users,id',
             'name' => ['required', 'string', 'max:100'],
             'slug' => [
@@ -57,31 +59,32 @@ class ServerRequest extends FormRequest
                 new Slug,
                 Rule::unique('server_listing_servers', 'slug')->ignore($server, 'slug'),
             ],
-            'description' => ['required', 'string', 'min:100', 'max:1000'],
-            'server_ip' => ['required'],
-            'server_port' => ['nullable', 'integer', 'min:1', 'max:65535'],
             'website_url' => ['nullable', 'url'],
             'discord_url' => ['nullable', 'url'],
-            'discord_server_id' => ['nullable'],
-            'banner_image' =>  array_merge($server ? ['nullable'] : ['required'], $bannerRules),
+            'youtube_video' => ['nullable', 'url'],
             'support_email' => ['nullable', 'email'],
-            'votifier_host' => ['nullable'],
-            'votifier_port' => ['nullable', 'integer'],
-            'votifier_public_key' => ['nullable'],
-            'teamspeak_server_api_key' => ['nullable'],
+            'description' => ['required', 'string', 'min:100', 'max:1000'],
+
+            'discord_server_id' => ['nullable'],
+            'tags' => ['required', 'array'],
+            'tags.*' => ['nullable', 'integer', 'exists:server_listing_tags,id'],
             'is_online' => ['nullable', 'boolean'],
             'is_premium' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
             'is_approved' => ['nullable', 'boolean'],
+            'teamspeak_server_api_key' => ['nullable'],
+            'banner_image' =>  array_merge($server ? ['nullable'] : ['required'], $bannerRules),
+
+            'votifier_host' => ['nullable'],
+            'votifier_port' => ['nullable', 'integer'],
+            'votifier_public_key' => ['nullable'],
+
             'hide_voters' => ['nullable', 'boolean'],
             'hide_players_list' => ['nullable', 'boolean'],
             'block_ping' => ['nullable', 'boolean'],
             'block_version_detection' => ['nullable', 'boolean'],
             'terms_accepted' => ['sometimes', 'required', 'boolean'],
-            'youtube_video' => ['nullable', 'url'],
             'position' => ['nullable', 'integer'],
-            'tags' => ['required', 'array'],
-            'tags.*' => ['nullable', 'integer', 'exists:server_listing_tags,id'],
         ];
     }
 

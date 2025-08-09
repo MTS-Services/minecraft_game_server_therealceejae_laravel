@@ -9,18 +9,25 @@ use Azuriom\Plugin\ServerListing\Models\Tag;
 use Azuriom\Plugin\ServerListing\Requests\ServerRequest;
 use Azuriom\Models\User;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
+use Azuriom\Plugin\ServerListing\Services\ServerStatusService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class ServerListingController extends Controller
 {
-    /**
-     * Show the home admin page of the plugin.
-     */
+
+    protected ServerStatusService $serverStatusService;
+
+    public function __construct(ServerStatusService $serverStatusService)
+    {
+        $this->serverStatusService = $serverStatusService;
+    }
+
     public function index()
     {
         $data['per_page'] = 10;
@@ -101,32 +108,45 @@ class ServerListingController extends Controller
     public function store(ServerRequest $request)
     {
 
-        DB::transaction(function () use ($request) {
+        try {
             $validated = $request->validated();
+            $status = $this->serverStatusService->checkServerStatus($validated['server_ip'], $validated['server_port']);
 
-            if ($request->hasFile('logo_image')) {
-                $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');
+            if (!$status['success']) {
+                return back()->withInput()->withErrors(['server_ip' => $status['message']]);
             }
 
-            // Upload banner image if present
-            if ($request->hasFile('banner_image')) {
-                $validated['banner_image'] = $request->file('banner_image')->store('uploads/server_banners', 'public');
-            }
+            DB::transaction(function () use ($validated, $request) {
+                if ($request->hasFile('logo_image')) {
+                    $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');
+                }
 
-            $validated['terms_accepted'] = true;
-            $server = ServerListing::create($validated);
+                // Upload banner image if present
+                if ($request->hasFile('banner_image')) {
+                    $validated['banner_image'] = $request->file('banner_image')->store('uploads/server_banners', 'public');
+                }
 
-            foreach ($validated['tags'] as $tag) {
-                ServerTag::create([
-                    'server_id' => $server->id,
-                    'tag_id' => $tag,
-                    'created_at' => now(),
-                ]);
-            }
-        });
+                $validated['terms_accepted'] = true;
+                $server = ServerListing::create($validated);
 
-        return to_route('server-listing.admin.servers.index')
-            ->with('success', trans('messages.status.success'));
+                foreach ($validated['tags'] as $tag) {
+                    ServerTag::create([
+                        'server_id' => $server->id,
+                        'tag_id' => $tag,
+                        'created_at' => now(),
+                    ]);
+                }
+            });
+            return to_route('server-listing.admin.servers.index')
+                ->with('success', trans('messages.status.success'));
+        } catch (Throwable $e) {
+            Log::error('Failed to create server', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all(),
+            ]);
+            throw $e;
+        }
     }
 
     public function edit($server_slug)
