@@ -115,7 +115,14 @@ class ServerListingController extends Controller
             if (!$status['success']) {
                 return back()->withInput()->withErrors(['server_ip' => $status['message']]);
             }
-
+            $country = $this->serverStatusService->getCountryCode($validated['server_ip']);
+            $country = json_decode($country, true);
+            if (!empty($country)) {
+                $country = ServerCountry::where('code', $country['countryCode'])->first();
+                if ($country) {
+                    $validated['country_id'] = $country->id;
+                }
+            }
             DB::transaction(function () use ($validated, $request) {
                 if ($request->hasFile('logo_image')) {
                     $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');

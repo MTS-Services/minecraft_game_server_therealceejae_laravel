@@ -102,4 +102,13 @@ class ServerStatusService
             ];
         }
     }
+
+    public function getCountryCode(string $ip): string
+    {
+        if (empty($ip)) {
+            return '';
+        }
+        $response = Http::get('http://ip-api.com/json/' . $ip);
+        return $response;
+    }
 }
