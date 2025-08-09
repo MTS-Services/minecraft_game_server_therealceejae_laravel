@@ -4,6 +4,7 @@ namespace Azuriom\Plugin\ServerListing\Models;
 
 use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -68,6 +69,9 @@ class ServerListing extends Model
         'approved_label',
         'approved_bg',
         'premium_bg',
+        'created_at_formatted',
+        'updated_at_formatted',
+        'youtube_video_id',
     ];
 
     protected $casts = [
@@ -284,5 +288,27 @@ class ServerListing extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(ServerCountry::class, 'country_id');
+    }
+
+    public function getCreatedAtFormattedAttribute(): string
+    {
+        return Carbon::parse($this->created_at)->format('M d, Y');
+    }
+    public function getUpdatedAtFormattedAttribute(): string
+    {
+        return Carbon::parse($this->updated_at)->format('M d, Y');
+    }
+
+    public function getYoutubeVideoIdAttribute(): ?string
+    {
+        // The video URL from your model's attribute
+        $url = $this->youtube_video;
+
+        // Use a regular expression to match the video ID from different YouTube URL formats
+        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i', $url, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
     }
 }

@@ -145,6 +145,35 @@ return new class extends Migration {
                 '00BFFF',
             ];
 
+            $randomVideos = [
+                'https://youtu.be/QeuA2Ra6t2Q?si=Xztb5UX7o732M4XN',
+                'https://youtu.be/zwJpztVYrvc?si=sG0Eg5lPF4Q7kgwa',
+                'https://youtu.be/kAJEcok4gXQ?si=927tNd7cdv-Dt25s',
+                'https://youtu.be/bkqAWKJAlTw?si=DnT7CqWw3WsZAwvK',
+                'https://youtu.be/G4PPHQNIQes?si=cPBqiEcl-I8ovTPP',
+                'https://youtu.be/NiAnRUp8iaA?si=c-vl9T0RrMYw5F6O',
+                'https://www.youtube.com/watch?v=mxHIFijxTZY',
+                'https://www.youtube.com/watch?v=o95GpmmOFe4',
+                'https://www.youtube.com/watch?v=jFqMcnevQwg',
+                'https://www.youtube.com/watch?v=yu5mPUCRDjk',
+                'https://www.youtube.com/watch?v=XzVoI_x-8kg',
+                'https://www.youtube.com/watch?v=AFV_FzL3RXY',
+                'https://www.youtube.com/watch?v=wt6-IyzIvmE',
+                'https://www.youtube.com/watch?v=3HxlkTeivtc',
+                'https://www.youtube.com/watch?v=vThQq7Xz6ek',
+                'https://www.youtube.com/watch?v=A4fKAYbXUjA',
+                'https://www.youtube.com/watch?v=PeMYfoQsuvE',
+                'https://www.youtube.com/watch?v=FLN-qGrGJLA',
+                'https://www.youtube.com/watch?v=DMEvZctrppM',
+                'https://www.youtube.com/watch?v=YsDR05kT2ME',
+                'https://www.youtube.com/watch?v=3dyU9C4HOgM',
+                'https://www.youtube.com/watch?v=xqi_zN1z0xg',
+                'https://www.youtube.com/watch?v=vdZyuHA_ptA',
+                'https://www.youtube.com/watch?v=-Z1nI9XiZ8E',
+                'https://www.youtube.com/watch?v=2uEvJESmCY8',
+                'https://www.youtube.com/watch?v=HYd_c0o9AmQ',
+            ];
+
             for ($i = 1; $i <= $count; $i++) {
                 $name = 'Bangladesh Craft ' . Str::random(6);
                 $servers[] = array_merge([
@@ -160,7 +189,7 @@ return new class extends Migration {
                     'discord_url' => 'https://discord.gg/' . Str::random(6),
                     'discord_server_id' => '123456789012345678',
                     'banner_image' => 'https://placehold.co/468x60/f2f2f2/' . $colors[array_rand($colors)] . '?text=' . implode('+', explode(' ', $name)) . '&font=Lora',
-                    'logo_image' => 'https://placehold.co/60x60/f2f2f2/' . $colors[array_rand($colors)] . '?text=LOGO'. '&font=Lora',
+                    'logo_image' => 'https://placehold.co/60x60/f2f2f2/' . $colors[array_rand($colors)] . '?text=LOGO' . '&font=Lora',
                     'minecraft_version' => '1.18.2',
                     'support_email' => $name . '@example.com',
                     'votifier_host' => '127.0.0.1',
@@ -182,7 +211,7 @@ return new class extends Migration {
                     'vote_count' => rand(0, 100),
                     'total_votes' => rand(0, 100),
                     'last_ping' => $now,
-                    'youtube_video' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    'youtube_video' => $randomVideos[array_rand($randomVideos)],
                     'position' => rand(0, 100),
                     'created_at' => $now,
                     'updated_at' => $now,

@@ -3,8 +3,8 @@
 namespace Azuriom\Plugin\ServerListing\Controllers;
 
 use Azuriom\Http\Controllers\Controller;
-use Azuriom\Plugin\ServerListing\Models\ServerCountry;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
+use Azuriom\Plugin\ServerListing\Models\ServerCountry;
 use Azuriom\Plugin\ServerListing\Models\ServerTag;
 use Azuriom\Plugin\ServerListing\Models\Tag;
 use Azuriom\Plugin\ServerListing\Requests\ServerRequest;
@@ -26,7 +26,9 @@ class ServerListingController extends Controller
 
     public function details(string $slug)
     {
-        return view('server-listing::details');
+        $serverDetail = ServerListing::where('slug', $slug)->firstOrFail();
+        $serverDetail->load(['user', 'serverTags', 'country']);
+        return view('server-listing::details', compact('serverDetail'));
     }
 
     public function submission()
