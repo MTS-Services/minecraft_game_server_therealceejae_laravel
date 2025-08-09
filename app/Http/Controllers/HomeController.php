@@ -5,7 +5,9 @@ namespace Azuriom\Http\Controllers;
 use Azuriom\Models\Post;
 use Azuriom\Plugin\ServerListing\Models\ServerCountry;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
+use Azuriom\Plugin\ServerListing\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
 
 class HomeController extends Controller
@@ -16,8 +18,17 @@ class HomeController extends Controller
 
 
         if (plugins()->isEnabled('server-listing')) {
-            $data['server_countries'] = ServerCountry::active()->latest()->orderBy('name')->get();
-            $data['server_versions'] = ServerListing::pluck('minecraft_version')->unique()->toArray();
+            $data['server_countries'] = ServerCountry::active()->ordered()->get();
+            $data['tags'] = Tag::active()->ordered()->get();
+
+
+
+            $versions = Http::get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
+                ->json('versions');
+            $data['minecraft_versions'] = collect($versions)
+                // ->filter(fn($version) => $version['type'] === 'release')
+                ->pluck('id')
+                ->values();
 
             $query = ServerListing::with(['country', 'user']);
             $search = false;
@@ -27,10 +38,12 @@ class HomeController extends Controller
                     $q->where('name', 'like', '%' . $search . '%')
                         ->orWhere('description', 'like', '%' . $search . '%')
                         ->orWhere('server_ip', 'like', '%' . $search . '%')
-                        ->orWhereJsonContains('tags', $search)
                         ->orWhere('minecraft_version', 'like', '%' . $search . '%')
                         ->orWhere('website_url', 'like', '%' . $search . '%')
                         ->orWhereHas('country', function ($subQuery) use ($search) {
+                            $subQuery->where('name', 'like', '%' . $search . '%');
+                        })
+                        ->orWhereHas('serverTags', function ($subQuery) use ($search) {
                             $subQuery->where('name', 'like', '%' . $search . '%');
                         });
                 });
@@ -40,6 +53,13 @@ class HomeController extends Controller
                 $search = true;
                 $query->whereHas('country', function ($q) {
                     $q->where('slug', request()->get('country'));
+
+                });
+            }
+            if (request()->has('tag') && request()->get('tag') !== 'all') {
+                $search = true;
+                $query->whereHas('serverTags', function ($q) {
+                    $q->where('slug', request()->get('tag'));
 
                 });
             }
