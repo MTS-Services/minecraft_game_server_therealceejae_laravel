@@ -97,16 +97,6 @@
 
 @include('admin.elements.editor')
 
-<div>
-    @if ($errors->any())
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li class="text-danger">{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
-</div>
-
 <div id="connectionStatusSection" class="col-12 mb-3 d-none">
     {{-- Success Message Card (Initially Hidden) --}}
     <div id="successCard" class="card mb-3 status-card border-success shadow-sm d-none">
@@ -229,7 +219,7 @@
                 <label class="form-label" for="slugInput">{{ trans('server-listing::messages.fields.slug') }} <span
                         class="text-danger">*</span></label>
                 <div class="input-group @error('slug') has-validation @enderror">
-                    <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slugInput"
+                    <input type="number" class="form-control @error('slug') is-invalid @enderror" id="slugInput"
                         name="slug" value="{{ old('slug', $server->slug ?? '') }}" required>
                     <button type="button" class="btn btn-outline-secondary" onclick="generateSlug()">
                         <i class="bi bi-arrow-clockwise"></i>
@@ -420,7 +410,8 @@
                             href="https://woodpunchsgraphics.com/collections/minecraft-server-banner-maker"
                             target="_blank">Woodpunch's Graphics</a></span>
                     <div class="card-note-info">
-                        <span><i class="bi bi-info-circle-fill"></i> For animated banners, you need to use MP4 format instead of GIF format.</span>
+                        <span><i class="bi bi-info-circle-fill"></i> For animated banners, you need to use MP4 format
+                            instead of GIF format.</span>
                         <span>You can easily convert your GIF banner to MP4 here : <a
                                 href="https://ezgif.com/gif-to-mp4"
                                 target="_blank">https://ezgif.com/gif-to-mp4</a></span>

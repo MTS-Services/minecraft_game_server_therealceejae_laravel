@@ -55,7 +55,8 @@
             --logo-size-sm: 40px;
             --logo-size-md: 50px;
             --logo-size-lg: 60px;
-            --banner-height: 70px;
+            --banner-height: 60px;
+            --banner-width: 468px;
         }
 
         /* Dark mode variables */
@@ -360,8 +361,7 @@
         .server-banner,
         .premium-banner-container,
         .premium-server-banner {
-            width: 100%;
-            max-width: 400px;
+            width: var(--banner-width);
             height: var(--banner-height);
             border-radius: var(--border-radius-sm);
             overflow: hidden;
@@ -370,7 +370,7 @@
         }
 
         .server-banner img,
-        .premium-banner img,
+        .premium-banner,
         .premium-server-banner img {
             width: 100%;
             height: 100%;
@@ -559,7 +559,7 @@
             .server-banner,
             .premium-banner-container,
             .premium-server-banner {
-                max-width: 100%;
+                max-width: var(--banner-width);
                 margin-bottom: var(--spacing-sm);
             }
 

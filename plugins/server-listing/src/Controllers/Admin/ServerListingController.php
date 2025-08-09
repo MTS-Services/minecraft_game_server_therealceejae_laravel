@@ -111,7 +111,9 @@ class ServerListingController extends Controller
         try {
             $validated = $request->validated();
             $status = $this->serverStatusService->checkServerStatus($validated['server_ip'], $validated['server_port']);
-
+            if (!$status['success']) {
+                return back()->withInput()->withErrors(['server_ip' => $status['message']]);
+            }
             $validated['logo_image'] = $status['server_data']['icon'];
             $validated['motd'] = implode('<br> ', $status['server_data']['motd']['html']);
             $validated['minecraft_version'] = $status['server_data']['version'];
@@ -120,10 +122,6 @@ class ServerListingController extends Controller
             $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
             $validated['server_datas'] = $status['server_data'];
 
-
-            if (!$status['success']) {
-                return back()->withInput()->withErrors(['server_ip' => $status['message']]);
-            }
             $country = $this->serverStatusService->getCountryCode($validated['server_ip']);
             $country = json_decode($country, true);
             if (!empty($country)) {

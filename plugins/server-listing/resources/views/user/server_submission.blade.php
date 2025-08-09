@@ -3,8 +3,12 @@
 @include('admin.elements.editor')
 @section('app')
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+
     @push('styles')
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
             :root {
                 /* Primary Colors */
                 --primary-green: #4CAF50;
@@ -352,8 +356,250 @@
                     padding: 1.5rem;
                 }
             }
+
+            :root {
+                --bs-font-sans-serif: 'Poppins', sans-serif;
+                --bs-success: #28a745;
+                --bs-danger: #dc3545;
+                --bs-body-color: #212529;
+                --bs-card-bg: #fff;
+                --bs-border-color: #dee2e6;
+                --bs-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                --border-radius: 0.5rem;
+                --bs-transition: all 0.3s ease;
+            }
+
+            [data-bs-theme="dark"] {
+                --bs-body-color: #dee2e6;
+                --bs-body-bg: #212529;
+                --bs-card-bg: #292c31;
+                --bs-border-color: #495057;
+                --bs-shadow-sm: 0 0.125rem 0.25rem rgba(255, 255, 255, 0.05);
+            }
+
+            /* General Card Styling */
+            .info-card {
+                border-radius: var(--border-radius);
+                transition: var(--bs-transition);
+                border: 1px solid var(--bs-border-color);
+                background-color: var(--bs-card-bg);
+                box-shadow: var(--bs-shadow-sm);
+            }
+
+            .info-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            }
+
+            .info-card .label {
+                font-size: 0.8rem;
+                font-weight: 500;
+                color: var(--bs-secondary-color);
+                margin-bottom: 0.25rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .info-card .value {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: var(--bs-body-color);
+                line-height: 1.2;
+            }
+
+            .info-card-success {
+                border-left: 5px solid var(--bs-success);
+            }
+
+            .info-card-error {
+                border-left: 5px solid var(--bs-danger);
+            }
+
+            /* Server Logo Styling */
+            .server-logo {
+                width: 4rem;
+                height: 4rem;
+                object-fit: contain;
+                border-radius: var(--border-radius);
+                background: rgba(0, 0, 0, 0.05);
+                padding: 0.5rem;
+            }
+
+            /* Status Alert Styling */
+            .status-card {
+                border-radius: var(--border-radius);
+            }
+
+            .status-card .card-body {
+                padding: 1.5rem;
+            }
+
+            .status-card .card-title {
+                font-weight: 600;
+            }
+
+            .status-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 1.5rem;
+            }
+
+            .card-note {
+                font-size: 0.8rem;
+                font-weight: 500;
+                color: var(--bs-secondary-color);
+                margin-top: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .card-note-info {
+                display: flex;
+                flex-direction: column;
+                gap: 0.2rem;
+                margin-top: 0.5rem;
+                background: #dc354547;
+                padding: 1rem;
+                border-radius: 10px;
+                color: #020;
+                font-weight: 400;
+            }
         </style>
     @endpush
+
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+        <script>
+            // Snippet from @thierryc on GitHub
+            // https://gist.github.com/codeguy/6684588?permalink_comment_id=3243980#gistcomment-3243980
+            function slugifyInput(str) {
+                return str
+                    .normalize(
+                        'NFKD'
+                    ) // The normalize() using NFKD method returns the Unicode Normalization Form of a given string.
+                    .toLowerCase() // Convert the string to lowercase letters
+                    .trim() // Remove whitespace from both sides of a string (optional)
+                    .replace(/\s+/g, '-') // Replace spaces with -
+                    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                    .replace(/--+/g, '-'); // Replace multiple - with single -
+            }
+
+            function generateSlug() {
+                const name = document.getElementById('serverName').value;
+                document.getElementById('serverSlug').value = slugifyInput(name);
+            }
+        </script>
+    @endpush
+
+    @push('footer-scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const serverIpInput = document.getElementById('serverIpInput');
+                const serverPortInput = document.getElementById('serverPortInput');
+                const checkConnectionButton = document.querySelector('.btn-group .btn-primary');
+
+                // Status Elements
+                const statusSection = document.getElementById('connectionStatusSection');
+                const successCard = document.getElementById('successCard');
+                const errorCard = document.getElementById('errorCard');
+                const successMessage = document.getElementById('successMessage');
+                const errorMessage = document.getElementById('errorMessage');
+                const serverDetailsContainer = document.getElementById('serverDetailsContainer');
+                const serverBedrockSupportedValue = document.getElementById('serverBedrockSupportedValue');
+                const playersOnlineValue = document.getElementById('playersOnlineValue');
+                const serverVersionValue = document.getElementById('serverVersionValue');
+                const serverLogoPreview = document.getElementById('serverLogoPreview');
+
+                function toggleButtonState() {
+                    if (serverIpInput.value.trim() === '') {
+                        checkConnectionButton.disabled = true;
+                    } else {
+                        checkConnectionButton.disabled = false;
+                    }
+                }
+                toggleButtonState();
+                serverIpInput.addEventListener('input', toggleButtonState);
+
+                checkConnectionButton.addEventListener('click', function() {
+                    // Show loading state and hide previous messages
+                    checkConnectionButton.disabled = true;
+                    checkConnectionButton.innerHTML =
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking...`;
+                    statusSection.classList.add('d-none');
+                    successCard.classList.add('d-none');
+                    errorCard.classList.add('d-none');
+                    serverDetailsContainer.classList.add('d-none');
+
+                    const serverIp = serverIpInput.value;
+                    const serverPort = serverPortInput.value;
+
+                    axios.post("{{ route('server-listing.check-connection') }}", {
+                            serverIp: serverIp,
+                            serverPort: serverPort
+                        })
+                        .then(function(response) {
+                            const data = response.data;
+                            statusSection.classList.remove('d-none');
+
+                            if (data.success) {
+                                // Connection is successful
+                                successCard.classList.remove('d-none');
+                                successMessage.innerText = data.message;
+                                serverDetailsContainer.classList.remove('d-none');
+
+                                // Update server details
+                                const serverData = data.server_data;
+                                // serverBedrockSupportedValue.innerHTML = serverData.motd.clean.join('<br>');
+                                serverBedrockSupportedValue.innerHTML = serverData.debug.bedrock ? 'Yes' :
+                                    'No';
+                                playersOnlineValue.innerText =
+                                    `${serverData.players.online} / ${serverData.players.max}`;
+                                serverVersionValue.innerText = serverData.version;
+
+                                // Update server logo
+                                if (serverData.icon) {
+                                    serverLogoPreview.src = `{{ base64_encode('') }}${serverData.icon}`;
+                                    serverLogoPreview.classList.remove('d-none');
+                                } else {
+                                    serverLogoPreview.classList.add('d-none');
+                                }
+
+                            } else {
+                                // Connection failed for various reasons
+                                errorCard.classList.remove('d-none');
+                                errorMessage.innerText = data.message;
+                            }
+                        })
+                        .catch(function(error) {
+                            statusSection.classList.remove('d-none');
+                            errorCard.classList.remove('d-none');
+
+                            // Handle the two different error types from the controller
+                            if (error.response && error.response.status === 400) {
+                                // This is for invalid input (e.g., empty IP)
+                                errorMessage.innerText = error.response.data.message;
+                            } else if (error.response && error.response.data && error.response.data
+                                .message) {
+                                // This is for the "offline" reason from the API
+                                errorMessage.innerText = error.response.data.message;
+                            } else {
+                                // A generic network or server error
+                                errorMessage.innerText = 'An unexpected error occurred. Please try again.';
+                            }
+                        })
+                        .finally(function() {
+                            checkConnectionButton.disabled = false;
+                            checkConnectionButton.innerHTML = 'Check Connection';
+                        });
+                });
+            });
+        </script>
+    @endpush
+
 
     <div class="minecraft-header position-relative overflow-hidden">
         <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape" alt="Minecraft Landscape" class="w-100">
@@ -369,7 +615,74 @@
             </p>
         </div>
 
-        <form id="addServerForm">
+        <div id="connectionStatusSection" class="col-12 mb-3 d-none">
+            {{-- Success Message Card (Initially Hidden) --}}
+            <div id="successCard" class="card mb-3 status-card border-success shadow-sm d-none">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="status-icon bg-success-subtle text-success">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0">{{ trans('server-listing::messages.server_connection.success') }}</h5>
+                        <p class="mb-0 text-success" id="successMessage"></p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Error Message Card (Initially Hidden) --}}
+            <div id="errorCard" class="card mb-3 status-card border-danger shadow-sm d-none">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="status-icon bg-danger-subtle text-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0">{{ trans('server-listing::messages.server_connection.failed') }}</h5>
+                        <p class="mb-0 text-danger" id="errorMessage"></p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Server Details Container (Initially Hidden) --}}
+            <div id="serverDetailsContainer" class="row gx-3 d-none">
+                <div class="col-md-3">
+                    <div class="info-card h-100 p-3 text-center">
+                        <img id="serverLogoPreview" src="#" alt="Server Logo" class="server-logo d-none">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-card info-card-success h-100 p-3">
+                        <p class="label">{{ trans('server-listing::messages.server_connection.supported') }}</p>
+                        <p class="value" id="serverBedrockSupportedValue">
+                            {{ trans('server-listing::messages.server_connection.unknown') }}</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-card info-card-success h-100 p-3">
+                        <p class="label">{{ trans('server-listing::messages.server_connection.players') }}</p>
+                        <p class="value" id="playersOnlineValue">
+                            {{ trans('server-listing::messages.server_connection.unknown') }}</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-card info-card-success h-100 p-3">
+                        <p class="label">{{ trans('server-listing::messages.server_connection.version') }}</p>
+                        <p class="value" id="serverVersionValue">
+                            {{ trans('server-listing::messages.server_connection.unknown') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if ($errors->any())
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li class="alert alert-danger">{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+
+        <form action="{{ route('server-listing.submission.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="form-section">
                 <div class="section-header">
                     <div class="section-icon">
@@ -386,36 +699,60 @@
                 </div>
 
                 <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="serverIpInput"
+                            class="form-label">{{ trans('server-listing::messages.fields.server_ip') }}
+                            <span class="text-danger">*</span></label>
+                        <input name="server_ip" type="text" class="form-control" value="{{ old('server_ip') }}"
+                            id="serverIpInput" placeholder="{{ trans('server-listing::messages.placeholder.server_ip') }}"
+                            required>
+
+                        @error('server_ip')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="serverPortInput"
+                            class="form-label">{{ trans('server-listing::messages.fields.server_port') }}</label>
+                        <div class="btn-group w-100">
+                            <input name="server_port" value="{{ old('server_port') }}" type="number" class="form-control"
+                                style="border-radius: 10px 0 0 10px" id="serverPortInput"
+                                placeholder="{{ trans('server-listing::messages.placeholder.server_port') }}">
+                            <button class="btn btn-primary text-nowrap" type="button">Check Connection</button>
+                        </div>
+                        @error('server_port')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
                     <div class="col-md-6 mb-3">
                         <label for="serverName"
                             class="form-label">{{ trans('server-listing::messages.fields.server_name') }} <span
                                 class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="serverName" required
+                        <input type="text" name="name" value="{{ old('name') }}" class="form-control"
+                            id="serverName" required
                             placeholder="{{ trans('server-listing::messages.placeholder.server_name') }}">
+                        @error('name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="javaServerIP"
-                            class="form-label">{{ trans('server-listing::messages.fields.java_server_ip') }}
-                            <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="javaServerIP"
-                            placeholder="{{ trans('server-listing::messages.placeholder.java_server_ip') }}" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="bedrockServerIP"
-                            class="form-label">{{ trans('server-listing::messages.fields.bedrock_server_ip') }}</label>
-                        <input type="text" class="form-control" id="bedrockServerIP"
-                            placeholder="{{ trans('server-listing::messages.placeholder.bedrock_server_ip') }}" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="websiteUrl"
-                            class="form-label">{{ trans('server-listing::messages.fields.website_url') }}
-                            <span class="text-danger">*</span></label>
-                        <input type="url" class="form-control" id="websiteUrl"
-                            placeholder="{{ trans('server-listing::messages.placeholder.website_url') }}">
+                        <label for="serverSlug" class="form-label">Slug<span class="text-danger">*</span></label>
+                        <div class="btn-group w-100">
+                            <input type="text" name="slug" value="{{ old('slug') }}" class="form-control"
+                                style="border-radius: 10px 0 0 10px" id="serverSlug" required
+                                placeholder="{{ trans('server-listing::messages.placeholder.server_name') }}">
+                            <button class="btn btn-primary text-nowrap" type="button"
+                                onclick="generateSlug()">Generate</button>
+                        </div>
+                        @error('slug')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col mb-3">
-                    <label for="description" class="form-label">{{ trans('server-listing::messages.fields.description') }}
+                    <label for="description"
+                        class="form-label">{{ trans('server-listing::messages.fields.description') }}
                         <span class="text-danger">*</span></label>
                     <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="textArea"
                         placeholder="{{ trans('server-listing::messages.placeholder.description') }}" name="description" rows="5">{{ old('description', $server->description ?? '') }}</textarea>
@@ -423,61 +760,6 @@
                     @error('description')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-4 mb-3">
-                        <label for="country" class="form-label">{{ trans('server-listing::messages.fields.country') }}
-                            <span class="text-danger">*</span></label>
-                        <select class="form-select" id="country">
-                            <option value="">{{ trans('server-listing::messages.fields.country-select') }}</option>
-                            <option value="US">United States</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="DE">Germany</option>
-                            <option value="FR">France</option>
-                            <option value="CA">Canada</option>
-                            <option value="AU">Australia</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="version"
-                            class="form-label">{{ trans('server-listing::messages.fields.minecraft_version') }}<span
-                                class="text-danger">*</span></label>
-                        <select class="form-select" id="version">
-                            <option value="">{{ trans('server-listing::messages.fields.minecraft_version_select') }}
-                            </option>
-                            <option value="1.20.2">1.20.2</option>
-                            <option value="1.20.1">1.20.1</option>
-                            <option value="1.19.4">1.19.4</option>
-                            <option value="1.19.2">1.19.2</option>
-                            <option value="1.18.2">1.18.2</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="discordUrl"
-                            class="form-label">{{ trans('server-listing::messages.fields.discord_url') }}</label>
-                        <input type="url" class="form-control" id="discordUrl"
-                            placeholder="{{ trans('server-listing::messages.placeholder.discord_url') }}">
-                    </div>
-                    <div class="mb-3 col-md-4">
-                        <label for="youtubeVideo"
-                            class="form-label">{{ trans('server-listing::messages.fields.youtube_video') }}</label>
-                        <input type="url" class="form-control" id="youtubeVideo"
-                            placeholder="https://www.youtube.com/watch?v=...">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="playerSlots"
-                            class="form-label">{{ trans('server-listing::messages.fields.maximum_player_slots') }}</label>
-                        <input type="number" class="form-control" id="playerSlots"
-                            placeholder="{{ trans('server-listing::messages.placeholder.maximum_player_slots') }}">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="supportEmail"
-                            class="form-label">{{ trans('server-listing::messages.fields.support_email') }}</label>
-                        <input type="email" class="form-control" id="supportEmail"
-                            placeholder="{{ trans('server-listing::messages.placeholder.support_email') }}">
-                    </div>
                 </div>
             </div>
             <!-- Additional Information Section -->
@@ -490,32 +772,47 @@
                 </div>
 
                 <div class="row">
-                    <div class="mb-4 col-md-6">
-                        <label for="logoImageInput"
-                            class="form-label">{{ trans('server-listing::messages.fields.logo_image') }}
+                    <div class="col-md-4 mb-3">
+                        <label for="websiteUrl"
+                            class="form-label">{{ trans('server-listing::messages.fields.website_url') }}
                             <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control @error('logo_image') is-invalid @enderror"
-                            id="logoImageInput" name="logo_image" accept="image/jpg,image/jpeg,image/png,image/gif"
-                            data-image-preview="logoImagePreview">
-                        <div class="form-text">{{ trans('server-listing::messages.placeholder.logo_image_text') }}</div>
-
-                        @error('logo_image')
+                        <input type="url" name="website_url" value="{{ old('website_url') }}" required
+                            class="form-control" id="websiteUrl"
+                            placeholder="{{ trans('server-listing::messages.placeholder.website_url') }}">
+                        @error('website_url')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
 
-                        <img src="#" class="mt-2 img-fluid rounded img-preview d-none" alt="logo image"
-                            id="logoImagePreview">
-
                     </div>
-
-                    <div class="mb-4 col-md-6">
+                    <div class="mb-3 col-md-4">
+                        <label for="youtubeVideo"
+                            class="form-label">{{ trans('server-listing::messages.fields.youtube_video') }}</label>
+                        <input type="url" name="youtube_video" value="{{ old('youtube_video') }}"
+                            class="form-control" id="youtubeVideo" placeholder="https://www.youtube.com/watch?v=...">
+                        @error('youtube_video')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="supportEmail"
+                            class="form-label">{{ trans('server-listing::messages.fields.support_email') }}</label>
+                        <input type="email" name="support_email" value="{{ old('support_email') }}"
+                            class="form-control" id="supportEmail"
+                            placeholder="{{ trans('server-listing::messages.placeholder.support_email') }}">
+                        @error('support_email')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+                    <div class="mb-4 col">
                         <label for="bannerImageInput"
                             class="form-label">{{ trans('server-listing::messages.fields.banner_image') }}
                             <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control @error('banner_image') is-invalid @enderror"
-                            id="bannerImageInput" name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
+                        <input type="file" name="banner_image" value="{{ old('banner_image') }}"
+                            class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput"
+                            name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
                             data-image-preview="bannerImagePreview">
-                        <div class="form-text">{{ trans('server-listing::messages.placeholder.banner_image_text') }}</div>
+                        <div class="form-text">{{ trans('server-listing::messages.placeholder.banner_image_text') }}
+                        </div>
 
                         @error('banner_image')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -534,93 +831,20 @@
 
                     <div class="tag-grid tag-category">
 
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="survival"
-                                value="survival">
-                            <label class="tag-label" for="survival">Survival</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="creative"
-                                value="creative">
-                            <label class="tag-label" for="creative">Creative</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="hardcore"
-                                value="hardcore">
-                            <label class="tag-label" for="hardcore">Hardcore</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="adventure"
-                                value="adventure">
-                            <label class="tag-label" for="adventure">Adventure</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="spectator"
-                                value="spectator">
-                            <label class="tag-label" for="spectator">Spectator</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="factions"
-                                value="factions">
-                            <label class="tag-label" for="factions">Factions</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="skyblock"
-                                value="skyblock">
-                            <label class="tag-label" for="skyblock">SkyBlock</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="prison" value="prison">
-                            <label class="tag-label" for="prison">Prison</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="towny" value="towny">
-                            <label class="tag-label" for="towny">Towny</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="pvp" value="pvp">
-                            <label class="tag-label" for="pvp">PvP</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="economy" value="economy">
-                            <label class="tag-label" for="economy">Economy</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="ranks" value="ranks">
-                            <label class="tag-label" for="ranks">Ranks</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="jobs" value="jobs">
-                            <label class="tag-label" for="jobs">Jobs</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="quests" value="quests">
-                            <label class="tag-label" for="quests">Quests</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="mcmmo" value="mcmmo">
-                            <label class="tag-label" for="mcmmo">McMMO</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="vanilla" value="vanilla">
-                            <label class="tag-label" for="vanilla">Vanilla</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="bukkit" value="bukkit">
-                            <label class="tag-label" for="bukkit">Bukkit</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="spigot" value="spigot">
-                            <label class="tag-label" for="spigot">Spigot</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="paper" value="paper">
-                            <label class="tag-label" for="paper">Paper</label>
-                        </div>
-                        <div class="tag-item">
-                            <input class="form-check-input tag-checkbox" type="checkbox" id="forge" value="forge">
-                            <label class="tag-label" for="forge">Forge</label>
-                        </div>
+                        @forelse($tags as $tag)
+                            <div class="tag-item">
+                                <input class="form-check-input tag-checkbox" type="checkbox" name="tags[]"
+                                    value="{{ $tag->id }}" id="tag_{{ $tag->slug }}"
+                                    value="{{ $tag->id }}"
+                                    {{ in_array($tag->id, old('tags', [])) ? 'checked' : '' }}>
+                                <label class="tag-label" for="tag_{{ $tag->slug }}">{{ $tag->name }}</label>
+                            </div>
+                        @empty
+                            <p class="text-muted">No tags available</p>
+                        @endforelse
+                        @error('tags')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
 
                     </div>
                 </div>
@@ -650,22 +874,33 @@
                         <div class="col-md-6 mb-3">
                             <label for="votifierHost"
                                 class="form-label">{{ trans('server-listing::messages.fields.votifier_host') }}</label>
-                            <input type="text" class="form-control" id="votifierHost"
+                            <input type="text" name="votifier_host" value="{{ old('votifier_host') }}"
+                                class="form-control" id="votifierHost"
                                 placeholder="{{ trans('server-listing::messages.placeholder.votifier_host') }}">
+                            @error('votifier_host')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="votifierPort"
                                 class="form-label">{{ trans('server-listing::messages.fields.votifier_port') }}</label>
-                            <input type="number" class="form-control" id="votifierPort"
+                            <input type="number" name="votifier_port" value="{{ old('votifier_port') }}"
+                                class="form-control" id="votifierPort"
                                 placeholder="{{ trans('server-listing::messages.placeholder.votifier_port') }}">
+                            @error('votifier_port')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="votifierKey"
                             class="form-label">{{ trans('server-listing::messages.fields.votifier_public_key') }}</label>
-                        <textarea class="form-control" id="votifierKey" rows="3"
-                            placeholder="{{ trans('server-listing::messages.placeholder.votifier_public_key') }}"></textarea>
+                        <textarea class="form-control" name="votifier_public_key" id="votifierKey" rows="3"
+                            placeholder="{{ trans('server-listing::messages.placeholder.votifier_public_key') }}">{{ old('votifier_public_key', $server->votifier_public_key ?? '') }}</textarea>
+                        @error('votifier_public_key')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -686,8 +921,12 @@
                     <div class="mb-3">
                         <label for="teamspeakServer"
                             class="form-label">{{ trans('server-listing::messages.fields.teamspeak_server_api_key') }}</label>
-                        <input type="text" class="form-control" id="teamspeakServer"
+                        <input type="text" name="teamspeak_server_api_key"
+                            value="{{ old('teamspeak_server_api_key') }}" class="form-control" id="teamspeakServer"
                             placeholder="{{ trans('server-listing::messages.placeholder.teamspeak_server_api_key') }}">
+                        @error('teamspeak_server_api_key')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                         <div class="form-text">
                             {{ trans('server-listing::messages.placeholder.teamspeak_server_api_key_text') }}</div>
                     </div>
@@ -709,12 +948,32 @@
                         <span class="verification-optional">{{ trans('server-listing::messages.fields.optional') }}</span>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="discordServer"
-                            class="form-label">{{ trans('server-listing::messages.fields.discord_server_id') }}</label>
-                        <input type="text" class="form-control" id="discordServer"
-                            placeholder="{{ trans('server-listing::messages.placeholder.discord_server_id') }}">
-                        <div class="form-text">{{ trans('server-listing::messages.placeholder.discord_server_id_text') }}
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="discordUrl"
+                                class="form-label">{{ trans('server-listing::messages.fields.discord_url') }}</label>
+                            <input type="url" name="discord_url" value="{{ old('discord_url') }}"
+                                class="form-control" id="discordUrl"
+                                placeholder="{{ trans('server-listing::messages.placeholder.discord_url') }}">
+                            @error('discord_url')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3 col-md-6">
+                            <label for="discordServer"
+                                class="form-label">{{ trans('server-listing::messages.fields.discord_server_id') }}</label>
+                            <input type="text" name="discord_server_id" value="{{ old('discord_server_id') }}"
+                                class="form-control" id="discordServer"
+                                placeholder="{{ trans('server-listing::messages.placeholder.discord_server_id') }}">
+                            @error('discord_server_id')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                        <div class="col">
+                            <div class="form-text">
+                                {{ trans('server-listing::messages.placeholder.discord_server_id_text') }}
+                            </div>
                         </div>
                     </div>
 
@@ -738,10 +997,14 @@
                 </div>
                 <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="hideVoters" required>
+                        <input class="form-check-input" name="hide_voters" value="1"
+                            {{ old('hide_voters') ? 'checked' : '' }} type="checkbox" id="hideVoters">
                         <label class="form-check-label" for="hideVoters">
                             Hide Top Voters
                         </label>
+                        @error('hide_voters')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
 
                     </div>
                     <div class="form-text">
@@ -751,20 +1014,23 @@
                 </div>
                 <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="hidePlayer" required>
+                        <input class="form-check-input" name="hide_players_list" value="1"
+                            {{ old('hide_players_list') ? 'checked' : '' }} type="checkbox" id="hidePlayer">
                         <label class="form-check-label" for="hidePlayer">
                             Hide Player List
                         </label>
-
+                        @error('hide_players_list')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                     </div>
                     <div class="form-text">
                         <small><i class="bi bi-info-circle me-2"></i>This option allow you to hide the player list on your
                             server page.</small>
                     </div>
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="blockPing" required>
+                        <input class="form-check-input" type="checkbox" id="blockPing">
                         <label class="form-check-label" for="blockPing">
                             Block Ping
                         </label>
@@ -777,7 +1043,7 @@
                 </div>
                 <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="blockVersionDetection" required>
+                        <input class="form-check-input" type="checkbox" id="blockVersionDetection">
                         <label class="form-check-label" for="blockVersionDetection">
                             Block Version Detection
                         </label>
@@ -798,11 +1064,15 @@
                         </label>
                     </div>
                     <div class="form-text">{{ trans('server-listing::messages.premium_listing_text2') }}</div>
-                </div>
+                </div> --}}
 
                 <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                        <input class="form-check-input" name="terms_accepted" type="checkbox" id="agreeTerms"
+                            {{ old('terms_accepted') ? 'checked' : '' }} value="1" required>
+                        @error('terms_accepted')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                         <label class="form-check-label" for="agreeTerms">
                             I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a
                                 href="#" class="text-decoration-none">Community Guidelines</a> *
