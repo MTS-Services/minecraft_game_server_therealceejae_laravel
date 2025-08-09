@@ -1,5 +1,6 @@
 <?php
 
+use Azuriom\Plugin\ServerListing\Controllers\CheckConnectionController;
 use Azuriom\Plugin\ServerListing\Controllers\ServerListingController;
 // use Azuriom\Plugin\ServerListing\Controllers\ServerListingHomeController;
 use Illuminate\Support\Facades\Route;
@@ -18,4 +19,11 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [ServerListingHomeController::class, 'index']);
 
-Route::get('/{slug}', [ServerListingController::class, 'details'])->name('details');
+Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
+
+Route::post('/check-connection', [CheckConnectionController::class, 'checkConnection'])->name('check-connection');
+// Route::get('/submission', [ServerListingController::class, 'submission'])->name('submission')->middleware('auth:web');
+Route::controller(ServerListingController::class)->middleware('auth:web')->prefix('submission')->group(function () {
+    Route::get('/', 'submission')->name('submission');
+    Route::post('/store', 'store')->name('submission.store');
+});

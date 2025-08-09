@@ -3,6 +3,8 @@
 return [
     'nav' => [
         'title' => 'Server Listing',
+        'tags' => 'Tags',
+        'tag' => 'Tag',
         'servers' => 'Servers',
         'settings' => 'Settings',
         'packages' => 'Packages',
@@ -35,6 +37,18 @@ return [
         'edit' => 'Edit Category :category',
         'name' => 'Category Name',
 
+    ],
+    'tag' => [
+        'title' => 'Tag',
+        'tags' => 'Tags',
+        'create' => 'Create Tag',
+        'edit' => 'Edit Tag :tag',
+        'name' => 'Tag Name',
+
+    ],
+    'card' => [
+        'approved_server' => 'Approved Server',
+        'premium_server' => 'Premium Server',
     ],
 
     'permissions' => [

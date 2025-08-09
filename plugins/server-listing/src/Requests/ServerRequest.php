@@ -19,10 +19,15 @@ class ServerRequest extends FormRequest
      * @var array<int, string>
      */
     protected array $checkboxes = [
+        'is_online',
         'is_premium',
         'is_featured',
-        'is_online',
         'is_approved',
+        'hide_voters',
+        'hide_players_list',
+        'block_ping',
+        'block_version_detection',
+        'terms_accepted',
     ];
 
     /**
@@ -41,11 +46,11 @@ class ServerRequest extends FormRequest
     public function rules(): array
     {
         $server = $this->route('server'); // route binding for update
-        $imageRules = ['image', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
-
+        $bannerRules =  ['image', 'dimensions:width=468,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
         return [
+            'server_ip' => ['required', 'string', Rule::unique('server_listing_servers', 'server_ip')->ignore($server, 'slug')],
+            'server_port' => ['nullable', 'integer', 'min:1'],
             'user_id' => 'required|sometimes|exists:users,id',
-            'category_id' => ['required', 'exists:server_listing_categories,id'],
             'name' => ['required', 'string', 'max:100'],
             'slug' => [
                 'required',
@@ -54,25 +59,31 @@ class ServerRequest extends FormRequest
                 new Slug,
                 Rule::unique('server_listing_servers', 'slug')->ignore($server, 'slug'),
             ],
-            'description' => ['required', 'string'],
-            'server_ip' => ['required', 'ip'],
-            'server_port' => ['required', 'integer', 'min:1', 'max:65535'],
-            'website_url' => ['required', 'url'],
+            'website_url' => ['nullable', 'url'],
             'discord_url' => ['nullable', 'url'],
-            'banner_image' => array_merge($server ? ['nullable'] : ['required'], $imageRules),
-            'logo_image' => array_merge($server ? ['nullable'] : ['required'], $imageRules),
-            'version' => ['required', 'string', 'max:50'],
-            'max_players' => ['required', 'integer', 'min:1'],
-            'current_players' => ['nullable', 'integer', 'min:0'],
+            'youtube_video' => ['nullable', 'url'],
+            'support_email' => ['nullable', 'email'],
+            'description' => ['required', 'string', 'min:100'],
+
+            'discord_server_id' => ['nullable'],
+            'tags' => ['required', 'array'],
+            'tags.*' => ['nullable', 'integer', 'exists:server_listing_tags,id'],
             'is_online' => ['nullable', 'boolean'],
             'is_premium' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
             'is_approved' => ['nullable', 'boolean'],
-            // 'tags' => ['nullable', 'array'],
-            // 'tags.*' => ['string'],
-            'vote_count' => ['nullable', 'integer', 'min:0'],
-            'total_votes' => ['nullable', 'integer', 'min:0'],
-            'last_ping' => ['nullable', 'date'],
+            'teamspeak_server_api_key' => ['nullable'],
+            'banner_image' =>  array_merge($server ? ['nullable'] : ['required'], $bannerRules),
+
+            'votifier_host' => ['nullable'],
+            'votifier_port' => ['nullable', 'integer'],
+            'votifier_public_key' => ['nullable'],
+
+            'hide_voters' => ['nullable', 'boolean'],
+            'hide_players_list' => ['nullable', 'boolean'],
+            'block_ping' => ['nullable', 'boolean'],
+            'block_version_detection' => ['nullable', 'boolean'],
+            'terms_accepted' => ['sometimes', 'required', 'boolean'],
             'position' => ['nullable', 'integer'],
         ];
     }

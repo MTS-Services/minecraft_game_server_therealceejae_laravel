@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ServerTag extends Model
 {
     use HasTablePrefix;
-    protected $table = 'server_listing_tags';
+    protected $table = 'server_listing_server_tags';
 
     protected $fillable = [
         'server_id',

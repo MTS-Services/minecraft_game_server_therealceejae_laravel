@@ -3,9 +3,11 @@
 namespace Azuriom\Http\Controllers;
 
 use Azuriom\Models\Post;
-use Azuriom\Plugin\ServerListing\Models\ServerCategory;
+use Azuriom\Plugin\ServerListing\Models\ServerCountry;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
+use Azuriom\Plugin\ServerListing\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
 
 class HomeController extends Controller
@@ -15,12 +17,20 @@ class HomeController extends Controller
     {
 
 
-
         if (plugins()->isEnabled('server-listing')) {
-            $data['server_categories'] = ServerCategory::active()->latest()->get();
-            $data['server_versions'] = ServerListing::pluck('version')->unique()->toArray();
+            $data['server_countries'] = ServerCountry::active()->ordered()->get();
+            $data['tags'] = Tag::active()->ordered()->get();
 
-            $query = ServerListing::with(['category', 'user']);
+
+
+            $versions = Http::get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
+                ->json('versions');
+            $data['minecraft_versions'] = collect($versions)
+                // ->filter(fn($version) => $version['type'] === 'release')
+                ->pluck('id')
+                ->values();
+
+            $query = ServerListing::with(['country', 'user']);
             $search = false;
             if ($request->has('search') && $request->get('search') != '') {
                 $search = $request->get('search');
@@ -28,23 +38,34 @@ class HomeController extends Controller
                     $q->where('name', 'like', '%' . $search . '%')
                         ->orWhere('description', 'like', '%' . $search . '%')
                         ->orWhere('server_ip', 'like', '%' . $search . '%')
-                        ->orWhereJsonContains('tags', $search)
-                        ->orWhere('version', 'like', '%' . $search . '%')
+                        ->orWhere('minecraft_version', 'like', '%' . $search . '%')
                         ->orWhere('website_url', 'like', '%' . $search . '%')
-                        ->orWhereHas('category', function ($subQuery) use ($search) {
+                        ->orWhereHas('country', function ($subQuery) use ($search) {
+                            $subQuery->where('name', 'like', '%' . $search . '%');
+                        })
+                        ->orWhereHas('serverTags', function ($subQuery) use ($search) {
                             $subQuery->where('name', 'like', '%' . $search . '%');
                         });
                 });
                 $search = true;
             }
-            if (request()->has('category') && request()->get('category') !== 'all') {
+            if (request()->has('country') && request()->get('country') !== 'all') {
                 $search = true;
-                $server_category = ServerCategory::where('slug', request()->get('category'))->first();
-                $query->where('category_id', $server_category->id);
+                $query->whereHas('country', function ($q) {
+                    $q->where('slug', request()->get('country'));
+
+                });
             }
-            if (request()->has('version') && request()->get('version') !== 'all') {
+            if (request()->has('tag') && request()->get('tag') !== 'all') {
                 $search = true;
-                $query->where('version', request()->get('version'));
+                $query->whereHas('serverTags', function ($q) {
+                    $q->where('slug', request()->get('tag'));
+
+                });
+            }
+            if (request()->has('minecraft_version') && request()->get('minecraft_version') !== 'all') {
+                $search = true;
+                $query->where('minecraft_version', request()->get('minecraft_version'));
             }
             if ($search) {
                 $data['servers'] = $query->approved()->orderBy('is_featured', 'desc')->orderBy('is_premium', 'desc')->orderBy('position', 'asc')->orderBy('name');
@@ -57,12 +78,12 @@ class HomeController extends Controller
             // --- Popular Servers Pagination ---
             // Get 'popular_page' from the request, default to 1
             $popularPage = request()->query('popular_page', 1);
-            $data['popularServers'] = $query->paginate(2, ['*'], 'popular_page', $popularPage);
+            $data['popularServers'] = $query->paginate(10, ['*'], 'popular_page', $popularPage);
 
 
 
             if (!$search) {
-                $data['topServers'] = ServerListing::with(['category', 'user'])
+                $data['topServers'] = ServerListing::with(['country', 'user', 'serverTags'])
                     ->featured()
                     ->premium()
                     ->approved()
@@ -73,13 +94,13 @@ class HomeController extends Controller
                 // --- Premium Servers Pagination ---
                 // Get 'premium_page' from the request, default to 1
                 $premiumPage = request()->query('premium_page', 1);
-                $data['premiumServers'] = ServerListing::with(['category', 'user'])
+                $data['premiumServers'] = ServerListing::with(['country', 'user', 'serverTags'])
                     ->notFeatured()
                     ->premium()
                     ->approved()
                     ->orderBy('position', 'asc')
                     // Use 'premium_page' as the pagination parameter
-                    ->paginate(1, ['*'], 'premium_page', $premiumPage);
+                    ->paginate(10, ['*'], 'premium_page', $premiumPage);
             }
         }
 

@@ -1,7 +1,7 @@
 {
     "name": "azuriom/server-listing",
     "type": "azuriom-plugin",
-    "description": "Plugin for Azuriom",
+    "description": "Plugin for The Real Ceejae's Server-Listing.",
     "autoload": {
         "psr-4": {
             "Azuriom\\Plugin\\ServerListing\\": "src/"
@@ -20,5 +20,9 @@
         "psr/http-message": "*",
         "psr/log": "*",
         "psr/simple-cache": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform-check": false
     }
 }

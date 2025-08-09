@@ -1,11 +1,11 @@
 {
     "id": "server-listing",
     "name": "Server-Listing",
-    "description": "Plugin for Azuriom",
+    "description": "Plugin for The Real Ceejae's Server-Listing.",
     "version": "1.0.0",
     "url": "https://azuriom.com",
     "authors": [
-        "Azuriom"
+        "The Real Ceejae"
     ],
     "azuriom_api": "1.1.0",
     "providers": [

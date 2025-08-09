@@ -55,7 +55,8 @@
             --logo-size-sm: 40px;
             --logo-size-md: 50px;
             --logo-size-lg: 60px;
-            --banner-height: 70px;
+            --banner-height: 60px;
+            --banner-width: 468px;
         }
 
         /* Dark mode variables */
@@ -73,11 +74,6 @@
         }
 
         /* Base Styles */
-        body {
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 14px;
-        }
 
         /* Minecraft Landscape Header */
         .minecraft-header {
@@ -365,8 +361,7 @@
         .server-banner,
         .premium-banner-container,
         .premium-server-banner {
-            width: 100%;
-            max-width: 400px;
+            width: var(--banner-width);
             height: var(--banner-height);
             border-radius: var(--border-radius-sm);
             overflow: hidden;
@@ -375,7 +370,7 @@
         }
 
         .server-banner img,
-        .premium-banner img,
+        .premium-banner,
         .premium-server-banner img {
             width: 100%;
             height: 100%;
@@ -421,6 +416,11 @@
             padding: 0.3rem 0.6rem;
             border-radius: 15px;
             font-weight: 600;
+        }
+
+        .premium-online-badge.offline,
+        .premium-status-badge.offline {
+            background: var(--status-offline);
         }
 
         .status-badge.offline {
@@ -559,7 +559,7 @@
             .server-banner,
             .premium-banner-container,
             .premium-server-banner {
-                max-width: 100%;
+                max-width: var(--banner-width);
                 margin-bottom: var(--spacing-sm);
             }
 
@@ -709,31 +709,42 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <select class="form-select" name="category">
-                                        <option value="all">{{ __('All Categories') }}</option>
-                                        @foreach ($server_categories as $server_category)
-                                            <option value="{{ $server_category->slug }}"
-                                                {{ request('category') == $server_category->slug ? 'selected' : '' }}>
-                                                {{ $server_category->name }}
+                                    <select class="form-select" name="country">
+                                        <option value="all">{{ __('Countries') }}</option>
+                                        @foreach ($server_countries as $server_country)
+                                            <option value="{{ $server_country->slug }}"
+                                                {{ request('country') == $server_country->slug ? 'selected' : '' }}>
+                                                {{ $server_country->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <select class="form-select" name="version">
-                                        <option value="all">{{ __('All Versions') }}</option>
-                                        @foreach ($server_versions as $server_version)
+                                    <select class="form-select" name="tag">
+                                        <option value="all">{{ __('Game Modes') }}</option>
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag->slug }}"
+                                                {{ request('tag') == $tag->slug ? 'selected' : '' }}>
+                                                {{ $tag->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-select" name="minecraft_version">
+                                        <option value="all">{{ __('Minecraft Versions') }}</option>
+                                        @foreach ($minecraft_versions as $server_version)
                                             <option value="{{ $server_version }}"
-                                                {{ request('version') == $server_version ? 'selected' : '' }}>
+                                                {{ request('minecraft_version') == $server_version ? 'selected' : '' }}>
                                                 {{ $server_version }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <button type="submit" class="btn filter_button w-100">{{ __('Filter') }}</button>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <a href="{{ route('home') }}" class="btn reset_button w-100">{{ __('Reset') }}</a>
                                 </div>
                             </form>
@@ -788,7 +799,7 @@
                                 <div class="card-body p-0 premium-top10-body">
                                     @foreach ($topServers as $index => $topServer)
                                         <div class="premium-top10-row">
-                                            <a href="{{ route('server-listing.details', $topServer->slug ?? '') }}"
+                                            <a href="{{ route('server-listing.details', $topServer->slug) }}"
                                                 class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
@@ -810,23 +821,24 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="premium-server-banner">
-                                                        <img src="{{ $topServer->banner_image_url }}" alt="Server Banner">
+                                                        <img src="{{ $topServer->banner_image_url }}"
+                                                            alt="Server Banner">
                                                         <div class="premium-server-overlay">
                                                             <div class="d-flex align-items-center justify-content-between">
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version-badge me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $topServer->version }}
+                                                                            class="bi bi-gear me-1"></i>{{ $topServer->minecraft_version }}
                                                                     </span>
                                                                     <i class="bi bi-flag me-1 text-warning"></i>
                                                                     <a class="text-white fw-bold text-decoration-none"
-                                                                        href="{{ $topServer->website_url }}"
+                                                                        href="{{ $topServer->server_ip }}"
                                                                         target="_blank">
-                                                                        <small>{{ removeHttpFromUrl($topServer->website_url) }}</small>
+                                                                        <small>{{ removeHttpFromUrl($topServer->server_ip) }}</small>
                                                                     </a>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-btn"
-                                                                    onclick="copyIP('{{ $topServer->website_url }}')">
+                                                                    onclick="copyIP('{{ $topServer->server_ip }}')">
                                                                     <i class="bi bi-copy"></i>
                                                                 </button>
                                                             </div>
@@ -842,20 +854,22 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="text-center">
-                                                        <span class="badge premium-status-badge">
-                                                            <i class="bi bi-circle-fill me-1 premium-pulse"></i>
+                                                        <span
+                                                            class="badge premium-status-badge {{ $topServer->is_online ?: 'offline' }}">
+                                                            <i
+                                                                class=" me-1 {{ $topServer->is_online ? 'premium-pulse bi bi-circle-fill' : '' }}"></i>
                                                             {{ __($topServer->online_label) }}
                                                         </span>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-md-2">
+                                                <div class="col-md-2">
                                                     <div class="d-flex flex-wrap gap-1">
-                                                        @foreach (json_decode(json_decode($topServer->tags, true)[0], true) as $tag)
+                                                        @foreach ($topServer->serverTags as $tag)
                                                             <span
-                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
+                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                                         @endforeach
                                                     </div>
-                                                </div> --}}
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -917,6 +931,8 @@
                                 <div class="card-body p-0 premium-body">
                                     @foreach ($premiumServers as $index => $premiumServer)
                                         <div class="premium-server-row">
+                                            <a href="{{ route('server-listing.details', $premiumServer->slug) }}"
+                                                class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
                                                     <div class="d-flex align-items-center">
@@ -943,17 +959,18 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $premiumServer->version }}
+                                                                            class="bi bi-gear me-1"></i>{{ $premiumServer->minecraft_version }}
+
                                                                     </span>
                                                                     <i class="bi bi-flag me-1"></i>
                                                                     <a class="text-white text-decoration-none"
-                                                                        href="{{ $premiumServer->website_url }}"
+                                                                        href="{{ $premiumServer->server_ip }}"
                                                                         target="_blank">
-                                                                        <small>{{ removeHttpFromUrl($premiumServer->website_url) }}</small>
+                                                                        <small>{{ removeHttpFromUrl($premiumServer->server_ip) }}</small>
                                                                     </a>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-button"
-                                                                    onclick="copyIP('{{ $premiumServer->website_url }}')">
+                                                                    onclick="copyIP('{{ $premiumServer->server_ip }}')">
                                                                     <i class="bi bi-copy"></i>
                                                                 </button>
                                                             </div>
@@ -969,20 +986,21 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <div class="text-center">
-                                                        <span class="badge premium-online-badge">
+                                                        <span
+                                                            class="badge premium-online-badge {{ $premiumServer->is_online ?: 'offline' }}">
                                                             <i
-                                                                class="bi bi-circle-fill me-1 premium-online-pulse"></i>{{ __($premiumServer->online_label) }}
+                                                                class=" me-1 {{ $premiumServer->is_online ? 'premium-online-pulse bi bi-circle-fill' : '' }} "></i>{{ __($premiumServer->online_label) }}
                                                         </span>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-md-2">
+                                                <div class="col-md-2">
                                                     <div class="d-flex flex-wrap gap-1">
-                                                        @foreach (json_decode(json_decode($premiumServer->tags, true)[0], true) as $tag)
+                                                        @foreach ($premiumServer->serverTags as $tag)
                                                             <span
-                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
+                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                                         @endforeach
                                                     </div>
-                                                </div> --}}
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -1043,6 +1061,8 @@
                             <div class="card-body p-0">
                                 @foreach ($popularServers as $index => $popularServer)
                                     <div class="server-row">
+                                        <a href="{{ route('server-listing.details', $popularServer->slug) }}"
+                                                class="details-link"></a>
                                         <div class="row align-items-center">
                                             <div class="col-md-2">
                                                 <div class="d-flex align-items-center">
@@ -1068,17 +1088,17 @@
                                                             <div class="d-flex align-items-center">
                                                                 <span class="badge version-badge me-2">
                                                                     <i
-                                                                        class="bi bi-gear me-1"></i>{{ $popularServer->version }}
+                                                                        class="bi bi-gear me-1"></i>{{ $popularServer->minecraft_version }}
                                                                 </span>
                                                                 <i class="bi bi-flag me-1"></i>
                                                                 <a class="text-white text-decoration-none"
-                                                                    href="{{ $popularServer->website_url }}"
+                                                                    href="{{ $popularServer->server_ip }}"
                                                                     target="_blank">
-                                                                    <small>{{ removeHttpFromUrl($popularServer->website_url) }}</small>
+                                                                    <small>{{ removeHttpFromUrl($popularServer->server_ip) }}</small>
                                                                 </a>
                                                             </div>
                                                             <button class="btn btn-sm copy-btn"
-                                                                onclick="copyIP('{{ $popularServer->website_url }}')">
+                                                                onclick="copyIP('{{ $popularServer->server_ip }}')">
                                                                 <i class="bi bi-copy"></i>
                                                             </button>
                                                         </div>
@@ -1094,20 +1114,21 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="text-center">
-                                                    <span class="badge status-badge">
+                                                    <span
+                                                        class="badge status-badge {{ $popularServer->is_online ?: 'offline' }}">
                                                         <i
-                                                            class="bi bi-circle-fill me-1 pulse"></i>{{ __($popularServer->online_label) }}
+                                                            class=" me-1 {{ $popularServer->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($popularServer->online_label) }}
                                                     </span>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-2">
+                                            <div class="col-md-2">
                                                 <div class="d-flex flex-wrap gap-1">
-                                                    @foreach (json_decode(json_decode($popularServer->tags, true)[0], true) as $tag)
+                                                    @foreach ($popularServer->serverTags as $tag)
                                                         <span
-                                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag['value'] }}</span>
+                                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                                     @endforeach
                                                 </div>
-                                            </div> --}}
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -1143,9 +1164,9 @@
                             <p class="lead mb-4">
                                 {{ __('Get your Minecraft server listed and reach thousands of potential players!') }}
                             </p>
-                            <button class="btn btn-light btn-lg px-5">
+                            <a href="{{ route('server-listing.submission') }}" class="btn btn-light btn-lg px-5">
                                 <i class="bi bi-plus me-2"></i>{{ __('Add Your Server') }}
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
