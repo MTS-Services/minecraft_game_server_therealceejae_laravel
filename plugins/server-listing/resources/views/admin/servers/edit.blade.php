@@ -7,6 +7,7 @@
         <div class="card-body">
             <form action="{{ route('server-listing.admin.servers.edit', $server->slug) }}" method="POST"
                 enctype="multipart/form-data">
+                @csrf
                 @method('PUT')
 
                 @include('server-listing::admin.servers._form')

@@ -23,6 +23,7 @@ class ServerListing extends Model
         'slug',
         'motd',
         'description',
+        'server_datas',
         'server_ip',
         'server_port',
         'website_url',
@@ -86,7 +87,7 @@ class ServerListing extends Model
         'total_votes' => 'integer',
         'server_rank' => 'integer',
         'position' => 'integer',
-
+        'server_datas' => 'array',
     ];
 
     public const FEATURED = 1;
@@ -102,7 +103,7 @@ class ServerListing extends Model
 
     public function getLogoImageUrlAttribute(): string
     {
-        return $this->logo_image ? (filter_var($this->logo_image, FILTER_VALIDATE_URL) ? $this->logo_image : Storage::url($this->logo_image)) : asset('themes/default/img/default-logo.png');
+        return $this->logo_image ? $this->logo_image  : asset('themes/default/img/default-logo.png');
     }
 
     public function getBannerImageUrlAttribute(): string

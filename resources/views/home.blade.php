@@ -55,7 +55,8 @@
             --logo-size-sm: 40px;
             --logo-size-md: 50px;
             --logo-size-lg: 60px;
-            --banner-height: 70px;
+            --banner-height: 60px;
+            --banner-width: 468px;
         }
 
         /* Dark mode variables */
@@ -360,8 +361,7 @@
         .server-banner,
         .premium-banner-container,
         .premium-server-banner {
-            width: 100%;
-            max-width: 400px;
+            width: var(--banner-width);
             height: var(--banner-height);
             border-radius: var(--border-radius-sm);
             overflow: hidden;
@@ -370,7 +370,7 @@
         }
 
         .server-banner img,
-        .premium-banner img,
+        .premium-banner,
         .premium-server-banner img {
             width: 100%;
             height: 100%;
@@ -559,7 +559,7 @@
             .server-banner,
             .premium-banner-container,
             .premium-server-banner {
-                max-width: 100%;
+                max-width: var(--banner-width);
                 margin-bottom: var(--spacing-sm);
             }
 
@@ -832,13 +832,13 @@
                                                                     </span>
                                                                     <i class="bi bi-flag me-1 text-warning"></i>
                                                                     <a class="text-white fw-bold text-decoration-none"
-                                                                        href="{{ $topServer->website_url }}"
+                                                                        href="{{ $topServer->server_ip }}"
                                                                         target="_blank">
-                                                                        <small>{{ removeHttpFromUrl($topServer->website_url) }}</small>
+                                                                        <small>{{ removeHttpFromUrl($topServer->server_ip) }}</small>
                                                                     </a>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-btn"
-                                                                    onclick="copyIP('{{ $topServer->website_url }}')">
+                                                                    onclick="copyIP('{{ $topServer->server_ip }}')">
                                                                     <i class="bi bi-copy"></i>
                                                                 </button>
                                                             </div>
@@ -962,13 +962,13 @@
                                                                     </span>
                                                                     <i class="bi bi-flag me-1"></i>
                                                                     <a class="text-white text-decoration-none"
-                                                                        href="{{ $premiumServer->website_url }}"
+                                                                        href="{{ $premiumServer->server_ip }}"
                                                                         target="_blank">
-                                                                        <small>{{ removeHttpFromUrl($premiumServer->website_url) }}</small>
+                                                                        <small>{{ removeHttpFromUrl($premiumServer->server_ip) }}</small>
                                                                     </a>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-button"
-                                                                    onclick="copyIP('{{ $premiumServer->website_url }}')">
+                                                                    onclick="copyIP('{{ $premiumServer->server_ip }}')">
                                                                     <i class="bi bi-copy"></i>
                                                                 </button>
                                                             </div>
@@ -1088,13 +1088,13 @@
                                                                 </span>
                                                                 <i class="bi bi-flag me-1"></i>
                                                                 <a class="text-white text-decoration-none"
-                                                                    href="{{ $popularServer->website_url }}"
+                                                                    href="{{ $popularServer->server_ip }}"
                                                                     target="_blank">
-                                                                    <small>{{ removeHttpFromUrl($popularServer->website_url) }}</small>
+                                                                    <small>{{ removeHttpFromUrl($popularServer->server_ip) }}</small>
                                                                 </a>
                                                             </div>
                                                             <button class="btn btn-sm copy-btn"
-                                                                onclick="copyIP('{{ $popularServer->website_url }}')">
+                                                                onclick="copyIP('{{ $popularServer->server_ip }}')">
                                                                 <i class="bi bi-copy"></i>
                                                             </button>
                                                         </div>

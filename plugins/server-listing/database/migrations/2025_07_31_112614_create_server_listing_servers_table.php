@@ -21,15 +21,16 @@ return new class extends Migration {
             $table->string('slug', 100)->unique();
             $table->text('motd')->nullable();
             $table->text('description');
-            $table->string('server_ip')->nullable();
+            $table->string('server_ip')->nullable()->unique();
             $table->string('server_port')->nullable();
+            $table->json('server_datas')->nullable();
             $table->string('website_url')->nullable();
             $table->string('discord_url')->nullable();
             $table->string('discord_server_id')->nullable();
             $table->string('banner_image')->nullable();
-            $table->string('logo_image')->nullable();
-            $table->string('minecraft_version', 50);
-            $table->string('support_email', 50)->nullable();
+            $table->text('logo_image')->nullable();
+            $table->string('minecraft_version')->nullable();
+            $table->string('support_email')->nullable();
             $table->string('votifier_host')->nullable();
             $table->string('votifier_port')->nullable();
             $table->text('votifier_public_key')->nullable();
@@ -114,7 +115,7 @@ return new class extends Migration {
                     'slug' => Str::slug($name) . '-' . Str::random(4),
                     'description' => 'This is a sample description for ' . $name,
                     'motd' => 'This is a sample MOTD for ' . $name,
-                    'server_ip' => 'BangladeshCraft.aternos.me',
+                    'server_ip' => 'BangladeshCraft'. Str::random(6) . now()->format('Y-m-d') .'.aternos.me',
                     'server_port' => '25565',
                     'website_url' => 'https://' . $name . '.example.com',
                     'discord_url' => 'https://discord.gg/' . Str::random(6),
@@ -133,7 +134,7 @@ return new class extends Migration {
                     'server_rank' => rand(1, 1000),
                     'is_premium' => rand(0, 1),
                     'is_featured' => rand(0, 1),
-                    'is_approved' => rand(0, 1),
+                    'is_approved' => true,
                     'hide_voters' => rand(0, 1),
                     'hide_players_list' => rand(0, 1),
                     'block_ping' => rand(0, 1),
