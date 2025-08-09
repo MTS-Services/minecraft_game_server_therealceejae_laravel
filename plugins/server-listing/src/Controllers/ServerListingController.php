@@ -27,7 +27,7 @@ class ServerListingController extends Controller
     public function details(string $slug)
     {
         $serverDetail = ServerListing::where('slug', $slug)->firstOrFail();
-        $serverDetail->load('user');
+        $serverDetail->load(['user', 'serverTags', 'country']);
         return view('server-listing::details', compact('serverDetail'));
     }
 
@@ -94,4 +94,3 @@ class ServerListingController extends Controller
         }
     }
 }
- 

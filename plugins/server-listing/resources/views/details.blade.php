@@ -438,10 +438,10 @@
                             class="img-fluid server-logo">
                     </div>
                     <div class="server-banner-container">
-                        <video src="{{ asset('img/server-banner.mp4') }}" class="server-banner-video" muted=""
-                            autoplay="" loop="" playsinline="" allowfullscreen="false"></video>
-                        {{-- <img src="{{ $serverDetail->banner_image_url }}" class="server-banner-img"
-                            alt="{{ $serverDetail->name }}"> --}}
+                        {{-- <video src="{{ asset('img/server-banner.mp4') }}" class="server-banner-video" muted=""
+                            autoplay="" loop="" playsinline="" allowfullscreen="false"></video> --}}
+                        <img src="{{ $serverDetail->banner_image_url }}" class="server-banner-img"
+                            alt="{{ $serverDetail->name }}">
                     </div>
                 </div>
             </div>
@@ -481,38 +481,39 @@
                             <div class="border-bottom py-3">
                                 <i class="fas fa-comment me-2"></i> MOTD
                                 <div class="custom-design text-white p-2 mt-2 rounded" style="font-family: monospace;">
-                                    <span style="color: var(--primary-orange);">COMPLEX GAMING</span><br />
-                                    <small style="color: var(--text-secondary)">CLANS | #1 FACTIONS NETWORK | QUESTS</small>
+                                    <span style="color: var(--primary-orange);">{{ $serverDetail->motd }}</span>
                                 </div>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-circle me-2"></i> Server Status</span>
                                 <span class="text-success fw-semibold">
-                                    {{ $serverDetail->online_label }} <small class="text-muted">Checked 1 minute ago</small>
+                                    {{ $serverDetail->online_label }} <small class="text-muted">Checked 1 minute
+                                        ago</small>
                                 </span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-users me-2"></i> Players</span>
-                                <span>1141 / 5000</span>
+                                <span>{{ $serverDetail->current_players }} / {{ $serverDetail->max_players }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-map-marker-alt me-2"></i> Location</span>
-                                <span><i class="fas fa-flag-usa me-1"></i> United States of America</span>
+                                <span><i class="fas fa-flag-usa me-1"></i> {{ $serverDetail->country?->name }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-cube me-2"></i> Minecraft Version</span>
-                                <span><span class="badge bg-primary">{{ $serverDetail->version }}</span></span>
+                                <span><span class="badge bg-primary">{{ $serverDetail->minecraft_version }}</span></span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-globe me-2"></i> Website</span>
                                 <span>
-                                    <a href="{{ $serverDetail->website_url }}" class="text-decoration-none" target="_blank">
-                                        {{$serverDetail->website_url}}
+                                    <a href="{{ $serverDetail->website_url }}" class="text-decoration-none"
+                                        target="_blank">
+                                        {{ $serverDetail->website_url }}
                                     </a>
                                 </span>
                             </div>
@@ -524,12 +525,12 @@
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-calendar me-2"></i> Registered Since</span>
-                                <span>Nov 2, 2017 01:06 PM EST</span>
+                                <span>{{ $serverDetail->created_at_formatted }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-clock me-2"></i> Last Update</span>
-                                <span>Apr 29, 2025 04:56 PM EST</span>
+                                <span>{{ $serverDetail->updated_at_formatted }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
@@ -539,15 +540,13 @@
 
                             <div class="py-2">
                                 <i class="fas fa-tags me-2"></i> Tag(s):<br />
-                                <span class="badge bg-secondary me-1">Cobblemon</span>
-                                <span class="badge bg-secondary me-1">Factions</span>
-                                <span class="badge bg-secondary me-1">LifeSteal</span>
-                                <span class="badge bg-secondary me-1">Pixelmon</span>
-                                <span class="badge bg-secondary me-1">Reforged</span>
-                                <span class="badge bg-secondary me-1">Pokemon</span>
-                                <span class="badge bg-secondary me-1">Skyblock</span>
-                                <span class="badge bg-secondary me-1">SMP</span>
-                                <span class="badge bg-secondary me-1">Survival</span>
+
+                                @forelse ($serverDetail->serverTags as $tag)
+                                    <span
+                                        class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                @empty
+                                    <p class="text-muted">No tags available</p>
+                                @endforelse
                             </div>
                         </div>
                     </div>
@@ -595,9 +594,9 @@
             </div>
             <div class="card-body discord-widget">
                 <i class="fab fa-discord" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                <h5>Complex Pixelmon</h5>
+                <h5>{{ $serverDetail->name }}</h5>
                 <p>Minecraft Server</p>
-                <button class="btn btn-light">Join Discord</button>
+                <a href="{{ $serverDetail->discord_url }}" target="_blank" class="btn btn-light">Join Discord</a>
             </div>
         </div>
 
@@ -606,11 +605,12 @@
                 <i class="fas fa-play me-2"></i>Server Video
             </div>
             <div style="border-radius: 0 0 10px 10px; overflow: hidden">
-                <iframe width="100%" height="641" src="https://www.youtube.com/embed/0sE_whDkO7c"
+                <iframe width="100%" height="641" src="https://www.youtube.com/embed/{{ $serverDetail->youtube_video_id }}"
                     title="How to INSTALL PIXELMON! *FASTEST GUIDE* | Minecraft Pokemon Mod" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
+
         </div>
 
         <div class="card mt-4">
