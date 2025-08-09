@@ -403,7 +403,7 @@
                 <label class="form-label"
                     for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }} <span
                         class="text-danger">*</span></label>
-                <input type="file" class="form-control @error('banner_image') is-invalid @enderror" required
+                <input type="file" class="form-control @error('banner_image') is-invalid @enderror"
                     id="bannerImageInput" name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
                     data-image-preview="bannerImagePreview">
                 @error('banner_image')

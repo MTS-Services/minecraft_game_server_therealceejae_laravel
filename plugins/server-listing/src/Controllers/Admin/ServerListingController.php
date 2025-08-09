@@ -112,6 +112,15 @@ class ServerListingController extends Controller
             $validated = $request->validated();
             $status = $this->serverStatusService->checkServerStatus($validated['server_ip'], $validated['server_port']);
 
+            $validated['logo_image'] = $status['server_data']['icon'];
+            $validated['motd'] = implode('<br> ', $status['server_data']['motd']['html']);
+            $validated['minecraft_version'] = $status['server_data']['version'];
+            $validated['max_players'] = $status['server_data']['players']['max'];
+            $validated['current_players'] = $status['server_data']['players']['online'];
+            $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
+            $validated['server_datas'] = $status['server_data'];
+
+
             if (!$status['success']) {
                 return back()->withInput()->withErrors(['server_ip' => $status['message']]);
             }
@@ -124,10 +133,6 @@ class ServerListingController extends Controller
                 }
             }
             DB::transaction(function () use ($validated, $request) {
-                if ($request->hasFile('logo_image')) {
-                    $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');
-                }
-
                 // Upload banner image if present
                 if ($request->hasFile('banner_image')) {
                     $validated['banner_image'] = $request->file('banner_image')->store('uploads/server_banners', 'public');
@@ -169,39 +174,83 @@ class ServerListingController extends Controller
 
     public function update(ServerRequest $request, string $server_slug): RedirectResponse
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
+            $server = ServerListing::where('slug', $server_slug)->firstOrFail();
 
-        $server = ServerListing::where('slug', $server_slug)->first();
+            // 1. Check the server status first
+            $status = $this->serverStatusService->checkServerStatus($validated['server_ip'], $validated['server_port']);
 
-        // Encode tags as JSON
-        // $validated['tags'] = json_encode($validated['tags'] ?? []);
-
-        // Handle logo image upload
-        if ($request->hasFile('logo_image')) {
-            // Delete old logo if exists
-            if ($server->logo_image && Storage::disk('public')->exists($server->logo_image)) {
-                Storage::disk('public')->delete($server->logo_image);
+            // 2. If the connection check fails, return an error back to the form.
+            if (!$status['success']) {
+                return back()->withInput()->withErrors(['server_ip' => $status['message']]);
             }
 
-            $validated['logo_image'] = $request->file('logo_image')->store('uploads/server_logos', 'public');
-        }
+            // 3. Update validated data with server status information
+            // We'll only update the icon if the API provided a new one.
+            if (isset($status['server_data']['icon'])) {
+                $validated['logo_image'] = $status['server_data']['icon'];
+            }
+            $validated['motd'] = implode('<br> ', $status['server_data']['motd']['html']);
+            $validated['minecraft_version'] = $status['server_data']['version'];
+            $validated['max_players'] = $status['server_data']['players']['max'];
+            $validated['current_players'] = $status['server_data']['players']['online'];
+            $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
+            $validated['server_datas'] = $status['server_data'];
 
-        // Handle banner image upload
-        if ($request->hasFile('banner_image')) {
-            // Delete old banner if exists
-            if ($server->banner_image && Storage::disk('public')->exists($server->banner_image)) {
-                Storage::disk('public')->delete($server->banner_image);
+            // 4. Get the country code and update the country ID
+            $country = $this->serverStatusService->getCountryCode($validated['server_ip']);
+            $country = json_decode($country, true);
+            if (!empty($country)) {
+                $serverCountry = ServerCountry::where('code', $country['countryCode'])->first();
+                if ($serverCountry) {
+                    $validated['country_id'] = $serverCountry->id;
+                }
             }
 
-            $validated['banner_image'] = $request->file('banner_image')->store('uploads/server_banners', 'public');
+            DB::transaction(function () use ($validated, $request, $server) {
+                // Delete old logo if a new one from the API is being saved.
+                // This is only if you were previously storing file paths. If you store Base64, this isn't needed.
+                // Since your `store` method now stores the Base64, we will assume that's the approach.
+                // If you later switch back to file storage, you'll need to re-add the deletion logic here.
+
+                // Handle banner image upload
+                if ($request->hasFile('banner_image')) {
+                    // Delete old banner if exists
+                    if ($server->banner_image && Storage::disk('public')->exists($server->banner_image)) {
+                        Storage::disk('public')->delete($server->banner_image);
+                    }
+                    $validated['banner_image'] = $request->file('banner_image')->store('uploads/server_banners', 'public');
+                }
+
+                // Update the server record
+                $server->update($validated);
+
+                // Sync tags
+                if (isset($validated['tags'])) {
+                    $server->serverTags()->delete(); // Remove existing tags
+                    foreach ($validated['tags'] as $tagId) {
+                        ServerTag::create([
+                            'server_id' => $server->id,
+                            'tag_id' => $tagId,
+                            'created_at' => now(),
+                        ]);
+                    }
+                }
+            });
+
+            return to_route('server-listing.admin.servers.index')
+                ->with('success', trans('messages.status.success'));
+        } catch (Throwable $e) {
+            Log::error('Failed to update server', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all(),
+            ]);
+            throw $e;
         }
-
-        $server->update($validated);
-
-        return to_route('server-listing.admin.servers.index')
-            ->with('success', trans('messages.status.success'));
     }
-
+    
     public function destroy(string $server_slug)
     {
         $server = ServerListing::where('slug', $server_slug)->first();

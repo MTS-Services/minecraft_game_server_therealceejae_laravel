@@ -23,11 +23,12 @@ return new class extends Migration {
             $table->text('description');
             $table->string('server_ip')->nullable()->unique();
             $table->string('server_port')->nullable();
+            $table->json('server_datas')->nullable();
             $table->string('website_url')->nullable();
             $table->string('discord_url')->nullable();
             $table->string('discord_server_id')->nullable();
             $table->string('banner_image')->nullable();
-            $table->string('logo_image')->nullable();
+            $table->text('logo_image')->nullable();
             $table->string('minecraft_version')->nullable();
             $table->string('support_email')->nullable();
             $table->string('votifier_host')->nullable();

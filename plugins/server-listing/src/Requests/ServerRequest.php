@@ -48,7 +48,7 @@ class ServerRequest extends FormRequest
         $server = $this->route('server'); // route binding for update
         $bannerRules =  ['image', 'dimensions:width=468,height=60', 'max:5000', 'mimes:jpg,jpeg,png,webp,gif'];
         return [
-            'server_ip' => ['required', 'string', Rule::unique('server_listing_servers', 'server_ip')->ignore($server, 'server_ip')],
+            'server_ip' => ['required', 'string', Rule::unique('server_listing_servers', 'server_ip')->ignore($server, 'slug')],
             'server_port' => ['nullable', 'integer', 'min:1'],
             'user_id' => 'required|sometimes|exists:users,id',
             'name' => ['required', 'string', 'max:100'],
