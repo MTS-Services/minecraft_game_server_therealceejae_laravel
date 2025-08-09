@@ -181,22 +181,20 @@ class ServerListingController extends Controller
             // 1. Check the server status first
             $status = $this->serverStatusService->checkServerStatus($validated['server_ip'], $validated['server_port']);
 
-            // 2. If the connection check fails, return an error back to the form.
-            if (!$status['success']) {
+            if ($status['code'] !== 200) {
                 return back()->withInput()->withErrors(['server_ip' => $status['message']]);
             }
 
             // 3. Update validated data with server status information
-            // We'll only update the icon if the API provided a new one.
             if (isset($status['server_data']['icon'])) {
                 $validated['logo_image'] = $status['server_data']['icon'];
             }
-            $validated['motd'] = implode('<br> ', $status['server_data']['motd']['html']);
-            $validated['minecraft_version'] = $status['server_data']['version'];
-            $validated['max_players'] = $status['server_data']['players']['max'];
-            $validated['current_players'] = $status['server_data']['players']['online'];
-            $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
-            $validated['server_datas'] = $status['server_data'];
+            $validated['motd'] = isset($status['server_data']['motd']['html']) ? implode('<br> ', $status['server_data']['motd']['html']) : $server->motd;
+            $validated['minecraft_version'] = isset($status['server_data']['version']) ? $status['server_data']['version'] : $server->minecraft_version;
+            $validated['max_players'] = isset($status['server_data']['players']['max']) ? $status['server_data']['players']['max'] : $server->max_players;
+            $validated['current_players'] = isset($status['server_data']['players']['online']) ? $status['server_data']['players']['online'] : $server->current_players;
+            $validated['server_port'] = isset($validated['server_port']) && $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
+            $validated['server_datas'] = isset($status['server_data']) ? $status['server_data'] : $server->server_datas;
 
             // 4. Get the country code and update the country ID
             $country = $this->serverStatusService->getCountryCode($validated['server_ip']);
@@ -207,7 +205,7 @@ class ServerListingController extends Controller
                     $validated['country_id'] = $serverCountry->id;
                 }
             }
-            dd($validated);
+            // dd($validated);
 
             DB::transaction(function () use ($validated, $request, $server) {
                 // Delete old logo if a new one from the API is being saved.
@@ -229,7 +227,8 @@ class ServerListingController extends Controller
 
                 // Sync tags
                 if (isset($validated['tags'])) {
-                    $server->serverTags()->delete(); // Remove existing tags
+                    $server->serverTags()->detach();
+                    $server->serverTags()->forceDelete();
                     foreach ($validated['tags'] as $tagId) {
                         ServerTag::create([
                             'server_id' => $server->id,
