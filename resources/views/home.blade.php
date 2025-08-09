@@ -799,7 +799,7 @@
                                 <div class="card-body p-0 premium-top10-body">
                                     @foreach ($topServers as $index => $topServer)
                                         <div class="premium-top10-row">
-                                            <a href="{{ route('server-listing.details', $topServer->slug ?? '') }}"
+                                            <a href="{{ route('server-listing.details', $topServer->slug) }}"
                                                 class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
@@ -931,6 +931,8 @@
                                 <div class="card-body p-0 premium-body">
                                     @foreach ($premiumServers as $index => $premiumServer)
                                         <div class="premium-server-row">
+                                            <a href="{{ route('server-listing.details', $premiumServer->slug) }}"
+                                                class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
                                                     <div class="d-flex align-items-center">
@@ -1059,6 +1061,8 @@
                             <div class="card-body p-0">
                                 @foreach ($popularServers as $index => $popularServer)
                                     <div class="server-row">
+                                        <a href="{{ route('server-listing.details', $popularServer->slug) }}"
+                                                class="details-link"></a>
                                         <div class="row align-items-center">
                                             <div class="col-md-2">
                                                 <div class="d-flex align-items-center">
