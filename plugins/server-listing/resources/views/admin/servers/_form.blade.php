@@ -288,6 +288,7 @@
                 <label class="form-label" for="descriptionInput">
                     {{ trans('server-listing::messages.fields.description') }}
                     <span class="text-danger">*</span>
+                    <small>{{ trans('server-listing::messages.fields.description_min_length') }}</small>
                 </label>
                 <textarea class="form-control html-editor @error('description') is-invalid @enderror" id="descriptionInput"
                     placeholder="{{ trans('server-listing::messages.placeholder.description') }}" name="description" rows="5">{{ old('description', $server->description ?? '') }}</textarea>
@@ -324,7 +325,7 @@
                         class="text-danger">*</span></label>
                 <select class="form-select @error('tags') is-invalid @enderror" id="tagsInput" name="tags[]"
                     required multiple>
-                    <option value="" hidden selected>{{ trans('server-listing::messages.fields.tags-select') }}
+                    <option value="" disabled>{{ trans('server-listing::messages.fields.tags-select') }}
                     </option>
                     @foreach ($tags as $tag)
                         <option value="{{ $tag->id }}"
@@ -400,9 +401,10 @@
             </div>
 
             <div class="col-md-12 mb-3">
-                <label class="form-label"
-                    for="bannerImageInput">{{ trans('server-listing::messages.fields.banner_image') }} <span
-                        class="text-danger">*</span></label>
+                <label class="form-label" for="bannerImageInput">
+                    {{ trans('server-listing::messages.fields.banner_image') }} <span class="text-danger">*</span>
+                    <small>{{ trans('server-listing::messages.fields.banner_image_min_size') }}</small>
+                </label>
                 <input type="file" class="form-control @error('banner_image') is-invalid @enderror"
                     id="bannerImageInput" name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
                     data-image-preview="bannerImagePreview">
@@ -412,7 +414,19 @@
                 <img src="{{ isset($server->banner_image_url) ? $server->banner_image_url : '#' }}"
                     class="mt-2 img-fluid rounded img-preview {{ isset($server->banner_image_url) ? '' : 'd-none' }}"
                     alt="banner image" id="bannerImagePreview">
-            </div>           
+                <div class="card-note">
+                    <i class="bi bi-megaphone" style="color: #000"></i>
+                    <span>Get a professional banner with <a
+                            href="https://woodpunchsgraphics.com/collections/minecraft-server-banner-maker"
+                            target="_blank">Woodpunch's Graphics</a></span>
+                    <div class="card-note-info">
+                        <span><i class="bi bi-info-circle-fill"></i> For animated banners, you need to use MP4 format instead of GIF format.</span>
+                        <span>You can easily convert your GIF banner to MP4 here : <a
+                                href="https://ezgif.com/gif-to-mp4"
+                                target="_blank">https://ezgif.com/gif-to-mp4</a></span>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -648,6 +662,27 @@
             justify-content: center;
             border-radius: 50%;
             font-size: 1.5rem;
+        }
+
+        .card-note {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--bs-secondary-color);
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-note-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            margin-top: 0.5rem;
+            background: #dc354547;
+            padding: 1rem;
+            border-radius: 10px;
+            color: #020;
+            font-weight: 400;
         }
     </style>
 @endpush

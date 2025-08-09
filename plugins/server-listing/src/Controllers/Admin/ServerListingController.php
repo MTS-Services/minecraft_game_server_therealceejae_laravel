@@ -207,6 +207,7 @@ class ServerListingController extends Controller
                     $validated['country_id'] = $serverCountry->id;
                 }
             }
+            dd($validated);
 
             DB::transaction(function () use ($validated, $request, $server) {
                 // Delete old logo if a new one from the API is being saved.
@@ -250,7 +251,7 @@ class ServerListingController extends Controller
             throw $e;
         }
     }
-    
+
     public function destroy(string $server_slug)
     {
         $server = ServerListing::where('slug', $server_slug)->first();

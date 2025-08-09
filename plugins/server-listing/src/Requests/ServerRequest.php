@@ -63,7 +63,7 @@ class ServerRequest extends FormRequest
             'discord_url' => ['nullable', 'url'],
             'youtube_video' => ['nullable', 'url'],
             'support_email' => ['nullable', 'email'],
-            'description' => ['required', 'string', 'min:100', 'max:1000'],
+            'description' => ['required', 'string', 'min:100'],
 
             'discord_server_id' => ['nullable'],
             'tags' => ['required', 'array'],
