@@ -481,7 +481,7 @@
                             <div class="border-bottom py-3">
                                 <i class="fas fa-comment me-2"></i> MOTD
                                 <div class="custom-design text-white p-2 mt-2 rounded" style="font-family: monospace;">
-                                    <span style="color: var(--primary-orange);">{{ $serverDetail->motd }}</span>
+                                    <span style="color: var(--primary-orange);">{!! $serverDetail->motd !!}</span>
                                 </div>
                             </div>
 
