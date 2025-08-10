@@ -76,14 +76,14 @@ class ServerListing extends Model
 
     protected $casts = [
         'is_online' => 'boolean',
-        'is_premium'  => 'boolean',
-        'is_featured'  => 'boolean',
-        'is_approved'  => 'boolean',
-        'hide_voters'  => 'boolean',
-        'hide_players_list'  => 'boolean',
-        'block_ping'  => 'boolean',
-        'block_version_detection'  => 'boolean',
-        'terms_accepted'  => 'boolean',
+        'is_premium' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_approved' => 'boolean',
+        'hide_voters' => 'boolean',
+        'hide_players_list' => 'boolean',
+        'block_ping' => 'boolean',
+        'block_version_detection' => 'boolean',
+        'terms_accepted' => 'boolean',
         'last_ping' => 'datetime',
         'max_players' => 'integer',
         'current_players' => 'integer',
@@ -107,12 +107,12 @@ class ServerListing extends Model
 
     public function getLogoImageUrlAttribute(): string
     {
-        return $this->logo_image ? $this->logo_image  : asset('themes/default/img/default-logo.png');
+        return $this->logo_image ? $this->logo_image : asset('themes/default/img/default-logo.png');
     }
 
     public function getBannerImageUrlAttribute(): string
     {
-        return $this->banner_image  ? (filter_var($this->banner_image, FILTER_VALIDATE_URL) ? $this->banner_image : Storage::url($this->banner_image)) : asset('themes/default/img/default-banner.png');
+        return $this->banner_image ? (filter_var($this->banner_image, FILTER_VALIDATE_URL) ? $this->banner_image : Storage::url($this->banner_image)) : asset('themes/default/img/default-banner.png');
     }
 
     public function getFeaturedLabelAttribute(): string
@@ -236,8 +236,8 @@ class ServerListing extends Model
 
     public function scopeOrderByPopularity($query)
     {
-        return $query->orderByDesc('vote_count')
-            ->orderByDesc('current_players')
+        return $query->orderByDesc('current_players')
+            ->orderByDesc('vote_count')
             ->orderByDesc('total_votes');
     }
 

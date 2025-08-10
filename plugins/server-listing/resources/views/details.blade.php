@@ -488,8 +488,7 @@
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-circle me-2"></i> Server Status</span>
                                 <span class="text-success fw-semibold">
-                                    {{ $serverDetail->online_label }} <small class="text-muted">Checked 1 minute
-                                        ago</small>
+                                    {{ $serverDetail->online_label }}
                                 </span>
                             </div>
 
@@ -605,7 +604,8 @@
                 <i class="fas fa-play me-2"></i>Server Video
             </div>
             <div style="border-radius: 0 0 10px 10px; overflow: hidden">
-                <iframe width="100%" height="641" src="https://www.youtube.com/embed/{{ $serverDetail->youtube_video_id }}"
+                <iframe width="100%" height="641"
+                    src="https://www.youtube.com/embed/{{ $serverDetail->youtube_video_id }}"
                     title="How to INSTALL PIXELMON! *FASTEST GUIDE* | Minecraft Pokemon Mod" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -116,7 +116,7 @@ class ServerListingController extends Controller
             }
             $validated['logo_image'] = $status['server_data']['icon'];
             $validated['motd'] = implode('<br> ', $status['server_data']['motd']['html']);
-            $validated['minecraft_version'] = $status['server_data']['version'];
+            $validated['minecraft_version'] = $status['server_data']['protocol']['name'];
             $validated['max_players'] = $status['server_data']['players']['max'];
             $validated['current_players'] = $status['server_data']['players']['online'];
             $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
@@ -188,7 +188,7 @@ class ServerListingController extends Controller
                 $validated['logo_image'] = $status['server_data']['icon'];
             }
             $validated['motd'] = isset($status['server_data']['motd']['html']) ? implode('<br> ', $status['server_data']['motd']['html']) : $server->motd;
-            $validated['minecraft_version'] = isset($status['server_data']['version']) ? $status['server_data']['version'] : $server->minecraft_version;
+            $validated['minecraft_version'] = isset($status['server_data']['protocol']['name']) ? $status['server_data']['protocol']['name'] : $server->minecraft_version;
             $validated['max_players'] = isset($status['server_data']['players']['max']) ? $status['server_data']['players']['max'] : $server->max_players;
             $validated['current_players'] = isset($status['server_data']['players']['online']) ? $status['server_data']['players']['online'] : $server->current_players;
             $validated['server_port'] = isset($validated['server_port']) && $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];

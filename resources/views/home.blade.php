@@ -828,14 +828,14 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version-badge me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $topServer->minecraft_version }}
+                                                                            class="bi bi-gear me-1"></i>{{ remove_before_dash($topServer->minecraft_version) }}
                                                                     </span>
-                                                                    <i class="bi bi-flag me-1 text-warning"></i>
-                                                                    <a class="text-white fw-bold text-decoration-none"
-                                                                        href="{{ $topServer->server_ip }}"
-                                                                        target="_blank">
+                                                                    <img style="height: 12px; width: 20px;" class="me-1"
+                                                                        src="https://flagcdn.com/{{ strtolower($topServer?->country?->code) }}.svg"
+                                                                        alt="">
+                                                                    <span class="text-white fw-bold text-decoration-none">
                                                                         <small>{{ removeHttpFromUrl($topServer->server_ip) }}</small>
-                                                                    </a>
+                                                                    </span>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-btn"
                                                                     onclick="copyIP('{{ $topServer->server_ip }}')">
@@ -959,15 +959,15 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $premiumServer->minecraft_version }}
+                                                                            class="bi bi-gear me-1"></i>{{ remove_before_dash($premiumServer->minecraft_version) }}
 
                                                                     </span>
-                                                                    <i class="bi bi-flag me-1"></i>
-                                                                    <a class="text-white text-decoration-none"
-                                                                        href="{{ $premiumServer->server_ip }}"
-                                                                        target="_blank">
+                                                                    <img style="height: 12px; width: 20px;" class="me-1"
+                                                                        src="https://flagcdn.com/{{ strtolower($premiumServer?->country?->code) }}.svg"
+                                                                        alt="">
+                                                                    <span class="text-white text-decoration-none">
                                                                         <small>{{ removeHttpFromUrl($premiumServer->server_ip) }}</small>
-                                                                    </a>
+                                                                    </span>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-button"
                                                                     onclick="copyIP('{{ $premiumServer->server_ip }}')">
@@ -1062,7 +1062,7 @@
                                 @foreach ($popularServers as $index => $popularServer)
                                     <div class="server-row">
                                         <a href="{{ route('server-listing.details', $popularServer->slug) }}"
-                                                class="details-link"></a>
+                                            class="details-link"></a>
                                         <div class="row align-items-center">
                                             <div class="col-md-2">
                                                 <div class="d-flex align-items-center">
@@ -1088,14 +1088,16 @@
                                                             <div class="d-flex align-items-center">
                                                                 <span class="badge version-badge me-2">
                                                                     <i
-                                                                        class="bi bi-gear me-1"></i>{{ $popularServer->minecraft_version }}
+                                                                        class="bi bi-gear me-1"></i>{{ remove_before_dash($popularServer->minecraft_version) }}
                                                                 </span>
-                                                                <i class="bi bi-flag me-1"></i>
-                                                                <a class="text-white text-decoration-none"
-                                                                    href="{{ $popularServer->server_ip }}"
-                                                                    target="_blank">
+
+                                                                <img style="height: 12px; width: 20px;" class="me-1"
+                                                                    src="https://flagcdn.com/{{ strtolower($popularServer?->country?->code) }}.svg"
+                                                                    alt="">
+
+                                                                <span class="text-white text-decoration-none">
                                                                     <small>{{ removeHttpFromUrl($popularServer->server_ip) }}</small>
-                                                                </a>
+                                                                </span>
                                                             </div>
                                                             <button class="btn btn-sm copy-btn"
                                                                 onclick="copyIP('{{ $popularServer->server_ip }}')">

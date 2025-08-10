@@ -177,7 +177,7 @@
                 <label class="form-label"
                     for="serverPortInput">{{ trans('server-listing::messages.fields.server_port') }}</label>
                 <div class="btn-group w-100">
-                    <input type="text" class="form-control @error('server_port') is-invalid @enderror"
+                    <input type="number" class="form-control @error('server_port') is-invalid @enderror"
                         id="serverPortInput" name="server_port"
                         placeholder="{{ trans('server-listing::messages.placeholder.server_port') }}"
                         value="{{ old('server_port', $server->server_port ?? '') }}">
@@ -219,7 +219,7 @@
                 <label class="form-label" for="slugInput">{{ trans('server-listing::messages.fields.slug') }} <span
                         class="text-danger">*</span></label>
                 <div class="input-group @error('slug') has-validation @enderror">
-                    <input type="number" class="form-control @error('slug') is-invalid @enderror" id="slugInput"
+                    <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slugInput"
                         name="slug" value="{{ old('slug', $server->slug ?? '') }}" required>
                     <button type="button" class="btn btn-outline-secondary" onclick="generateSlug()">
                         <i class="bi bi-arrow-clockwise"></i>
@@ -741,7 +741,7 @@
                                 'No';
                             playersOnlineValue.innerText =
                                 `${serverData.players.online} / ${serverData.players.max}`;
-                            serverVersionValue.innerText = serverData.version;
+                            serverVersionValue.innerText = serverData.protocol.name;
 
                             // Update server logo
                             if (serverData.icon) {

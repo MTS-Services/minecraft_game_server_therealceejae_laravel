@@ -48,11 +48,12 @@ class ServerListingController extends Controller
             }
             $validated['logo_image'] = $status['server_data']['icon'];
             $validated['motd'] = implode('<br> ', $status['server_data']['motd']['html']);
-            $validated['minecraft_version'] = $status['server_data']['version'];
+            $validated['minecraft_version'] = $status['server_data']['protocol']['name'];
             $validated['max_players'] = $status['server_data']['players']['max'];
             $validated['current_players'] = $status['server_data']['players']['online'];
             $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
             $validated['server_datas'] = $status['server_data'];
+            $validated['is_approved'] = true;
             $validated['user_id'] = Auth::id();
 
             $validated['is_online'] = true;

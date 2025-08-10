@@ -558,7 +558,7 @@
                                     'No';
                                 playersOnlineValue.innerText =
                                     `${serverData.players.online} / ${serverData.players.max}`;
-                                serverVersionValue.innerText = serverData.version;
+                                serverVersionValue.innerText = serverData.protocol.name;
 
                                 // Update server logo
                                 if (serverData.icon) {
