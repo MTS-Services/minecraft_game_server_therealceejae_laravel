@@ -840,7 +840,7 @@
                                 <label class="tag-label" for="tag_{{ $tag->slug }}">{{ $tag->name }}</label>
                             </div>
                         @empty
-                            <p class="text-muted">No tags available</p>
+                            <p class="text-muted">No game modes / tags available</p>
                         @endforelse
                         @error('tags')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>

@@ -722,7 +722,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <select class="form-select" name="tag">
-                                        <option value="all">{{ __('Game Modes') }}</option>
+                                        <option value="all">{{ __('Game Modes / Tags') }}</option>
                                         @foreach ($tags as $tag)
                                             <option value="{{ $tag->slug }}"
                                                 {{ request('tag') == $tag->slug ? 'selected' : '' }}>

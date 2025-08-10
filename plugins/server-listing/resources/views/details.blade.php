@@ -538,13 +538,13 @@
                             </div>
 
                             <div class="py-2">
-                                <i class="fas fa-tags me-2"></i> Tag(s):<br />
+                                <i class="fas fa-tags me-2"></i> Game Modes / Tags:<br />
 
                                 @forelse ($serverDetail->serverTags as $tag)
                                     <span
                                         class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
                                 @empty
-                                    <p class="text-muted">No tags available</p>
+                                    <p class="text-muted">No game modes / tags available</p>
                                 @endforelse
                             </div>
                         </div>
