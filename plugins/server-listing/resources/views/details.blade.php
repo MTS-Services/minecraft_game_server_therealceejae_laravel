@@ -499,7 +499,9 @@
 
                             <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-map-marker-alt me-2"></i> Location</span>
-                                <span><i class="fas fa-flag-usa me-1"></i> {{ $serverDetail->country?->name }}</span>
+                                <span><img style="height: 12px; width: 20px;" class="me-1"
+                                        src="https://flagcdn.com/{{ strtolower($serverDetail?->country?->code) }}.svg"
+                                        alt=""> {{ $serverDetail?->country?->name }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between border-bottom py-2">
