@@ -186,7 +186,7 @@
                 border-left: 4px solid var(--primary-orange);
             }
 
-            .verification-container .spinner{
+            .verification-container .spinner {
                 color: var(--primary-orange);
             }
 
@@ -439,10 +439,11 @@
         <div aria-label="breadcrumb" class="custom-design card-header-custom py-2 px-3">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a href="#" class="text-decoration-none title-color">Minecraft Servers List</a>
+                    <a href="{{ route('home') }}" class="text-decoration-none title-color">Minecraft Servers List</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="#" class="text-decoration-none title-color">MineSuperior</a>
+                    <a href="{{ route('server-listing.details', $serverDetail->slug) }}"
+                        class="text-decoration-none title-color">{{ $serverDetail->name }}</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Vote</li>
             </ol>
@@ -455,11 +456,11 @@
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     <div class="vote-card h-100">
                         <div class="vote-card-header">
-                            <h1 class="server-title">Vote for "MineSuperior"</h1>
+                            <h1 class="server-title">Vote for "{{ $serverDetail->name }}"</h1>
                             <div class="server-banner-container">
                                 {{-- <video src="{{ asset('img/server-banner.mp4') }}" class="server-banner-video" muted=""
                             autoplay="" loop="" playsinline="" allowfullscreen="false"></video> --}}
-                                <img src="http://googleusercontent.com/file_content/0" class="server-banner-img"
+                                <img src="{{ $serverDetail->banner_image_url }}" class="server-banner-img"
                                     alt="MineSuperior Banner">
                             </div>
                         </div>
@@ -493,7 +494,8 @@
                                     <button type="submit" class="btn btn-vote flex-grow-1">
                                         <i class="fas fa-check-circle me-2"></i> Vote Now
                                     </button>
-                                    <a href="#" class="btn btn-back flex-grow-1">
+                                    <a href="{{ route('server-listing.details', $serverDetail->slug) }}"
+                                        class="btn btn-back flex-grow-1">
                                         <i class="fas fa-arrow-left me-2"></i> Back to Server
                                     </a>
                                 </div>

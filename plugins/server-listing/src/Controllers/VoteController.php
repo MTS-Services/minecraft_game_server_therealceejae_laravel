@@ -9,7 +9,7 @@ class VoteController extends Controller
 {
     public function index($slug)
     {
-        $server = ServerListing::where('slug', $slug)->firstOrFail();
-        return view('server-listing::vote', compact('server'));
+        $serverDetail = ServerListing::where('slug', $slug)->firstOrFail();
+        return view('server-listing::vote', compact('serverDetail'));
     }
 }
