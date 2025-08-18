@@ -46,6 +46,10 @@ return [
         'name' => 'Tag Name',
 
     ],
+    'card' => [
+        'approved_server' => 'Approved Server',
+        'premium_server' => 'Premium Server',
+    ],
 
     'permissions' => [
         'settings' => 'Manage minecraft server listing settings',

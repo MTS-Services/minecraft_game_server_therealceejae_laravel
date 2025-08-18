@@ -1,4 +1,5 @@
 <?php
+
 use Azuriom\Plugin\ServerListing\Controllers\Admin\ServerListingController;
 use Azuriom\Plugin\ServerListing\Controllers\Admin\TagController;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,3 @@ Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(fu
     Route::put('/tags/{tag}', 'update')->name('edit');
     Route::delete('/tags/{tag}', 'destroy')->name('destroy');
 });
-

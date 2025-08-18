@@ -17,7 +17,7 @@ class ServerCountry extends Model
         'name',
         'slug',
         'is_active',
-        'short_name',
+        'code',
         'position',
     ];
 

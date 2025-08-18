@@ -55,7 +55,8 @@
             --logo-size-sm: 40px;
             --logo-size-md: 50px;
             --logo-size-lg: 60px;
-            --banner-height: 70px;
+            --banner-height: 60px;
+            --banner-width: 468px;
         }
 
         /* Dark mode variables */
@@ -73,11 +74,6 @@
         }
 
         /* Base Styles */
-        body {
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 14px;
-        }
 
         /* Minecraft Landscape Header */
         .minecraft-header {
@@ -236,8 +232,6 @@
         }
 
         /* Premium Servers Styling */
-
-
         .premium-header {
             background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
             padding: 1.5rem;
@@ -365,8 +359,7 @@
         .server-banner,
         .premium-banner-container,
         .premium-server-banner {
-            width: 100%;
-            max-width: 400px;
+            width: var(--banner-width);
             height: var(--banner-height);
             border-radius: var(--border-radius-sm);
             overflow: hidden;
@@ -375,7 +368,7 @@
         }
 
         .server-banner img,
-        .premium-banner img,
+        .premium-banner,
         .premium-server-banner img {
             width: 100%;
             height: 100%;
@@ -423,6 +416,11 @@
             font-weight: 600;
         }
 
+        .premium-online-badge.offline,
+        .premium-status-badge.offline {
+            background: var(--status-offline);
+        }
+
         .status-badge.offline {
             background: var(--status-offline);
         }
@@ -436,7 +434,6 @@
             border-radius: var(--border-radius-sm);
             font-weight: 700;
         }
-
 
         .premium-rank-container {
             background: linear-gradient(135deg, var(--primary-purple), #673ab7);
@@ -547,40 +544,126 @@
             margin: var(--spacing-lg) 0;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* Mobile Server Cards */
+        .mobile-server-card {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid var(--border-primary);
+        }
 
-            .server-row .row>div,
-            .premium-server-row .row>div,
-            .premium-top10-row .row>div {
-                margin-bottom: var(--spacing-sm);
-            }
+        .mobile-server-header {
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+            color: white;
+            padding: 1rem;
+        }
 
-            .server-banner,
-            .premium-banner-container,
-            .premium-server-banner {
-                max-width: 100%;
-                margin-bottom: var(--spacing-sm);
-            }
+        .mobile-premium-header {
+            background: linear-gradient(135deg, var(--primary-purple), #673ab7);
+            color: white;
+            padding: 1rem;
+        }
 
-            .welcome-section h1 {
-                font-size: 1.8rem;
-            }
+        .mobile-top10-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            padding: 1rem;
+            border-bottom: 2px solid var(--primary-gold);
+        }
 
-            .premium-title {
-                font-size: 1.8rem;
-            }
+        .mobile-server-content {
+            padding: 1rem;
+        }
 
-            .premium-section-title {
-                font-size: 1.5rem;
-            }
+        .mobile-server-banner {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+        }
 
-            .server-logo,
-            .premium-logo-container,
-            .elit-server-logo {
-                width: var(--logo-size-sm);
-                height: var(--logo-size-sm);
-            }
+        .mobile-server-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mobile-banner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            padding: 0.5rem;
+            color: white;
+        }
+
+        .mobile-server-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .mobile-server-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--border-light);
+            position: relative;
+        }
+
+        .mobile-server-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mobile-server-details h6 {
+            margin: 0;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .mobile-server-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .mobile-stat-item {
+            text-align: center;
+        }
+
+        .mobile-stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            display: block;
+        }
+
+        .mobile-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .mobile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .mobile-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         /* Dark Mode Adjustments */
@@ -619,6 +702,15 @@
 
         [data-bs-theme="dark"] .middle-description {
             background-color: var(--bg-secondary);
+        }
+
+        [data-bs-theme="dark"] .mobile-server-card {
+            background: var(--bg-secondary);
+            border-color: var(--border-dark);
+        }
+
+        [data-bs-theme="dark"] .mobile-server-details h6 {
+            color: var(--text-white);
         }
 
         /* Animations */
@@ -671,11 +763,269 @@
             z-index: 1;
             background: transparent;
         }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+
+            /* Hide desktop table headers on tablet and mobile */
+            .desktop-table-header {
+                display: none !important;
+            }
+
+            /* Show mobile cards on tablet and mobile */
+            .desktop-server-row {
+                display: none !important;
+            }
+
+            .mobile-server-row {
+                display: block !important;
+            }
+        }
+
+        @media (min-width: 993px) {
+
+            /* Show desktop table on desktop */
+            .desktop-table-header {
+                display: block !important;
+            }
+
+            .desktop-server-row {
+                display: block !important;
+            }
+
+            /* Hide mobile cards on desktop */
+            .mobile-server-row {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            /* Header adjustments */
+            .minecraft-header img {
+                height: 120px;
+            }
+
+            .minecraft-header .px-5 {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            /* Welcome section */
+            .welcome-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .welcome-section .lead {
+                font-size: 1rem;
+            }
+
+            /* Premium headers */
+            .premium-title {
+                font-size: 1.3rem;
+            }
+
+            .premium-section-title {
+                font-size: 1.2rem;
+            }
+
+            .premium-top10-header {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .premium-header {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            /* Filter form - stack vertically on mobile */
+            .filter_card .row.g-3>* {
+                margin-bottom: 0.5rem;
+            }
+
+            .filter_card .col-md-4,
+            .filter_card .col-md-2,
+            .filter_card .col-md-1 {
+                width: 100%;
+                max-width: none;
+            }
+
+            /* Mobile server cards spacing */
+            .mobile-server-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .mobile-server-banner {
+                height: 100px;
+            }
+
+            .mobile-server-logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            .mobile-server-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .mobile-stat-value {
+                font-size: 1rem;
+            }
+
+            .mobile-stat-label {
+                font-size: 0.7rem;
+            }
+
+            /* Reduce spacing */
+            .container.content {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            /* Card padding */
+            .premium-top10-card-header,
+            .premium-card-header,
+            .server-card-header {
+                padding: 1rem;
+            }
+
+            .premium-top10-row,
+            .premium-server-row,
+            .server-row {
+                padding: 1rem 0.5rem;
+            }
+
+            /* Badge sizing */
+            .tag-badge,
+            .premium-tag,
+            .premium-feature-tag {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+                margin: 0.1rem;
+            }
+
+            /* Copy button sizing */
+            .copy-btn,
+            .premium-copy-btn,
+            .premium-copy-button {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.7rem;
+            }
+
+            /* Player count sizing */
+            .premium-count-text {
+                font-size: 1.1rem;
+            }
+
+            .premium-player-number {
+                font-size: 1rem;
+            }
+
+            .player-count {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            /* Extra small screens */
+            .welcome-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .premium-title {
+                font-size: 1.1rem;
+            }
+
+            .premium-section-title {
+                font-size: 1rem;
+            }
+
+            .mobile-server-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .mobile-server-banner {
+                height: 80px;
+            }
+
+            .mobile-server-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .container.content {
+                margin-top: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .premium-top10-header,
+            .premium-header {
+                padding: 1rem 0.75rem;
+            }
+
+            .mobile-banner-overlay {
+                padding: 0.25rem;
+            }
+
+            .mobile-server-content {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Landscape mobile adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .minecraft-header img {
+                height: 80px;
+            }
+
+            .welcome-section {
+                margin-bottom: 1rem;
+            }
+
+            .premium-top10-header,
+            .premium-header {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Tablet specific adjustments */
+        @media (min-width: 769px) and (max-width: 992px) {
+            .mobile-server-banner {
+                height: 140px;
+            }
+
+            .mobile-server-logo {
+                width: 55px;
+                height: 55px;
+            }
+
+            .mobile-stat-value {
+                font-size: 1.3rem;
+            }
+
+            .mobile-server-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 1.5rem;
+            }
+
+            .premium-title {
+                font-size: 1.8rem;
+            }
+
+            .premium-section-title {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 
     <!-- Minecraft Landscape Header -->
-    <div class="minecraft-header position-relative overflow-hidden">
-        <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape" alt="Minecraft Landscape" class="w-100">
+    <div class="minecraft-header position-relative overflow-hidden" style="background: #1b152c;">
+        {{-- <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape" alt="Minecraft Landscape" class="w-100"> --}}
+        <img src="{{ asset('img/breadcrumb.gif') }}" alt="Minecraft Landscape" class="w-100 object-fit-cover px-5">
         <div class="position-absolute top-0 start-0 w-100 h-100"></div>
     </div>
 
@@ -710,7 +1060,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <select class="form-select" name="country">
-                                        <option value="all">{{ __('All Countries') }}</option>
+                                        <option value="all">{{ __('Countries') }}</option>
                                         @foreach ($server_countries as $server_country)
                                             <option value="{{ $server_country->slug }}"
                                                 {{ request('country') == $server_country->slug ? 'selected' : '' }}>
@@ -720,20 +1070,31 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <select class="form-select" name="version">
-                                        <option value="all">{{ __('All Versions') }}</option>
-                                        @foreach ($server_versions as $server_version)
-                                            <option value="{{ $server_version }}"
-                                                {{ request('version') == $server_version ? 'selected' : '' }}>
-                                                {{ $server_version }}
+                                    <select class="form-select" name="tag">
+                                        <option value="all">{{ __('Game Modes / Tags') }}</option>
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag->slug }}"
+                                                {{ request('tag') == $tag->slug ? 'selected' : '' }}>
+                                                {{ $tag->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-2">
+                                    <select class="form-select" name="minecraft_version">
+                                        <option value="all">{{ __('Minecraft Versions') }}</option>
+                                        @foreach ($minecraft_versions as $server_version)
+                                            <option value="{{ $server_version }}"
+                                                {{ request('minecraft_version') == $server_version ? 'selected' : '' }}>
+                                                {{ $server_version }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
                                     <button type="submit" class="btn filter_button w-100">{{ __('Filter') }}</button>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <a href="{{ route('home') }}" class="btn reset_button w-100">{{ __('Reset') }}</a>
                                 </div>
                             </form>
@@ -760,8 +1121,9 @@
                                 </p>
                             </div>
 
+                            <!-- Desktop Version -->
                             <div class="card premium-top10-card border-0 shadow-lg">
-                                <div class="premium-top10-card-header">
+                                <div class="premium-top10-card-header desktop-table-header">
                                     <div class="row align-items-center text-white">
                                         <div class="col-md-2">
                                             <h5 class="mb-0 fw-bold"><i
@@ -787,8 +1149,9 @@
                                 </div>
                                 <div class="card-body p-0 premium-top10-body">
                                     @foreach ($topServers as $index => $topServer)
-                                        <div class="premium-top10-row">
-                                            <a href="{{ route('server-listing.details', $topServer->slug ?? '') }}"
+                                        <!-- Desktop Row -->
+                                        <div class="premium-top10-row desktop-server-row">
+                                            <a href="{{ route('server-listing.details', $topServer->slug) }}"
                                                 class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
@@ -810,23 +1173,24 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="premium-server-banner">
-                                                        <img src="{{ $topServer->banner_image_url }}" alt="Server Banner">
+                                                        <img src="{{ $topServer->banner_image_url }}"
+                                                            alt="Server Banner">
                                                         <div class="premium-server-overlay">
                                                             <div class="d-flex align-items-center justify-content-between">
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version-badge me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $topServer->version }}
+                                                                            class="bi bi-gear me-1"></i>{{ remove_before_dash($topServer->minecraft_version) }}
                                                                     </span>
-                                                                    <i class="bi bi-flag me-1 text-warning"></i>
-                                                                    <a class="text-white fw-bold text-decoration-none"
-                                                                        href="{{ $topServer->website_url }}"
-                                                                        target="_blank">
-                                                                        <small>{{ removeHttpFromUrl($topServer->website_url) }}</small>
-                                                                    </a>
+                                                                    <img style="height: 12px; width: 20px;" class="me-1"
+                                                                        src="https://flagcdn.com/{{ strtolower($topServer?->country?->code) }}.svg"
+                                                                        alt="">
+                                                                    <span class="text-white fw-bold text-decoration-none">
+                                                                        <small>{{ removeHttpFromUrl($topServer->server_ip) }}</small>
+                                                                    </span>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-btn"
-                                                                    onclick="copyIP('{{ $topServer->website_url }}')">
+                                                                    onclick="copyIP('{{ $topServer->server_ip }}')">
                                                                     <i class="bi bi-copy"></i>
                                                                 </button>
                                                             </div>
@@ -860,6 +1224,92 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Mobile Card -->
+                                        <div class="mobile-server-row">
+                                            <div class="mobile-server-card">
+                                                <div class="mobile-top10-header">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="premium-rank-badge me-2">
+                                                                <i class="bi bi-gem text-dark"></i>
+                                                                <span class="fw-bold">#{{ $index + 1 }}</span>
+                                                            </div>
+                                                            <h6 class="mb-0 text-white">
+                                                                <i class="bi bi-gem me-1"></i>{{ __('Elite Server') }}
+                                                            </h6>
+                                                        </div>
+                                                        <span
+                                                            class="badge premium-status-badge {{ $topServer->is_online ?: 'offline' }}">
+                                                            <i
+                                                                class="me-1 {{ $topServer->is_online ? 'premium-pulse bi bi-circle-fill' : '' }}"></i>
+                                                            {{ __($topServer->online_label) }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mobile-server-content">
+                                                    <a href="{{ route('server-listing.details', $topServer->slug) }}"
+                                                        class="details-link"></a>
+
+                                                    <div class="mobile-server-banner">
+                                                        <img src="{{ $topServer->banner_image_url }}"
+                                                            alt="Server Banner">
+                                                        <div class="mobile-banner-overlay">
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="badge premium-version-badge me-2">
+                                                                        <i
+                                                                            class="bi bi-gear me-1"></i>{{ remove_before_dash($topServer->minecraft_version) }}
+                                                                    </span>
+                                                                    <img style="height: 10px; width: 16px;" class="me-1"
+                                                                        src="https://flagcdn.com/{{ strtolower($topServer?->country?->code) }}.svg"
+                                                                        alt="">
+                                                                </div>
+                                                                <button class="btn btn-sm premium-copy-btn"
+                                                                    onclick="copyIP('{{ $topServer->server_ip }}')">
+                                                                    <i class="bi bi-copy"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mobile-server-info">
+                                                        <div class="mobile-server-logo">
+                                                            <img src="{{ $topServer->logo_image_url }}"
+                                                                alt="Server Logo">
+                                                            <div class="premium-logo-badge">
+                                                                <i class="bi bi-gem"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mobile-server-details flex-grow-1">
+                                                            <h6>{{ removeHttpFromUrl($topServer->server_ip) }}</h6>
+                                                            <small
+                                                                class="text-muted">{{ __('Premium Elite Server') }}</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mobile-server-stats">
+                                                        <div class="mobile-stat-item">
+                                                            <span
+                                                                class="mobile-stat-value premium-count-text">{{ $topServer->current_players }}</span>
+                                                            <small class="mobile-stat-label">{{ __('Online') }}</small>
+                                                        </div>
+                                                        <div class="mobile-stat-item">
+                                                            <span
+                                                                class="mobile-stat-value premium-count-text">{{ $topServer->max_players }}</span>
+                                                            <small class="mobile-stat-label">{{ __('Max') }}</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mobile-tags">
+                                                        @foreach ($topServer->serverTags as $tag)
+                                                            <span
+                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -867,7 +1317,6 @@
                     </div>
                 </div>
             @endif
-
 
             {{-- Premium Servers - Premium Design --}}
             @if (isset($premiumServers) && count($premiumServers) > 0)
@@ -887,7 +1336,7 @@
                             </div>
 
                             <div class="card premium-card border-0 shadow">
-                                <div class="premium-card-header">
+                                <div class="premium-card-header desktop-table-header">
                                     <div class="row align-items-center">
                                         <div class="col-md-2">
                                             <h5 class="mb-0 fw-bold premium-header-text">
@@ -918,7 +1367,10 @@
                                 </div>
                                 <div class="card-body p-0 premium-body">
                                     @foreach ($premiumServers as $index => $premiumServer)
-                                        <div class="premium-server-row">
+                                        <!-- Desktop Row -->
+                                        <div class="premium-server-row desktop-server-row">
+                                            <a href="{{ route('server-listing.details', $premiumServer->slug) }}"
+                                                class="details-link"></a>
                                             <div class="row align-items-center">
                                                 <div class="col-md-2">
                                                     <div class="d-flex align-items-center">
@@ -945,17 +1397,17 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <span class="badge premium-version me-2">
                                                                         <i
-                                                                            class="bi bi-gear me-1"></i>{{ $premiumServer->version }}
+                                                                            class="bi bi-gear me-1"></i>{{ remove_before_dash($premiumServer->minecraft_version) }}
                                                                     </span>
-                                                                    <i class="bi bi-flag me-1"></i>
-                                                                    <a class="text-white text-decoration-none"
-                                                                        href="{{ $premiumServer->website_url }}"
-                                                                        target="_blank">
-                                                                        <small>{{ removeHttpFromUrl($premiumServer->website_url) }}</small>
-                                                                    </a>
+                                                                    <img style="height: 12px; width: 20px;" class="me-1"
+                                                                        src="https://flagcdn.com/{{ strtolower($premiumServer?->country?->code) }}.svg"
+                                                                        alt="">
+                                                                    <span class="text-white text-decoration-none">
+                                                                        <small>{{ removeHttpFromUrl($premiumServer->server_ip) }}</small>
+                                                                    </span>
                                                                 </div>
                                                                 <button class="btn btn-sm premium-copy-button"
-                                                                    onclick="copyIP('{{ $premiumServer->website_url }}')">
+                                                                    onclick="copyIP('{{ $premiumServer->server_ip }}')">
                                                                     <i class="bi bi-copy"></i>
                                                                 </button>
                                                             </div>
@@ -988,6 +1440,91 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Mobile Card -->
+                                        <div class="mobile-server-row">
+                                            <div class="mobile-server-card">
+                                                <div class="mobile-premium-header">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="premium-rank-container me-2">
+                                                                <i class="bi bi-award text-warning"></i>
+                                                                <span class="fw-bold">#{{ $index + 1 }}</span>
+                                                            </div>
+                                                            <h6 class="mb-0 text-white">
+                                                                <i class="bi bi-star-fill me-1"></i>{{ __('Premium') }}
+                                                            </h6>
+                                                        </div>
+                                                        <span
+                                                            class="badge premium-online-badge {{ $premiumServer->is_online ?: 'offline' }}">
+                                                            <i
+                                                                class="me-1 {{ $premiumServer->is_online ? 'premium-online-pulse bi bi-circle-fill' : '' }}"></i>
+                                                            {{ __($premiumServer->online_label) }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mobile-server-content">
+                                                    <a href="{{ route('server-listing.details', $premiumServer->slug) }}"
+                                                        class="details-link"></a>
+
+                                                    <div class="mobile-server-banner">
+                                                        <img src="{{ $premiumServer->banner_image_url }}"
+                                                            alt="Server Banner">
+                                                        <div class="mobile-banner-overlay">
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="badge premium-version me-2">
+                                                                        <i
+                                                                            class="bi bi-gear me-1"></i>{{ remove_before_dash($premiumServer->minecraft_version) }}
+                                                                    </span>
+                                                                    <img style="height: 10px; width: 16px;" class="me-1"
+                                                                        src="https://flagcdn.com/{{ strtolower($premiumServer?->country?->code) }}.svg"
+                                                                        alt="">
+                                                                </div>
+                                                                <button class="btn btn-sm premium-copy-button"
+                                                                    onclick="copyIP('{{ $premiumServer->server_ip }}')">
+                                                                    <i class="bi bi-copy"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mobile-server-info">
+                                                        <div class="mobile-server-logo">
+                                                            <img src="{{ $premiumServer->logo_image_url }}"
+                                                                alt="Server Logo">
+                                                            <div class="premium-logo-badge">
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mobile-server-details flex-grow-1">
+                                                            <h6>{{ removeHttpFromUrl($premiumServer->server_ip) }}</h6>
+                                                            <small class="text-muted">{{ __('Premium Server') }}</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mobile-server-stats">
+                                                        <div class="mobile-stat-item">
+                                                            <span
+                                                                class="mobile-stat-value premium-player-number">{{ $premiumServer->current_players }}</span>
+                                                            <small class="mobile-stat-label">{{ __('Online') }}</small>
+                                                        </div>
+                                                        <div class="mobile-stat-item">
+                                                            <span
+                                                                class="mobile-stat-value premium-player-number">{{ $premiumServer->max_players }}</span>
+                                                            <small class="mobile-stat-label">{{ __('Max') }}</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mobile-tags">
+                                                        @foreach ($premiumServer->serverTags as $tag)
+                                                            <span
+                                                                class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -1011,14 +1548,13 @@
                     </div>
                 </div>
             </div>
+
             @if (isset($popularServers) && count($popularServers) > 0)
-
-
                 {{-- Popular Servers --}}
                 <div class="row">
                     <div class="col-12">
                         <div class="card border-0 shadow-sm server-card">
-                            <div class="server-card-header">
+                            <div class="server-card-header desktop-table-header">
                                 <div class="row align-items-center text-white">
                                     <div class="col-md-2">
                                         <h5 class="mb-0 fw-bold"><i
@@ -1045,7 +1581,10 @@
 
                             <div class="card-body p-0">
                                 @foreach ($popularServers as $index => $popularServer)
-                                    <div class="server-row">
+                                    <!-- Desktop Row -->
+                                    <div class="server-row desktop-server-row">
+                                        <a href="{{ route('server-listing.details', $popularServer->slug) }}"
+                                            class="details-link"></a>
                                         <div class="row align-items-center">
                                             <div class="col-md-2">
                                                 <div class="d-flex align-items-center">
@@ -1071,17 +1610,19 @@
                                                             <div class="d-flex align-items-center">
                                                                 <span class="badge version-badge me-2">
                                                                     <i
-                                                                        class="bi bi-gear me-1"></i>{{ $popularServer->version }}
+                                                                        class="bi bi-gear me-1"></i>{{ remove_before_dash($popularServer->minecraft_version) }}
                                                                 </span>
-                                                                <i class="bi bi-flag me-1"></i>
-                                                                <a class="text-white text-decoration-none"
-                                                                    href="{{ $popularServer->website_url }}"
-                                                                    target="_blank">
-                                                                    <small>{{ removeHttpFromUrl($popularServer->website_url) }}</small>
-                                                                </a>
+
+                                                                <img style="height: 12px; width: 20px;" class="me-1"
+                                                                    src="https://flagcdn.com/{{ strtolower($popularServer?->country?->code) }}.svg"
+                                                                    alt="">
+
+                                                                <span class="text-white text-decoration-none">
+                                                                    <small>{{ removeHttpFromUrl($popularServer->server_ip) }}</small>
+                                                                </span>
                                                             </div>
                                                             <button class="btn btn-sm copy-btn"
-                                                                onclick="copyIP('{{ $popularServer->website_url }}')">
+                                                                onclick="copyIP('{{ $popularServer->server_ip }}')">
                                                                 <i class="bi bi-copy"></i>
                                                             </button>
                                                         </div>
@@ -1106,6 +1647,88 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="d-flex flex-wrap gap-1">
+                                                    @foreach ($popularServer->serverTags as $tag)
+                                                        <span
+                                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mobile Card -->
+                                    <div class="mobile-server-row">
+                                        <div class="mobile-server-card">
+                                            <div class="mobile-server-header">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="simple-server-badge me-2">
+                                                            <i class="bi bi-trophy text-white"></i>
+                                                            <span class="fw-bold">#{{ $index + 3 }}</span>
+                                                        </div>
+                                                        <h6 class="mb-0 text-white">
+                                                            <i class="bi bi-server me-1"></i>{{ __('Server') }}
+                                                        </h6>
+                                                    </div>
+                                                    <span
+                                                        class="badge status-badge {{ $popularServer->is_online ?: 'offline' }}">
+                                                        <i
+                                                            class="me-1 {{ $popularServer->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>
+                                                        {{ __($popularServer->online_label) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="mobile-server-content">
+                                                <a href="{{ route('server-listing.details', $popularServer->slug) }}"
+                                                    class="details-link"></a>
+
+                                                <div class="mobile-server-banner">
+                                                    <img src="{{ $popularServer->banner_image_url }}"
+                                                        alt="Server Banner">
+                                                    <div class="mobile-banner-overlay">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="badge version-badge me-2">
+                                                                    <i
+                                                                        class="bi bi-gear me-1"></i>{{ remove_before_dash($popularServer->minecraft_version) }}
+                                                                </span>
+                                                                <img style="height: 10px; width: 16px;" class="me-1"
+                                                                    src="https://flagcdn.com/{{ strtolower($popularServer?->country?->code) }}.svg"
+                                                                    alt="">
+                                                            </div>
+                                                            <button class="btn btn-sm copy-btn"
+                                                                onclick="copyIP('{{ $popularServer->server_ip }}')">
+                                                                <i class="bi bi-copy"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mobile-server-info">
+                                                    <div class="mobile-server-logo">
+                                                        <img src="{{ $popularServer->logo_image_url }}"
+                                                            alt="Server Logo">
+                                                    </div>
+                                                    <div class="mobile-server-details flex-grow-1">
+                                                        <h6>{{ removeHttpFromUrl($popularServer->server_ip) }}</h6>
+                                                        <small class="text-muted">{{ __('Minecraft Server') }}</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mobile-server-stats">
+                                                    <div class="mobile-stat-item">
+                                                        <span
+                                                            class="mobile-stat-value player-count">{{ $popularServer->current_players }}</span>
+                                                        <small class="mobile-stat-label">{{ __('Online') }}</small>
+                                                    </div>
+                                                    <div class="mobile-stat-item">
+                                                        <span
+                                                            class="mobile-stat-value player-count">{{ $popularServer->max_players }}</span>
+                                                        <small class="mobile-stat-label">{{ __('Max') }}</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mobile-tags">
                                                     @foreach ($popularServer->serverTags as $tag)
                                                         <span
                                                             class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
@@ -1147,9 +1770,9 @@
                             <p class="lead mb-4">
                                 {{ __('Get your Minecraft server listed and reach thousands of potential players!') }}
                             </p>
-                            <button class="btn btn-light btn-lg px-5">
+                            <a href="{{ route('server-listing.submission') }}" class="btn btn-light btn-lg px-5">
                                 <i class="bi bi-plus me-2"></i>{{ __('Add Your Server') }}
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

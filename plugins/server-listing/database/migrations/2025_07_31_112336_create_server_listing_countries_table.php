@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 100);
             $table->string('slug', 100)->unique();
-            $table->string('short_name', 20)->nullable();
+            $table->string('code', 20)->nullable();
             $table->integer('position')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
@@ -41,7 +41,7 @@ return new class extends Migration {
                     $countriesToInsert[] = [
                         'name' => $name,
                         'slug' => Str::slug($name),
-                        'short_name' => $country['iso2'],
+                        'code' => $country['iso2'],
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
