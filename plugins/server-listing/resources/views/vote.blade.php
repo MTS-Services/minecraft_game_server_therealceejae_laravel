@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', 'Vote for MineSuperior')
+@section('title', 'Vote for ' . $serverDetail->name)
 @section('app')
     @push('styles')
         <style>
@@ -213,6 +213,14 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
+            }
+
+            /* disabled btn vote styling */
+            .btn-vote:disabled {
+                background-color: var(--border-light);
+                border-color: var(--primary-orange);
+                color: var(--text-muted);
+                cursor: not-allowed;
             }
 
             .btn-vote:hover {
@@ -434,7 +442,20 @@
     @endpush
 
     <div class="vote-container">
-        <!-- Breadcrumb Navigation -->
+
+        {{-- Display success or error messages --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <div aria-label="breadcrumb" class="custom-design card-header-custom py-2 px-3">
             <ol class="breadcrumb mb-0">
@@ -449,40 +470,53 @@
             </ol>
         </div>
 
-        <!-- Main Content -->
         <div class="content-container">
             <div class="row">
-                <!-- Vote Card -->
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     <div class="vote-card h-100">
                         <div class="vote-card-header">
                             <h1 class="server-title">Vote for "{{ $serverDetail->name }}"</h1>
                             <div class="server-banner-container">
-                                {{-- <video src="{{ asset('img/server-banner.mp4') }}" class="server-banner-video" muted=""
-                            autoplay="" loop="" playsinline="" allowfullscreen="false"></video> --}}
                                 <img src="{{ $serverDetail->banner_image_url }}" class="server-banner-img"
-                                    alt="MineSuperior Banner">
+                                    alt="{{ $serverDetail->name }} Banner">
                             </div>
                         </div>
                         <div class="vote-form">
                             <form id="voteForm" action="{{ route('server-listing.vote.store', $serverDetail->slug) }}"
                                 method="POST">
                                 @csrf
+
+                                {{-- Username Field --}}
                                 <div class="mb-4">
                                     <label for="username" class="form-label fw-bold">Your Minecraft Username</label>
-                                    <input type="text" class="form-control" id="username"
-                                        placeholder="Enter your username">
+                                    <input type="text" name="username"
+                                        class="form-control @error('username') is-invalid @enderror" id="username"
+                                        placeholder="Enter your username" value="{{ old('username') }}">
+                                    @error('username')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                     <div class="form-text">Make sure to enter your exact Minecraft username</div>
                                 </div>
 
+                                {{-- Privacy Agreement Checkbox --}}
                                 <div class="mb-4 form-check">
-                                    <input type="checkbox" class="form-check-input" id="privacyCheckbox">
+                                    <input type="checkbox" value="1" name="privacy_agreement"
+                                        class="form-check-input @error('privacy_agreement') is-invalid @enderror"
+                                        id="privacyCheckbox" {{ old('privacy_agreement') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="privacyCheckbox">
                                         I agree to {{ config('app.name') }}'s <a href="#">Privacy Policy</a> and <a
                                             href="#">Terms of Service</a>
                                     </label>
+                                    @error('privacy_agreement')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
+                                {{-- Verification Container --}}
                                 <div class="mb-4 verification-container">
                                     <div class="spinner-border spinner-border-sm spinner" role="status">
                                         <span class="visually-hidden">Loading...</span>
@@ -492,8 +526,9 @@
                                         alt="Cloudflare" class="cloudflare-logo">
                                 </div>
 
+                                {{-- Buttons --}}
                                 <div class="d-flex flex-wrap gap-2">
-                                    <button type="submit" class="btn btn-vote flex-grow-1">
+                                    <button type="submit" id="submitVoteBtn" class="btn btn-vote flex-grow-1" disabled>
                                         <i class="fas fa-check-circle me-2"></i> Vote Now
                                     </button>
                                     <a href="{{ route('server-listing.details', $serverDetail->slug) }}"
@@ -506,7 +541,6 @@
                     </div>
                 </div>
 
-                <!-- Top Voters Card -->
                 <div class="col-lg-4">
                     <div class="top-voters-card">
                         <div class="top-voters-header">
@@ -560,76 +594,31 @@
             </div>
         </div>
     </div>
-    {{-- 
-    @push('footer-scripts')
+
+    {{-- Essential JavaScript for button functionality --}}
+    @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Form submission handling
-                const voteForm = document.getElementById('voteForm');
-                if (voteForm) {
-                    voteForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
+                const usernameInput = document.getElementById('username');
+                const privacyCheckbox = document.getElementById('privacyCheckbox');
+                const submitButton = document.getElementById('submitVoteBtn');
 
-                        // Simulate form submission
-                        const submitBtn = voteForm.querySelector('button[type="submit"]');
-                        const originalText = submitBtn.innerHTML;
+                // Function to check both conditions and toggle the button
+                function toggleSubmitButton() {
+                    const isUsernameFilled = usernameInput.value.trim() !== '';
+                    const isCheckboxChecked = privacyCheckbox.checked;
 
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
-
-                        // Simulate API call
-                        setTimeout(function() {
-                            // Show success message
-                            showToast('Your vote has been recorded successfully!', 'success');
-
-                            // Reset form
-                            voteForm.reset();
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = originalText;
-                        }, 2000);
-                    });
+                    // Enable the button only if both conditions are true
+                    submitButton.disabled = !(isUsernameFilled && isCheckboxChecked);
                 }
 
-                // Toast notification function
-                function showToast(message, type = 'success') {
-                    const toastContainer = document.getElementById('toast-container') || createToastContainer();
-                    const toast = document.createElement('div');
-                    toast.className =
-                        `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
-                    toast.setAttribute('role', 'alert');
-                    toast.setAttribute('aria-live', 'assertive');
-                    toast.setAttribute('aria-atomic', 'true');
+                // Initial check on page load
+                toggleSubmitButton();
 
-                    toast.innerHTML = `
-                        <div class="d-flex">
-                            <div class="toast-body">
-                                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
-                                ${message}
-                            </div>
-                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                        </div>
-                    `;
-
-                    toastContainer.appendChild(toast);
-                    const bsToast = new bootstrap.Toast(toast);
-                    bsToast.show();
-
-                    // Remove toast element after it's hidden
-                    toast.addEventListener('hidden.bs.toast', () => {
-                        toast.remove();
-                    });
-                }
-
-                // Create toast container if it doesn't exist
-                function createToastContainer() {
-                    const container = document.createElement('div');
-                    container.id = 'toast-container';
-                    container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-                    container.style.zIndex = '9999';
-                    document.body.appendChild(container);
-                    return container;
-                }
+                // Add event listeners to trigger the check on user input
+                usernameInput.addEventListener('input', toggleSubmitButton);
+                privacyCheckbox.addEventListener('change', toggleSubmitButton);
             });
         </script>
-    @endpush --}}
+    @endpush
 @endsection
