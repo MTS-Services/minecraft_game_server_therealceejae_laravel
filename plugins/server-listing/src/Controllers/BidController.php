@@ -1,6 +1,9 @@
 <?php
 
+namespace Azuriom\Plugin\ServerListing\Controllers;
+
 use Azuriom\Http\Controllers\Controller;
+use Azuriom\Plugin\ServerListing\Services\BidService;
 
 class BidController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
-use Azuriom\Plugin\ServerListing\Models\Bid;
-use Azuriom\Plugin\ServerListing\Models\ServerListing;
+
+namespace Azuriom\Plugin\ServerListing\Services;
 
 class BidService
 {
-    public function destroy(ServerListing $serverListing, Bid $bid)
+    public function __construct()
     {
-        $bid->delete();
+        //
     }
 }
