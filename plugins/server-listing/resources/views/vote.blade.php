@@ -465,16 +465,18 @@
                             </div>
                         </div>
                         <div class="vote-form">
-                            <form id="voteForm">
+                            <form id="voteForm" action="{{ route('server-listing.vote.store', $serverDetail->slug) }}"
+                                method="POST">
+                                @csrf
                                 <div class="mb-4">
                                     <label for="username" class="form-label fw-bold">Your Minecraft Username</label>
                                     <input type="text" class="form-control" id="username"
-                                        placeholder="Enter your username" required>
+                                        placeholder="Enter your username">
                                     <div class="form-text">Make sure to enter your exact Minecraft username</div>
                                 </div>
 
                                 <div class="mb-4 form-check">
-                                    <input type="checkbox" class="form-check-input" id="privacyCheckbox" required>
+                                    <input type="checkbox" class="form-check-input" id="privacyCheckbox">
                                     <label class="form-check-label" for="privacyCheckbox">
                                         I agree to {{ config('app.name') }}'s <a href="#">Privacy Policy</a> and <a
                                             href="#">Terms of Service</a>
@@ -558,7 +560,7 @@
             </div>
         </div>
     </div>
-
+    {{-- 
     @push('footer-scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -629,5 +631,5 @@
                 }
             });
         </script>
-    @endpush
+    @endpush --}}
 @endsection

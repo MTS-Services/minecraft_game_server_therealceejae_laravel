@@ -15,6 +15,7 @@ class ServerVote extends Model
     protected $fillable = [
         'server_id',
         'user_id',
+        'user_name',
         'ip_address',
         'voted_at',
         'expires_at',

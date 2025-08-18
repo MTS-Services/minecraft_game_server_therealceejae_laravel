@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->foreign('server_id', 'vote_server_id')->references('id')->on('server_listing_servers')->nullOnDelete()->cascadeOnUpdate();
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->string('user_name')->nullable();
             $table->string('ip_address', 45);
             $table->timestamp('voted_at');
             $table->timestamp('expires_at')->nullable();
