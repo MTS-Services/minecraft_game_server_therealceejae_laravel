@@ -106,4 +106,8 @@ class ServerListingController extends Controller
             // dd($serverItems);
         return view('server-listing::user.server_listing', compact('sListings'));
     }
+    public function biddingInfo()
+    {
+        return view('server-listing::user.bidding_info');
+    }
 }

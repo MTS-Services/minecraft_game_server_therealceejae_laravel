@@ -28,4 +28,5 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->prefi
     Route::post('/store', 'store')->name('submission.store');
     Route::get('/user-dashboard', 'userDashboard')->name('user-dashboard');
     Route::get('/server-list', 'serverList')->name('list');
+    Route::get('/bidding-info', 'biddingInfo')->name('bidding-info');
 });

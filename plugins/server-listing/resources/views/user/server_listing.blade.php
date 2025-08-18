@@ -1180,8 +1180,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <a href="#" class="text-decoration-none text-white text-center">Bid Now</a>
+                                        <div class="col-md-2 z-3">
+                                            <a href="{{ route('server-listing.bidding-info') }}" class="text-decoration-none text-white text-center p-2">Bid Now</a>
                                             {{-- <div class="d-flex flex-wrap gap-1">
                                                 @foreach ($sList->serverTags as $tag)
                                                     <span
