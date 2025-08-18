@@ -447,9 +447,9 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <button class="btn btn-success">
+                <a href="{{ route('server-listing.vote.index', $serverDetail->slug) }}" class="btn btn-success">
                     <i class="fas fa-thumbs-up me-1"></i> Vote
-                </button>
+                </a>
                 <button class="btn btn-warning"><i class="bi bi-house"></i></button>
                 <button class="btn btn-warning"><i class="bi bi-info-circle"></i></button>
                 <button class="btn btn-warning"><i class="bi bi-question-circle"></i></button>

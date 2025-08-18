@@ -73,26 +73,6 @@
             font-size: .8rem;
         }
 
-        /* Base Styles */
-
-        /* Minecraft Landscape Header */
-        .minecraft-header {
-            position: relative;
-            overflow: hidden;
-            border-bottom: 3px solid var(--primary-green);
-        }
-
-        .minecraft-header img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .minecraft-header .position-absolute {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
-        }
-
         /* Welcome Section */
         .welcome-section h1 {
             color: var(--primary-blue);
@@ -1021,13 +1001,6 @@
             }
         }
     </style>
-
-    <!-- Minecraft Landscape Header -->
-    <div class="minecraft-header position-relative overflow-hidden" style="background: #1b152c;">
-        {{-- <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape" alt="Minecraft Landscape" class="w-100"> --}}
-        <img src="{{ asset('img/breadcrumb.gif') }}" alt="Minecraft Landscape" class="w-100 object-fit-cover px-5">
-        <div class="position-absolute top-0 start-0 w-100 h-100"></div>
-    </div>
 
     <div class="container content my-5">
         @include('elements.session-alerts')

@@ -32,6 +32,10 @@ return [
         'years' => 'years',
     ],
 
+    'vote' => [
+        'minecraft_servers' =>  'Minecraft Servers'
+    ],
+
     'fields' => [
         'logo' => 'Logo',
         'name' => 'Name',

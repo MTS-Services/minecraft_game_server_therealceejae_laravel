@@ -2,6 +2,7 @@
 
 use Azuriom\Plugin\ServerListing\Controllers\CheckConnectionController;
 use Azuriom\Plugin\ServerListing\Controllers\ServerListingController;
+use Azuriom\Plugin\ServerListing\Controllers\VoteController;
 // use Azuriom\Plugin\ServerListing\Controllers\ServerListingHomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,10 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', [ServerListingHomeController::class, 'index']);
 
 Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
+// Voting Routes 
+Route::controller(VoteController::class)->prefix('vote')->name('vote.')->group(function () {
+    Route::get('/{slug}',  'index')->name('index');
+});
 
 Route::post('/check-connection', [CheckConnectionController::class, 'checkConnection'])->name('check-connection');
 // Route::get('/submission', [ServerListingController::class, 'submission'])->name('submission')->middleware('auth:web');
