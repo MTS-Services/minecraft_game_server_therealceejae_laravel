@@ -68,17 +68,24 @@
     <div class="container mt-4">
         {{-- Modal start --}}
         <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="biddingModalLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="biddingModalLabel">Place a Bid</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Bid</button>
+                        <form action="" method="POST">
+                            @csrf
+                            <!-- Bid Amount -->
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Bid Amount ($)</label>
+                                <input type="number" name="amount" id="amount" step="0.01" class="form-control"
+                                    required>
+                            </div>
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary">Place Bid</button>
+                        </form>
                     </div>
                 </div>
             </div>

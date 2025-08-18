@@ -103,11 +103,26 @@ class ServerListingController extends Controller
     {
         $sListings = ServerListing::with(['user', 'country'])->latest()
             ->paginate(10);
-            // dd($serverItems);
+        // dd($serverItems);
         return view('server-listing::user.server_listing', compact('sListings'));
     }
     public function biddingInfo()
     {
         return view('server-listing::user.bidding_info');
+    }
+    public function placeBid(Request $request , $id)
+    {
+        $validated = $request->validate([
+            'bid_amount' => 'required',
+        ]);
+        DB::transaction(function () use ($validated, $id) {
+            $server = ServerListing::findOrFail($id);;
+            $server->bids()->create([
+                'user_id' => Auth::id(),
+                'user_server_id' => $server->id,
+                'amount' => $validated['bid_amount'],
+            ]);
+        });
+        return back()->with('success', 'Bid placed successfully');
     }
 }

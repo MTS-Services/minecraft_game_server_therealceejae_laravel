@@ -23,10 +23,10 @@ Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name(
 
 Route::post('/check-connection', [CheckConnectionController::class, 'checkConnection'])->name('check-connection');
 // Route::get('/submission', [ServerListingController::class, 'submission'])->name('submission')->middleware('auth:web');
-Route::controller(ServerListingController::class)->middleware('auth:web')->prefix('submission')->group(function () {
-    Route::get('/', 'submission')->name('submission');
+Route::controller(ServerListingController::class)->middleware('auth:web')->group(function () {
+    Route::get('/submission', 'submission')->name('submission');
     Route::post('/store', 'store')->name('submission.store');
-    Route::get('/user-dashboard', 'userDashboard')->name('user-dashboard');
+    Route::get('/dashboard', 'userDashboard')->name('user-dashboard');
     Route::get('/server-list', 'serverList')->name('list');
     Route::get('/bidding-info', 'biddingInfo')->name('bidding-info');
 });
