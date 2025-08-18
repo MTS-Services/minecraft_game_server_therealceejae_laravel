@@ -26,4 +26,6 @@ Route::post('/check-connection', [CheckConnectionController::class, 'checkConnec
 Route::controller(ServerListingController::class)->middleware('auth:web')->prefix('submission')->group(function () {
     Route::get('/', 'submission')->name('submission');
     Route::post('/store', 'store')->name('submission.store');
+    Route::get('/user-dashboard', 'userDashboard')->name('user-dashboard');
+    Route::get('/server-list', 'serverList')->name('list');
 });

@@ -94,4 +94,16 @@ class ServerListingController extends Controller
             throw $e;
         }
     }
+    public function userDashboard()
+    {
+        return view('server-listing::user.bidding_dashboard');
+    }
+
+    public function serverList()
+    {
+        $sListings = ServerListing::with(['user', 'country'])->latest()
+            ->paginate(10);
+            // dd($serverItems);
+        return view('server-listing::user.server_listing', compact('sListings'));
+    }
 }

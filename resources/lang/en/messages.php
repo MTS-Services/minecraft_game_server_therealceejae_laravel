@@ -14,6 +14,7 @@ return [
         'toggle' => 'Toggle navigation',
         'profile' => 'Profile',
         'admin' => 'Admin dashboard',
+        'server' => 'Your servers',
     ],
 
     'actions' => [

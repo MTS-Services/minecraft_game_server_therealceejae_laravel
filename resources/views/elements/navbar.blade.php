@@ -73,6 +73,9 @@
                             <a class="dropdown-item" href="{{ route('profile.index') }}">
                                 <i class="bi bi-person"></i> {{ trans('messages.nav.profile') }}
                             </a>
+                            <a class="dropdown-item" href="{{ route('server-listing.user-dashboard') }}">
+                                <i class="bi bi-server"></i> {{ trans('messages.nav.server') }}
+                            </a>
 
                             @foreach (plugins()->getUserNavItems() ?? [] as $navId => $navItem)
                                 <a class="dropdown-item" href="{{ route($navItem['route']) }}">
