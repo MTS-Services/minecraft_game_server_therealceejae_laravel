@@ -2,7 +2,7 @@
 
 @section('app')
     <main class="container content my-5">
-        @include('elements.session-al erts')
+        @include('elements.session-alerts')
 
         @yield('content')
     </main>

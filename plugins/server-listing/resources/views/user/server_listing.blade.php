@@ -59,6 +59,16 @@
                 --banner-height: 60px;
                 --banner-width: 468px;
             }
+
+            .bid-btn {
+                color: #fff;
+                background-color: var(--primary-gold);
+                border-color: var(--primary-gold);
+                border-radius: 10px;
+                font-size: 1rem;
+                font-weight: 600;
+            }
+
             .page-title {
                 font-size: 2rem;
                 font-weight: 600;
@@ -837,6 +847,9 @@
                 .mobile-server-row {
                     display: none !important;
                 }
+                .bid-btn {
+                    text-align: center;
+                }
             }
 
             @media (max-width: 768px) {
@@ -965,6 +978,10 @@
 
                 .player-count {
                     font-size: 0.9rem;
+                }
+
+                .bid-btn {
+                    width: 100%;
                 }
             }
 
@@ -1180,8 +1197,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 z-3">
-                                            <a href="{{ route('server-listing.bidding-info') }}" class="text-decoration-none text-white text-center p-2">Bid Now</a>
+                                        <div class="col-md-2 z-3 text-center">
+                                            <a href="{{ route('server-listing.bidding', $sList->slug) }}"
+                                                class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
                                             {{-- <div class="d-flex flex-wrap gap-1">
                                                 @foreach ($sList->serverTags as $tag)
                                                     <span
@@ -1261,11 +1279,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mobile-tags">
-                                                @foreach ($sList->serverTags as $tag)
+                                            <div class="mobile-tags text-center">
+                                                <a href="{{ route('server-listing.bidding', $sList->slug) }}"
+                                                    class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
+                                                {{-- @foreach ($sList->serverTags as $tag)
                                                     <span
                                                         class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
-                                                @endforeach
+                                                @endforeach --}}
                                             </div>
                                         </div>
                                     </div>

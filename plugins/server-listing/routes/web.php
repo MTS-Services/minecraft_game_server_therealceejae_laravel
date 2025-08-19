@@ -1,5 +1,6 @@
 <?php
 
+use Azuriom\Plugin\ServerListing\Controllers\BidController;
 use Azuriom\Plugin\ServerListing\Controllers\CheckConnectionController;
 use Azuriom\Plugin\ServerListing\Controllers\ServerListingController;
 // use Azuriom\Plugin\ServerListing\Controllers\ServerListingHomeController;
@@ -28,5 +29,8 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
     Route::post('/store', 'store')->name('submission.store');
     Route::get('/dashboard', 'userDashboard')->name('user-dashboard');
     Route::get('/server-list', 'serverList')->name('list');
-    Route::get('/bidding-info', 'biddingInfo')->name('bidding-info');
+});
+Route::controller(BidController::class)->middleware('auth:web')->group(function () {
+    Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');
+    Route::post('/place-bid/{slug}', 'placeBid')->name('place-bid');
 });

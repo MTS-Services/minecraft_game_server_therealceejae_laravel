@@ -50,6 +50,25 @@
                 background-color: #d4edda !important;
             }
 
+            .status-badge,
+            .premium-online-badge,
+            .premium-status-badge {
+                background: #28a745;
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+                border-radius: 15px;
+                font-weight: 600;
+            }
+
+            .premium-online-badge.offline,
+            .premium-status-badge.offline {
+                background: #dc3545;
+            }
+
+            .status-badge.offline {
+                background: #dc3545;
+            }
+
             [data-bs-theme="dark"] .table-success {
                 background-color: #3d3d3d !important;
             }
@@ -75,7 +94,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="" method="POST">
+                        <form action="{{ route('server-listing.place-bid', $serverList->slug) }}" method="POST">
                             @csrf
                             <!-- Bid Amount -->
                             <div class="mb-3">
@@ -140,73 +159,83 @@
                 </div>
             </div>
         </div>
-
-        <!-- Bidding Information Section -->
-        <div class="mt-5">
-            <div class="d-flex justify-content-between align-items-center">
-                <h2 class="h4 mb-4">Bidding information</h2>
-                <div class="text-end">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#biddingModal">
-                        Bidding
-                    </button>
-                </div>
+        {{-- Session message --}}
+        @if (session('success'))
+            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="accordion" id="biddingAccordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            View Bidding Details
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                        data-bs-parent="#biddingAccordion">
-                        <div class="accordion-body">
-                            <div class="table-responsive">
-                                <table class="table bidding-table">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Status:</th>
-                                            <td><span class="status-closed">Closed</span></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Slots:</th>
-                                            <td><strong>5</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Current time:</th>
-                                            <td>August 17th, 2025 11:02 PM EST</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Bidding start:</th>
-                                            <td>August 7th, 2025 09:00 AM EST</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Bidding end:</th>
-                                            <td>August 12th, 2025 03:00 PM EST</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Payment limit date:</th>
-                                            <td>August 15th, 2025 03:00 PM EST</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Banner display start:</th>
-                                            <td><strong>August 17th, 2025 03:00 PM EST</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Banner display end:</th>
-                                            <td><strong>September 17th, 2025 03:00 PM EST</strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+
+            <script>
+                setTimeout(() => {
+                    let alertBox = document.getElementById('success-alert');
+                    if (alertBox) {
+                        let bsAlert = new bootstrap.Alert(alertBox);
+                        bsAlert.close();
+                    }
+                }, 2000);
+            </script>
+        @endif
+        <!-- Bidding Information Section -->
+        <div class="{{ session('success') ? 'mb-5' : 'my-5' }}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 fw-bold mb-0">Bidding Information</h2>
+                <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
+                    data-bs-target="#biddingModal">
+                    <i class="bi bi-cash-stack me-1"></i> Bidding
+                </button>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted w-25">Status</th>
+                                    <td>
+                                        <span class="badge status-badge {{ $serverList->is_online ?: 'offline' }}">
+                                            <i
+                                                class=" me-1 {{ $serverList->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($serverList->online_label) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Slots</th>
+                                    <td><strong>5</strong></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Current time</th>
+                                    <td>{{ now()->format('F jS, Y h:i A T') }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Bidding start</th>
+                                    <td>{{ $serverList->created_at->format('F jS, Y h:i A T') }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Bidding end</th>
+                                    <td>August 12th, 2025 03:00 PM EST</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Payment limit date</th>
+                                    <td>August 15th, 2025 03:00 PM EST</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Banner display start</th>
+                                    <td><strong>August 17th, 2025 03:00 PM EST</strong></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="bg-light text-muted">Banner display end</th>
+                                    <td><strong>September 17th, 2025 03:00 PM EST</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Current Bids Section -->
+        {{-- <!-- Current Bids Section -->
         <div class="my-5">
             <h4 class="mb-3">Current bids</h4>
             <p class="text-muted">Only the top 5 bidders will win the "Premium Option".</p>
@@ -283,7 +312,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> --}}
     </div>
 
 @endsection

@@ -9,14 +9,14 @@ return new class extends Migration {
     {
         Schema::create('bids', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('server_listing_id')->index();
-            $table->decimal('amount', 8, 2);
-            $table->date('bidding_at')->now();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedBigInteger('server_id')->nullable();
+            $table->decimal('amount', 15, 2);
+            $table->timestamp('bidding_at');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('server_listing_id')->references('id')->on('server_listings')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreign('server_id')->references('id')->on('server_listing_servers')->nullOnDelete()->cascadeOnUpdate();
         });
     }
 
