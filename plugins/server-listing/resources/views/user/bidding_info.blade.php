@@ -4,89 +4,471 @@
 @section('app')
     @push('styles')
         <style>
-            .breadcrumb-item a {
-                color: #fd7e14;
-                text-decoration: none;
+            :root {
+                --blue: #007bff;
+                --indigo: #6610f2;
+                --purple: #8b5cf6;
+                --pink: #e83e8c;
+                --red: #dc3545;
+                --orange: #fd7e14;
+                --yellow: #ffc107;
+                --green: #28a745;
+                --teal: #20c997;
+                --cyan: #17a2b8;
+                --white: #fff;
+                --gray: #6c757d;
+                --gray-dark: #343a40;
+                --primary: #007bff;
+                --secondary: #6c757d;
+                --success: #28a745;
+                --info: #17a2b8;
+                --warning: #ffc107;
+                --danger: #dc3545;
+                --light: #f8f9fa;
+                --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+                --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
+                --glass-bg: rgba(255, 255, 255, 0.25);
+                --glass-border: rgba(255, 255, 255, 0.18);
+                /* --shadow-light: 0 8px 32px 0 rgba(31, 38, 135, 0.37); */
+                --shadow-medium: 0 15px 35px rgba(0, 0, 0, 0.1);
+                --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+                [data-bs-theme="dark"] {
+                    --bg-primary: #212529;
+                    --bg-secondary: rgba(255, 255, 255, 0.1);
+                    --drak-text-primary: #ffffff;
+                    --text-secondary: #adb5bd;
+                    --border-light: #495057;
+                    --shadow-light: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+                }
             }
 
-            .breadcrumb-item.active {
-                color: #6c757d;
+            * {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            [data-bs-theme="dark"] {
+                .bidding-table {
+                    background: var(--bg-secondary);
+                }
+
+                .stat-card,
+                .bid-info-card {
+                    background: var(--bg-secondary);
+                }
+
+                .stat-label {
+                    color: var(--text-secondary);
+                }
+
+            }
+
+            .breadcrumb-custom {
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid var(--glass-border);
+                border-radius: 15px;
+                padding: 0.75rem 1.25rem;
+                margin-bottom: 2rem;
+                box-shadow: var(--shadow-light);
+            }
+
+            .breadcrumb-custom a {
+                color: var(--blue);
+                text-decoration: none;
+                font-weight: 500;
+            }
+
+            .breadcrumb-custom a:hover {
+                color: var(--indigo);
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
             }
 
             .page-title {
-                color: #fd7e14;
+                color: #ff8c00;
+                font-weight: bold;
                 font-size: 2rem;
-                font-weight: 400;
                 margin-bottom: 1.5rem;
             }
 
-            .bidding-table {
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
+            .info-card {
+                background: linear-gradient(135deg, #17a2b8, #20c997);
+                color: white;
+                border-radius: 10px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .bidding-info {
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid var(--glass-border);
+                border-radius: 15px;
+                margin-bottom: 2rem;
+                box-shadow: var(--shadow-medium);
+            }
+
+            .section-header {
+                background: var(--primary-gradient);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 15px 15px 0 0;
+                font-weight: 600;
+                font-size: 1.2rem;
+                box-shadow: var(--shadow-light);
+                position: relative;
                 overflow: hidden;
             }
 
-            .bidding-table th {
-                background-color: #f8f9fa;
+            .section-header::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                animation: shimmer 3s infinite;
+            }
+
+            @keyframes shimmer {
+                0% {
+                    left: -100%;
+                }
+
+                100% {
+                    left: 100%;
+                }
+            }
+
+            .bidding-table {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 0 0 15px 15px;
+                box-shadow: var(--shadow-medium);
+                overflow: hidden;
+            }
+
+            .table-row {
+                padding: 1.5rem 2rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+            }
+
+            .table-row:hover {
+                background: linear-gradient(90deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+                transform: translateX(5px);
+            }
+
+            .table-row:last-child {
+                border-bottom: none;
+            }
+
+            .status-badge {
+                padding: 0.5rem 1rem;
+                border-radius: 25px;
+                font-size: 0.875rem;
                 font-weight: 600;
-                border-bottom: 2px solid #dee2e6;
-                width: 200px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             }
 
-            .bidding-table td {
-                border-bottom: 1px solid #dee2e6;
-            }
-
-            .status-closed {
-                background-color: #6c757d;
+            .status-offline {
+                background: var(--secondary-gradient);
                 color: white;
-                padding: 4px 12px;
-                border-radius: 20px;
-                font-weight: 500;
+            }
+
+            .btn-bidding,
+            .btn-pay {
+                border: none;
+                color: white;
+                padding: 0.5rem 1.5rem;
+                border-radius: 30px;
+                font-weight: 600;
+                text-decoration: none;
                 display: inline-block;
+                position: relative;
+                overflow: hidden;
             }
 
-            .table-success {
-                background-color: #d4edda !important;
+            .btn-bidding {
+                background: var(--warning-gradient);
+                box-shadow: 0 8px 25px rgba(67, 233, 123, 0.3);
             }
 
-            .status-badge,
-            .premium-online-badge,
-            .premium-status-badge {
-                background: #28a745;
-                font-size: 0.75rem;
-                padding: 0.3rem 0.6rem;
+            .btn-pay {
+                background: var(--success-gradient);
+                box-shadow: 0 8px 25px rgba(226, 235, 103, 0.3);
+            }
+
+            .btn-bidding::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                transition: left 0.5s;
+            }
+
+            .btn-bidding:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 35px rgba(67, 233, 123, 0.4);
+                color: white;
+            }
+
+            .btn-bidding:hover::before {
+                left: 100%;
+            }
+
+            .premium-features {
+                /* background: rgba(255, 255, 255, 0.95); */
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 20px;
+                padding: 2.5rem;
+                margin-bottom: 3rem;
+                box-shadow: var(--shadow-medium);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .premium-features::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: var(--success-gradient);
+                border-radius: 20px 20px 0 0;
+            }
+
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 3rem;
+            }
+
+            .stat-card {
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                padding: 1.5rem;
+                border-radius: 20px;
+                text-align: center;
+                box-shadow: var(--shadow-light);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: var(--primary-gradient);
+            }
+
+            .stat-card:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: var(--shadow-heavy);
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+                font-weight: 700;
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 0.5rem;
+            }
+
+            .stat-label {
+                color: #6c757d;
+                font-size: 1rem;
+                font-weight: 500;
+            }
+
+            .bid-info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .bid-info-card {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                padding: 1rem;
+                border-radius: 20px;
+                text-align: center;
+                box-shadow: var(--shadow-light);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .bid-info-grid .bid-info-number {}
+
+            .feature-item {
+                display: flex;
+                align-items: center;
+                background: rgba(102, 126, 234, 0.05);
+                margin-bottom: 1rem;
+                padding: 0.75rem;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+            }
+
+            .feature-item:hover {
+                background: rgba(102, 126, 234, 0.10);
+                transform: translateX(10px);
+            }
+
+            .feature-item i {
+                margin-right: 1rem;
+                font-size: 1.2rem;
+                width: 24px;
+                text-align: center;
+            }
+
+            .badge {
+                font-weight: 500;
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                font-size: 0.875rem;
+            }
+
+            .server-header {
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid var(--glass-border);
                 border-radius: 15px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .server-logo {
+                box-shadow: var(--shadow-medium);
+            }
+
+            .server-logo img {
+                width: 60px;
+                height: 60px object-fit: cover;
+            }
+
+            .server-logo:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .server-stats-card {
+                background: rgba(255, 255, 255, 0.856);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                border-radius: 15px;
+                padding: 1.5rem;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .server-stats-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn-outline-secondary {
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                color: white;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 30px;
+                padding: 0.75rem 2rem;
                 font-weight: 600;
             }
 
-            .premium-online-badge.offline,
-            .premium-status-badge.offline {
-                background: #dc3545;
+            .btn-outline-secondary:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-color: rgba(255, 255, 255, 0.5);
+                color: white;
+                transform: translateY(-2px);
             }
 
-            .status-badge.offline {
-                background: #dc3545;
+            @media (max-width: 768px) {
+                .page-title {
+                    font-size: 2rem;
+                }
+
+                .stats-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1rem;
+                }
+
+                .info-card,
+                .premium-features {
+                    padding: 1.5rem;
+                }
             }
 
-            [data-bs-theme="dark"] .table-success {
-                background-color: #3d3d3d !important;
+            #biddingModal .modal-header {
+                background: linear-gradient(135deg, #17a2b8, #20c997);
+                color: white;
+                border: none ! important;
             }
 
-            [data-bs-theme="dark"] .bidding-table th {
-                background-color: #6c757d;
-                border-bottom: 2px solid #5f6468;
+            #biddingModal .place-bid-btn {
+                background: linear-gradient(135deg, #20c997, #17a2b8);
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
             }
 
-            [data-bs-theme="dark"] .bidding-table td {
-                border-bottom: 1px solid #6c757d;
+            .form-control {
+                outline: none;
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-control:focus,
+            {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25);
             }
         </style>
     @endpush
 
     <div class="container mt-4">
-        {{-- Modal start --}}
-        <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true">
+        <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -103,216 +485,171 @@
                                     required>
                             </div>
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary">Place Bid</button>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="place-bid-btn">Place Bid</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        {{-- Modal end --}}
 
-        <!-- Breadcrumb Navigation -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="#">Minecraft Servers</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Premium Option</li>
-            </ol>
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb-custom">
+            <a href="#" class="text-decoration-none">Minecraft Servers</a>
+            <span class="mx-2">/</span>
+            <span class="">Premium Option</span>
         </nav>
 
         <!-- Page Title -->
-        <h1 class="page-title">Premium Option</h1>
+        <h1 class="page-title">
+            <i class="fas fa-crown me-3"></i>Premium Option
+        </h1>
 
-        <!-- Information Alert -->
-        <div class="alert alert-info" role="alert">
-            <p class="mb-2">
-                Premium servers are displayed at the top on the first page of the site for a whole month.
-                Premium servers will also appear at the top of search results, their country pages,
-                tag pages and version pages (if they fit the criteria).
-            </p>
-            <p class="mb-0">
-                If you want more information,
-                <a href="#" data-bs-toggle="modal" data-bs-target="#faqModal">read our Premium FAQ</a>.
-            </p>
-        </div>
-
-        <!-- Modal for FAQ -->
-        <div class="modal fade" id="faqModal" tabindex="-1" aria-labelledby="faqModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="faqModalLabel">Premium FAQ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Q: How long does a Premium listing last?</strong><br>
-                            A: Each Premium placement lasts for 1 month.</p>
-                        <p><strong>Q: Where will my server appear?</strong><br>
-                            A: At the top of the main page, search results, and relevant categories.</p>
-                        <p><strong>Q: Can I renew Premium?</strong><br>
-                            A: Yes, you can rebid for another slot in the next auction.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+        <!-- Premium Info Card -->
+        <div class="info-card">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h4 class="mb-3"><i class="fas fa-star me-2"></i>Premium Server Benefits</h4>
+                    <p class="mb-2">Premium servers are displayed at the top on the first page of the site for a whole
+                        month. Premium servers will also appear at the top of search results, their country pages, tag pages
+                        and version pages (if they fit the criteria).</p>
+                    <p class="mb-0">If you want more information, <a href="#" class="text-white"><u>read our
+                                Premium
+                                FAQ</u></a>.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-trophy" style="font-size: 5rem; opacity: 0.2;"></i>
                 </div>
             </div>
         </div>
-        {{-- Session message --}}
-        @if (session('success'))
-            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Available Slots</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">30</div>
+                <div class="stat-label">Days Duration</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Visibility Boost</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Premium Support</div>
+            </div>
+        </div>
+
+        <!-- Premium Features -->
+        <div class="premium-features">
+            <h5 class="mb-4"><i class="fas fa-server me-2"></i>Server Information:</h5>
+
+            <!-- Server Header -->
+            <div class="server-header mb-4">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="server-logo">
+                            <img src="{{ $serverList->logo_image_url }}" alt="">
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 text-warning fw-bold">{{ $serverList->name }}</h6>
+                        <small class="text-muted">{{ $serverList->server_ip }}</small>
+                    </div>
+                    <div>
+                        <span class="badge bg-{{ $serverList->is_online ? 'success' : 'danger' }}"
+                            style="padding: 0.5rem 1rem; border-radius: 20px;">
+                            <i
+                                class=" me-1 {{ $serverList->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($serverList->online_label) }}
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <script>
-                setTimeout(() => {
-                    let alertBox = document.getElementById('success-alert');
-                    if (alertBox) {
-                        let bsAlert = new bootstrap.Alert(alertBox);
-                        bsAlert.close();
-                    }
-                }, 2000);
-            </script>
-        @endif
-        <!-- Bidding Information Section -->
-        <div class="{{ session('success') ? 'mb-5' : 'my-5' }}">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="h4 fw-bold mb-0">Bidding Information</h2>
-                <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
-                    data-bs-target="#biddingModal">
-                    <i class="bi bi-cash-stack me-1"></i> Bidding
-                </button>
-            </div>
-
-            <div class="card shadow-sm border-0 rounded">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted w-25">Status</th>
-                                    <td>
-                                        <span class="badge status-badge {{ $serverList->is_online ?: 'offline' }}">
-                                            <i
-                                                class=" me-1 {{ $serverList->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($serverList->online_label) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Slots</th>
-                                    <td><strong>5</strong></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Current time</th>
-                                    <td>{{ now()->format('F jS, Y h:i A T') }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Bidding start</th>
-                                    <td>{{ $serverList->created_at->format('F jS, Y h:i A T') }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Bidding end</th>
-                                    <td>August 12th, 2025 03:00 PM EST</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Payment limit date</th>
-                                    <td>August 15th, 2025 03:00 PM EST</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Banner display start</th>
-                                    <td><strong>August 17th, 2025 03:00 PM EST</strong></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted">Banner display end</th>
-                                    <td><strong>September 17th, 2025 03:00 PM EST</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <!-- Server Stats Grid -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="server-stats-card">
+                        <i class="fas fa-users text-primary mb-2" style="font-size: 2rem;"></i>
+                        <div class="fw-bold text-primary" style="font-size: 1.5rem;">206/862</div>
+                        <small class="text-muted">Players Online</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="server-stats-card">
+                        <i class="fas fa-chart-line text-success mb-2" style="font-size: 2rem;"></i>
+                        <div class="fw-bold text-success" style="font-size: 1.5rem;">100%</div>
+                        <small class="text-muted">Uptime</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="server-stats-card">
+                        <i class="fas fa-trophy text-warning mb-2" style="font-size: 2rem;"></i>
+                        <div class="fw-bold text-warning" style="font-size: 1.5rem;">#1</div>
+                        <small class="text-muted">Server Rank</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="server-stats-card">
+                        <i class="fas fa-thumbs-up text-info mb-2" style="font-size: 2rem;"></i>
+                        <div class="fw-bold text-info" style="font-size: 1.5rem;">6,828</div>
+                        <small class="text-muted">Total Votes</small>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- <!-- Current Bids Section -->
-        <div class="my-5">
-            <h4 class="mb-3">Current bids</h4>
-            <p class="text-muted">Only the top 5 bidders will win the "Premium Option".</p>
-
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Place</th>
-                            <th scope="col">Server</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Paid</th>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="table-success">
-                            <td>1</td>
-                            <td>MineSuperior</td>
-                            <td>$2205</td>
-                            <td>Yes</td>
-                            <td>August 12th, 2025 03:00 PM EST</td>
-                        </tr>
-                        <tr class="table-success">
-                            <td>2</td>
-                            <td>OPBlocks Network</td>
-                            <td>$1800</td>
-                            <td>Yes</td>
-                            <td>August 12th, 2025 02:59 PM EST</td>
-                        </tr>
-                        <tr class="table-success">
-                            <td>3</td>
-                            <td>Daedric</td>
-                            <td>$855</td>
-                            <td>Yes</td>
-                            <td>August 12th, 2025 02:59 PM EST</td>
-                        </tr>
-                        <tr class="table-success">
-                            <td>4</td>
-                            <td>Foxcraft</td>
-                            <td>$765</td>
-                            <td>Yes</td>
-                            <td>August 12th, 2025 02:59 PM EST</td>
-                        </tr>
-                        <tr class="table-success">
-                            <td>5</td>
-                            <td>ManaCube</td>
-                            <td>$755</td>
-                            <td>Yes</td>
-                            <td>August 12th, 2025 02:59 PM EST</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>The World Is Your Oyster SMP</td>
-                            <td>$740</td>
-                            <td>Yes</td>
-                            <td>August 10th, 2025 01:59 PM EST</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>PrestigiousMC | pgmc.world</td>
-                            <td>$625</td>
-                            <td>Yes</td>
-                            <td>August 11th, 2025 01:03 PM EST</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Advancius Network</td>
-                            <td>$455</td>
-                            <td>Yes</td>
-                            <td>August 12th, 2025 02:59 PM EST</td>
-                        </tr>
-                        <!-- More rows if needed -->
-                    </tbody>
-                </table>
+        <div class="bidding-info">
+            <!-- Bidding Information -->
+            <div class="section-header d-flex align-items-center justify-content-between">
+                <span><i class="fas fa-gavel me-2"></i>Bidding Information</span>
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn-bidding float-end" data-bs-toggle="modal"
+                        data-bs-target="#biddingModal">
+                        <i class="bi bi-cash-stack me-1"></i>Start Bidding
+                    </button>
+                    <a href="#" class="btn-pay float-end">
+                        <i class="fas fa-credit-card me-1"></i>Pay Now
+                    </a>
+                </div>
             </div>
-        </div> --}}
+
+            <!-- Statistics Grid -->
+            <div class="bid-info-grid">
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-dollar-sign"></i><span class="fw-bold">50</span></div>
+                    <div class="bid-info-label">Minimum Bid</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Bidding Start Date</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Bidding End Date</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Payment Start Date</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Payment End Date</div>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection

@@ -25,6 +25,9 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ favicon() }}">
 
+    {{-- Fontawsome CDN --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <!-- Scripts -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
     <script src="{{ asset('vendor/axios/axios.min.js') }}" defer></script>
