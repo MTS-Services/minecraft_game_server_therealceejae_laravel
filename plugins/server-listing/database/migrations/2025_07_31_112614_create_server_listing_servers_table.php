@@ -185,7 +185,7 @@ return new class extends Migration {
                     'motd' => 'This is a sample MOTD for ' . $name,
                     'server_ip' => 'BangladeshCraft' . Str::random(6) . now()->format('Y-m-d') . '.aternos.me',
                     'server_port' => '25565',
-                    'website_url' => 'https://' . $name . '.example.com',
+                    'website_url' => 'https://' . Str::slug($name) . '.example.com',
                     'discord_url' => 'https://discord.gg/' . Str::random(6),
                     'discord_server_id' => '123456789012345678',
                     'banner_image' => 'https://placehold.co/468x60/f2f2f2/' . $colors[array_rand($colors)] . '?text=' . implode('+', explode(' ', $name)) . '&font=Lora',
