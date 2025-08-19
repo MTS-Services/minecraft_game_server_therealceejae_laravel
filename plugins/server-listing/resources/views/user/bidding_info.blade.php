@@ -222,7 +222,6 @@
             }
 
             .btn-bidding:hover {
-                transform: translateY(-3px);
                 box-shadow: 0 12px 35px rgba(67, 233, 123, 0.4);
                 color: white;
             }
@@ -447,52 +446,49 @@
                 border: none;
                 padding: 0.5rem 1rem;
                 border-radius: 5px;
-            }
-
-            .form-control {
-                outline: none;
-                border: 2px solid #e2e8f0;
-                border-radius: 10px;
-                padding: 0.75rem 1rem;
-                font-size: 1rem;
                 transition: all 0.3s ease;
             }
-
-            .form-control:focus,
-            {
-            border-color: var(--purple);
-            box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25);
+            #biddingModal .place-bid-btn:hover {
+                background: linear-gradient(135deg, #17a2b8, #20c997);
+            }
+            #biddingModal .form-control {
+                outline: none ! important;
+            }
+            #biddingModal .form-control:focus {
+                border-color: var(--purple);
             }
         </style>
     @endpush
 
     <div class="container mt-4">
-        <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true"
-            data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="biddingModalLabel">Place a Bid</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('server-listing.place-bid', $serverList->slug) }}" method="POST">
-                            @csrf
-                            <!-- Bid Amount -->
-                            <div class="mb-3">
-                                <label for="amount" class="form-label">Bid Amount ($)</label>
-                                <input type="number" name="amount" id="amount" step="0.01" class="form-control"
-                                    required>
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="place-bid-btn">Place Bid</button>
-                            </div>
-                        </form>
+        @if(biddingIsOpen())
+            <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true"
+                data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="biddingModalLabel">Place a Bid</h1>
+                            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('server-listing.place-bid', $serverList->slug) }}" method="POST">
+                                @csrf
+                                <!-- Bid Amount -->
+                                <div class="mb-3">
+                                    <label for="amount" class="form-label">Bid Amount ($)</label>
+                                    <input type="number" name="amount" id="amount" step="0.01" class="form-control"
+                                        required>
+                                </div>
+                                <!-- Submit Button -->
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="place-bid-btn">Place Bid</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb-custom">
@@ -523,11 +519,68 @@
                 </div>
             </div>
         </div>
+        <div class="bidding-info">
+            <!-- Bidding Information -->
+            <div class="section-header d-flex align-items-center justify-content-between">
+                <span><i class="fas fa-gavel me-2"></i>Bidding Information</span>
+                <div class="d-flex align-items-center gap-2">
+                    @if (biddingIsOpen())
+                        <button type="button" class="btn-bidding float-end z-1" data-bs-toggle="modal"
+                            data-bs-target="#biddingModal">
+                            <i class="bi bi-cash-stack me-1"></i>Start Bidding
+                        </button>
+                    @else
+                        <button type="button" class="btn-bidding float-end" style="cursor: not-allowed" disabled>
+                            <i class="bi bi-cash-stack me-1"></i>Bidding Closed
+                        </button>
+                    @endif
+
+                    @if (paymentIsOpen())
+                        <a href="#" class="btn-pay float-end">
+                            <i class="fas fa-credit-card me-1"></i>Pay Now
+                        </a>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Statistics Grid -->
+            <div class="bid-info-grid">
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-dollar-sign"></i><span
+                            class="fw-bold">{{ now()->endOfMonth()->day }}</span></div>
+                    <div class="bid-info-label">Minimum Bid</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Bidding Start Date</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Bidding End Date</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Payment Start Date</div>
+                </div>
+                <div class="bid-info-card">
+                    <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
+                        {{ now()->format('M d, Y') }}
+                    </div>
+                    <div class="bid-info-label">Payment End Date</div>
+                </div>
+            </div>
+        </div>
 
         <!-- Statistics Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">5</div>
+                <div class="stat-number">10</div>
                 <div class="stat-label">Available Slots</div>
             </div>
             <div class="stat-card">
@@ -603,53 +656,7 @@
             </div>
         </div>
 
-        <div class="bidding-info">
-            <!-- Bidding Information -->
-            <div class="section-header d-flex align-items-center justify-content-between">
-                <span><i class="fas fa-gavel me-2"></i>Bidding Information</span>
-                <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn-bidding float-end" data-bs-toggle="modal"
-                        data-bs-target="#biddingModal">
-                        <i class="bi bi-cash-stack me-1"></i>Start Bidding
-                    </button>
-                    <a href="#" class="btn-pay float-end">
-                        <i class="fas fa-credit-card me-1"></i>Pay Now
-                    </a>
-                </div>
-            </div>
 
-            <!-- Statistics Grid -->
-            <div class="bid-info-grid">
-                <div class="bid-info-card">
-                    <div class="bid-info-number"><i class="fas fa-dollar-sign"></i><span class="fw-bold">50</span></div>
-                    <div class="bid-info-label">Minimum Bid</div>
-                </div>
-                <div class="bid-info-card">
-                    <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
-                        {{ now()->format('M d, Y') }}
-                    </div>
-                    <div class="bid-info-label">Bidding Start Date</div>
-                </div>
-                <div class="bid-info-card">
-                    <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
-                        {{ now()->format('M d, Y') }}
-                    </div>
-                    <div class="bid-info-label">Bidding End Date</div>
-                </div>
-                <div class="bid-info-card">
-                    <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
-                        {{ now()->format('M d, Y') }}
-                    </div>
-                    <div class="bid-info-label">Payment Start Date</div>
-                </div>
-                <div class="bid-info-card">
-                    <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
-                        {{ now()->format('M d, Y') }}
-                    </div>
-                    <div class="bid-info-label">Payment End Date</div>
-                </div>
-            </div>
-        </div>
     </div>
 
 @endsection

@@ -18,25 +18,29 @@ class BidController extends Controller
         $this->middleware(['auth:web', 'verified']);
         $this->bidService = $bidService;
     }
-     public function biddingInfo(string $slug)
+    public function biddingInfo(string $slug)
     {
         $data['serverList'] = ServerListing::where('slug', $slug)->first();
         return view('server-listing::user.bidding_info', $data);
     }
-    public function placeBid(Request $request , $slug)
+    public function placeBid(Request $request, $slug)
     {
         $validated = $request->validate([
             'amount' => 'required',
         ]);
         $server = ServerListing::where('slug', $slug)->first();
-        DB::transaction(function () use ($validated, $server) {
-            Bid::create([
-                'user_id' => Auth::id(),
-                'user_server_id' => $server->id,
-                'amount' => $validated['amount'],
-                'bidding_at' => now(),
-            ]);
-        });
-        return back()->with('success', 'Bid placed successfully');
+        if (biddingIsOpen()) {
+            DB::transaction(function () use ($validated, $server) {
+                Bid::create([
+                    'user_id' => Auth::id(),
+                    'user_server_id' => $server->id,
+                    'amount' => $validated['amount'],
+                    'bidding_at' => now(),
+                ]);
+            });
+            return back()->with('success', 'Bid placed successfully');
+        }else {
+            return back()->with('error', 'Bidding is closed');
+        }
     }
 }
