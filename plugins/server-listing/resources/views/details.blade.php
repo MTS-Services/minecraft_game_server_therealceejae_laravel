@@ -585,6 +585,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-custom fw-semibold">
+                            <i class="fas fa-vote-yea me-2"></i> Vote for this Server
+                        </div>
+                        <div class="card-body">
+                            @if($sites->isNotEmpty())
+                                <ul class="list-group list-group-flush">
+                                    @foreach($sites as $site)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ $site->name }}
+                                            <a href="{{ route('server-listing.vote.vote', [$serverDetail, $site]) }}" class="btn btn-sm btn-success vote-link" data-vote-url="{{ $site->url }}" data-id="{{ $site->id }}">Vote</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-muted">No voting sites available for this server.</p>
+                            @endif
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -688,6 +709,31 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const voteLinks = document.querySelectorAll('.vote-link');
+
+            voteLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const voteUrl = this.href;
+
+                    axios.post(voteUrl, {
+                        _token: '{{ csrf_token() }}'
+                    })
+                    .then(function (response) {
+                        if (response.data.url) {
+                            window.open(response.data.url, '_blank');
+                        }
+                        showToast(response.data.message, 'success');
+                    })
+                    .catch(function (error) {
+                        showToast(error.response.data.message, 'error');
+                    });
+                });
+            });
+        });
+
         // Copy IP functionality
         function copyIP(ip) {
             navigator.clipboard.writeText(ip).then(function() {

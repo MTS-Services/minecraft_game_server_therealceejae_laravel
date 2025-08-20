@@ -1122,6 +1122,7 @@
                                 </div>
                                 <div class="card-body p-0 premium-top10-body">
                                     @foreach ($topServers as $index => $topServer)
+                                        <a href="{{ route('server-listing.vote.index', $topServer->slug) }}">Test</a>
                                         <!-- Desktop Row -->
                                         <div class="premium-top10-row desktop-server-row">
                                             <a href="{{ route('server-listing.details', $topServer->slug) }}"

@@ -28,7 +28,10 @@ class ServerListingController extends Controller
     {
         $serverDetail = ServerListing::where('slug', $slug)->firstOrFail();
         $serverDetail->load(['user', 'serverTags', 'country']);
-        return view('server-listing::details', compact('serverDetail'));
+
+        $sites = $serverDetail->rewards()->with('sites')->get()->pluck('sites')->flatten()->unique('id');
+
+        return view('server-listing::details', compact('serverDetail', 'sites'));
     }
 
     public function submission()

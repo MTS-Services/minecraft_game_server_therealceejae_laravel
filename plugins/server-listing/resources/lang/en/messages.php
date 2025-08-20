@@ -33,7 +33,7 @@ return [
     ],
 
     'vote' => [
-        'minecraft_servers' =>  'Minecraft Servers'
+        'minecraft_servers' => 'Minecraft Servers'
     ],
 
     'fields' => [
@@ -75,7 +75,6 @@ return [
         'country' => 'Country',
         'youtube_video' => 'YouTube Video',
         'server' => 'Server',
-        'server_ip' => 'Server IP',
         'website' => 'Website URL',
         'server_status' => 'Server Status',
         'premium_status' => 'Premium Status',
@@ -93,6 +92,19 @@ return [
         'teamspeak_server_api_key' => 'TeamSpeak Server API Key',
         'discord_server_id' => 'Discord Server ID',
         'motd' => 'MOTD',
+        'rewards' => 'Rewards',
+        'chances' => 'Chances',
+        'image' => 'Image',
+        'enabled' => 'Enabled',
+        'servers' => 'Servers',
+        'money' => 'Money',
+        'require_online' => 'Require Online',
+        'commands' => 'Commands',
+        'enable' => 'Enable',
+        'sites' => 'Sites',
+        'site' => 'Site',
+        'reward' => 'Reward',
+        'date' => 'Date',
 
     ],
     'placeholder' => [

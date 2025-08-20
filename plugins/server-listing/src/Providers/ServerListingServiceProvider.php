@@ -3,11 +3,13 @@
 namespace Azuriom\Plugin\ServerListing\Providers;
 
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
+use Azuriom\Plugin\ServerListing\Verification\VoteVerifier;
 use Azuriom\Models\ActionLog;
 use Azuriom\Models\Permission;
-use Azuriom\Plugin\ServerListing\Models\ServerListing;
-use Azuriom\Plugin\ServerListing\Models\ServerStats;
-use Azuriom\Plugin\ServerListing\Models\ServerVote;
+use Azuriom\Plugin\ServerListing\Models\ServerListing as Server;
+use Azuriom\Plugin\ServerListing\Models\ServerTag;
+use Azuriom\Plugin\ServerListing\Models\Vote\Reward;
+use Azuriom\Plugin\ServerListing\Models\Vote\Site;
 use Azuriom\Plugin\ServerListing\View\Composers\ServerListingAdminDashboardComposer;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\View;
@@ -17,6 +19,10 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
     public function register(): void
     {
         require_once __DIR__ . '/../../vendor/autoload.php';
+        
+        $this->app->bind(VoteVerifier::class, function ($app) {
+            return VoteVerifier::for(''); // Domain will be set when used
+        });
     }
 
     /**
@@ -48,18 +54,21 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
 
 
         Permission::registerPermissions([
-            'server-listing.tag' => 'server-listing::admin.permissions.tag',
-            'server-listing.server' => 'server-listing::admin.permissions.server',
-            'server-listing.votes' => 'server-listing::admin.permissions.votes',
-            'server-listing.stats' => 'server-listing::admin.permissions.stats',
-            'server-listing.settings' => 'server-listing::admin.permissions.settings',
+            'server-listing.admin' => 'server-listing::admin.permissions.admin',
         ]);
 
         ActionLog::registerLogModels([
-            ServerListing::class,
-            ServerVote::class,
-            ServerStats::class,
+            Server::class,
+            ServerTag::class,
+            Reward::class,
+            Site::class,
         ], 'server-listing::admin.logs');
+
+        ActionLog::registerLogs('server-listing.vote.settings', [
+            'icon' => 'hand-thumbs-up',
+            'color' => 'info',
+            'message' => 'server-listing::admin.logs.vote.settings',
+        ]);
         // ActionLog::registerLogActions([
         //     ServerListing::class => [
         //         'created' => 'server-listing::admin.logs.server.created',
@@ -98,7 +107,8 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
     protected function routeDescriptions(): array
     {
         return [
-            'server-listing.home' => trans('server-listing::messages.title'),
+            'server-listing.index' => trans('server-listing::messages.title'),
+            'server-listing.vote.index' => trans('server-listing::messages.vote.title'),
         ];
     }
 
@@ -115,15 +125,14 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
                 'type' => 'dropdown',
                 'icon' => 'bi bi-server',
                 'route' => 'server-listing.admin.*',
+                'permission' => 'server-listing.admin',
                 'items' => [
-                    'server-listing.admin.tags.index' => [
-                        'name' => trans('server-listing::admin.nav.tags'),
-                        'permission' => 'server-listing.tag',
-                    ],
-                    'server-listing.admin.servers.index' => [
-                        'name' => trans('server-listing::admin.nav.servers'),
-                        'permission' => 'server-listing.server',
-                    ],
+                    'server-listing.admin.servers.index' => trans('server-listing::admin.nav.servers'),
+                    'server-listing.admin.tags.index' => trans('server-listing::admin.nav.tags'),
+                    'server-listing.admin.vote.settings' => trans('server-listing::admin.nav.settings'),
+                    'server-listing.admin.vote.sites.index' => trans('server-listing::admin.nav.sites'),
+                    'server-listing.admin.vote.rewards.index' => trans('server-listing::admin.nav.rewards'),
+                    'server-listing.admin.vote.votes.index' => trans('server-listing::admin.nav.votes'),
                 ],
             ],
         ];

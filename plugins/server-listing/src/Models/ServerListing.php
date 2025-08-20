@@ -290,6 +290,16 @@ class ServerListing extends Model
         return $this->belongsTo(ServerCountry::class, 'country_id');
     }
 
+    public function rewards(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            'Azuriom\Plugin\ServerListing\Models\Vote\Reward',
+            'server_listing_vote_reward_server',
+            'server_id',
+            'reward_id'
+        );
+    }
+
     public function getCreatedAtFormattedAttribute(): string
     {
         return Carbon::parse($this->created_at)->format('M d, Y');

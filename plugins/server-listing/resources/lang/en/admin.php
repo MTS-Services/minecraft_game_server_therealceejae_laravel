@@ -19,7 +19,55 @@ return [
         'purchases' => 'Purchases',
         'statistics' => 'Statistics',
         'categories' => 'Categories',
+        'sites' => 'Sites',
+        'rewards' => 'Rewards',
+        'votes' => 'Votes'
     ],
+
+    'vote' => [
+        'title' => 'Vote',
+        'votes' => 'Votes',
+        'monthly_votes' => 'Monthly Votes',
+        'weekly_votes' => 'Weekly Votes',
+        'daily_votes' => 'Daily Votes',
+        'settings' => [
+            'title' => 'Vote Settings',
+            'top_player_count' => 'Top Player Count',
+            'display_rewards' => 'Display Rewards',
+            'ip_compatibility' => 'IP Compatibility',
+            'ip_compatibility_info' => 'If enabled, the plugin will check if the player\'s IP matches the server IP before allowing voting. This is useful for preventing abuse from players using VPNs or proxies.',
+            'auth_required' => 'Authentication Required',
+            'commands' => 'Commands',
+        ],
+        'rewards' => [
+            'commands' => 'Commands',
+            'title' => 'Vote Rewards',
+            'create' => 'Create Reward',
+            'edit' => 'Edit Reward :reward',
+        ],
+        'sites' => [
+            'title' => 'Sites',
+            'create' => 'Create Site',
+            'edit' => 'Edit Site :site',
+            'name' => 'Site Name',
+            'url' => 'Site URL',
+            'verification_key' => 'Verification Key',
+            'minutes' => 'Minutes',
+            'delay' => 'Delay',
+            'variables' => 'Variables are used to pass additional information to the voting site.',
+            'enable' => 'Enable this site',
+            'list' => 'List of Voting Sites',
+            'variable' => 'Variables are used to pass additional information to the voting site.',
+            'verifications' => [
+                'disabled' => 'Verification is disabled for this site.',
+                'enable' => 'Enable verification for this site',
+                'api_key' => 'API Key',
+                'input' => 'The input field that will be used to verify the vote.',
+            ],
+        ],
+
+    ],
+
 
     'server' => [
         'title' => 'Server',

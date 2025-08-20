@@ -2,6 +2,10 @@
 
 use Azuriom\Plugin\ServerListing\Controllers\Admin\ServerListingController;
 use Azuriom\Plugin\ServerListing\Controllers\Admin\TagController;
+use Azuriom\Plugin\ServerListing\Controllers\Admin\Vote\RewardController;
+use Azuriom\Plugin\ServerListing\Controllers\Admin\Vote\SettingController;
+use Azuriom\Plugin\ServerListing\Controllers\Admin\Vote\SiteController;
+use Azuriom\Plugin\ServerListing\Controllers\Admin\Vote\VoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,4 +39,16 @@ Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(fu
     Route::get('/tags/{tag}', 'edit')->name('edit');
     Route::put('/tags/{tag}', 'update')->name('edit');
     Route::delete('/tags/{tag}', 'destroy')->name('destroy');
+});
+
+Route::prefix('vote')->name('vote.')->middleware('can:server-listing.admin')->group(function () {
+    Route::get('/settings', [SettingController::class, 'show'])->name('settings');
+    Route::post('/settings', [SettingController::class, 'save'])->name('settings.save');
+
+    Route::get('sites/verification', [SiteController::class, 'verificationForUrl'])->name('sites.verification');
+
+    Route::resource('sites', SiteController::class)->except('show');
+    Route::resource('rewards', RewardController::class)->except('show');
+
+    Route::get('votes', [VoteController::class, 'index'])->name('votes.index');
 });

@@ -21,10 +21,13 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', [ServerListingHomeController::class, 'index']);
 
 Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
-// Voting Routes 
+// Voting Routes
 Route::controller(VoteController::class)->prefix('vote')->name('vote.')->group(function () {
-    Route::get('/{slug}',  'index')->name('index');
-    Route::post('/{slug}', 'store')->name('store');
+    Route::get('/{server:slug}', 'index')->name('index');
+    Route::post('/{server:slug}/submit', 'submit')->name('submit');
+    Route::get('/user/{user}', 'verifyUser')->name('verify-user');
+    Route::post('/{server:slug}/site/{site}', 'vote')->name('vote');
+    Route::post('/{server:slug}/site/{site}/done', 'done')->name('done');
 });
 
 Route::post('/check-connection', [CheckConnectionController::class, 'checkConnection'])->name('check-connection');
