@@ -2,6 +2,7 @@
 
 use Azuriom\Plugin\ServerListing\Controllers\BidController;
 use Azuriom\Plugin\ServerListing\Controllers\CheckConnectionController;
+use Azuriom\Plugin\ServerListing\Controllers\PaymentController;
 use Azuriom\Plugin\ServerListing\Controllers\ServerListingController;
 // use Azuriom\Plugin\ServerListing\Controllers\ServerListingHomeController;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,21 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
 Route::controller(BidController::class)->middleware('auth:web')->group(function () {
     Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');
     Route::post('/place-bid/{slug}', 'placeBid')->name('place-bid');
+});
+
+// Route::prefix('payments')->name('payments.')->group(function () {
+//     Route::middleware('auth')->group(function () {
+//         Route::get('/payment', [PaymentController::class, 'payment'])->name('payment');
+//         Route::post('/{gateway:type}/pay', [PaymentController::class, 'pay'])->name('pay');
+//     });
+
+//     Route::get('/{gateway:type}/success', [PaymentController::class, 'success'])->name('success');
+//     Route::get('/{gateway:type}/failure', [PaymentController::class, 'failure'])->name('failure');
+// });
+
+Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
+    Route::get('/payment', 'payment')->name('payment');
+    Route::post('/{gateway:type}/pay', 'pay')->name('pay');
+    Route::get('/{gateway:type}/success', 'success')->name('success');
+    Route::get('/{gateway:type}/failure', 'failure')->name('failure');
 });

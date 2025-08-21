@@ -1029,6 +1029,25 @@
         <div class="position-absolute top-0 start-0 w-100 h-100"></div>
     </div>
 
+
+    <div class="container my-5">
+        <div class="card w-50 mx-auto">
+            <div class="card-body">
+                <p>Your bidding amount is: $50</p>
+
+                <a href="{{ route('server-listing.payments.payment') }}" class="btn btn-primary"> Pay now</a>
+
+                {{-- <form action="{{ route('server-listing.payments.payment')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="bidding_amount" value="50">
+                    <button type="submit" class="btn btn-primary">Pay now</button>
+                </form> --}}
+
+            </div>
+        </div>
+    </div>
+
+
     <div class="container content my-5">
         @include('elements.session-alerts')
 
@@ -1157,7 +1176,8 @@
                                                 <div class="col-md-2">
                                                     <div class="d-flex align-items-center">
                                                         <div class="elit-server-logo me-3">
-                                                            <img src="{{ $topServer->logo_image_url }}" alt="Server Logo">
+                                                            <img src="{{ $topServer->logo_image_url }}"
+                                                                alt="Server Logo">
                                                             <div class="premium-logo-badge">
                                                                 <i class="bi bi-gem"></i>
                                                             </div>

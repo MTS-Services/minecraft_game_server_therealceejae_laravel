@@ -324,12 +324,12 @@ if (!function_exists('tagsBgColors')) {
     }
 }
 
-
-function remove_before_dash(string $text): string
+if (!function_exists('remove_before_dash')) {
+    function remove_before_dash(string $text): string
     {
         if (strpos($text, '-') !== false) {
             return substr($text, strpos($text, '-') + 1);
         }
         return $text;
     }
-
+}

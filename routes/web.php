@@ -9,6 +9,7 @@ use Azuriom\Http\Controllers\PostController;
 use Azuriom\Http\Controllers\PostLikeController;
 use Azuriom\Http\Controllers\ProfileController;
 use Azuriom\Http\Controllers\UserController;
+use Azuriom\Plugin\ServerListing\Controllers\PayMan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
