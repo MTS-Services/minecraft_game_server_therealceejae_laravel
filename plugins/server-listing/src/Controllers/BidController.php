@@ -6,6 +6,7 @@ use Azuriom\Http\Controllers\Controller;
 use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Plugin\ServerListing\Services\BidService;
+use Azuriom\Plugin\Shop\Cart\Cart;
 use Azuriom\Plugin\Shop\Models\Gateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,19 +60,18 @@ class BidController extends Controller
         // return to_route('server-listing.bids.payment', $bid);
     }
 
-    public function payment(string $encryptedId)
+    public function addToCart(Request $request, string $encryptedId)
     {
+        $bid = ServerBid::findOrFail(decrypt($encryptedId));
 
-        $bid = ServerBid::where('id', decrypt($encryptedId))->firstOrFail();
+        $cart = Cart::fromSession($request->session());
 
-        $gateways = Gateway::enabled()
-            ->get()
-            ->filter(fn(Gateway $gateway) => $gateway->isSupported())
-            ->reject(fn(Gateway $gateway) => $gateway->paymentMethod()->hasFixedAmount());
+        if ($cart->has($bid)) {
+            return to_route('shop.cart.index')->with('error', 'This bid is already in your cart.');
+        }
 
-        return view('server-listing::user.gateways', [
-            'bid' => $bid,
-            'gateways' => $gateways,
-        ]);
+        $cart->add($bid);
+
+        return to_route('shop.cart.index')->with('success', 'Bid added to cart.');
     }
 }

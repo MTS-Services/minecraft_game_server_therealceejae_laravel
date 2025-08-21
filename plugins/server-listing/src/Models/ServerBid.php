@@ -26,6 +26,15 @@ class ServerBid extends Model implements Buyable
         'bidding_at',
     ];
 
+    protected $casts = [
+        'bidding_at' => 'datetime',
+    ];
+
+    public function getDescription(): string
+    {
+        return 'Bid for ' . $this->serverListing->name;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

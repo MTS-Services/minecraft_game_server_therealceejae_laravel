@@ -103,20 +103,19 @@ class ServerListingController extends Controller
     public function serverList()
     {
 
-        $sListings = ServerListing::where('user_id', Auth::id())->with(['user', 'country'])->latest()->paginate(10);
-        // $promotedServerIds = ServerBid::where('status', 'completed')
-        //     ->pluck('server_listing_id')
-        //     ->unique();
+        $promotedServerIds = ServerBid::where('status', 'completed')
+            ->pluck('server_listing_id')
+            ->unique();
 
-        // $promotedListings = ServerListing::with(['user', 'country'])
-        //     ->whereIn('id', $promotedServerIds)
-        //     ->get();
+        $promotedListings = ServerListing::with(['user', 'country'])
+            ->whereIn('id', $promotedServerIds)
+            ->get();
 
-        // $sListings = ServerListing::with(['user', 'country'])
-        //     ->whereNotIn('id', $promotedServerIds)
-        //     ->latest()
-        //     ->paginate(10);
+        $sListings = ServerListing::with(['user', 'country'])
+            ->whereNotIn('id', $promotedServerIds)
+            ->latest()
+            ->paginate(10);
 
-        return view('server-listing::user.server_listing', compact('sListings'));
+        return view('server-listing::user.server_listing', compact('promotedListings', 'sListings'));
     }
 }

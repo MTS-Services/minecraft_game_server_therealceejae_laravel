@@ -4,8 +4,8 @@
 
 @push('footer-scripts')
     <script>
-        document.querySelectorAll('.payment-method').forEach(function (el) {
-            el.addEventListener('click', function (ev) {
+        document.querySelectorAll('.payment-method').forEach(function(el) {
+            el.addEventListener('click', function(ev) {
                 ev.preventDefault();
 
                 const form = document.getElementById('submitForm');
@@ -23,9 +23,11 @@
         @forelse($gateways as $gateway)
             <div class="col-md-3">
                 <div class="card">
-                    <a href="{{ route('server-listing.payments.pay', ['gateway' => $gateway->type, 'bid' => $bid]) }}" class="payment-method">
+                    <a href="{{ route('server-listing.payments.pay', ['gateway' => $gateway->type, 'encryptedId' => encrypt($bid->id)]) }}"
+                        class="payment-method">
                         <div class="card-body text-center">
-                            <img src="{{ $gateway->paymentMethod()->image() }}" style="max-height: 45px" class="img-fluid" alt="{{ $gateway->name }}">
+                            <img src="{{ $gateway->paymentMethod()->image() }}" style="max-height: 45px" class="img-fluid"
+                                alt="{{ $gateway->name }}">
                         </div>
                     </a>
                 </div>

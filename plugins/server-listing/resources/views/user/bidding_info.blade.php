@@ -540,9 +540,12 @@
                     @endif
 
                     @if (isset($bid))
-                        <a href="{{ route('server-listing.bids.payment', encrypt($bid->id)) }}" class="btn-pay float-end">
-                            <i class="fas fa-credit-card me-1"></i>Pay Now
-                        </a>
+                        <form action="{{ route('server-listing.bids.add-to-cart', encrypt($bid->id)) }}" method="POST" class="float-end">
+                            @csrf
+                            <button type="submit" class="btn-pay">
+                                <i class="fas fa-credit-card me-1"></i>Pay Now
+                            </button>
+                        </form>
                     @endif
                 </div>
             </div>

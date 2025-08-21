@@ -34,11 +34,9 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
 Route::controller(BidController::class)->middleware('auth:web')->name('bids.')->group(function () {
     Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');
     Route::post('/place-bid/{slug}', 'placeBid')->name('place-bid');
-    Route::get('/payment/{bid}', 'payment')->name('payment');
+    Route::post('/add-to-cart/{encryptedId}', 'addToCart')->name('add-to-cart');
 });
 
 Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
-    Route::post('/{gateway:type}/pay/{bid}', 'pay')->name('pay');
-    Route::get('/{gateway:type}/success', 'success')->name('success');
-    Route::get('/{gateway:type}/failure', 'failure')->name('failure');
+    Route::get('/success', 'success')->name('success');
 });

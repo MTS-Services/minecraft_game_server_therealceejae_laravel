@@ -5,12 +5,14 @@ namespace Azuriom\Plugin\ServerListing\Providers;
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\ActionLog;
 use Azuriom\Models\Permission;
+use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Plugin\ServerListing\Models\ServerStats;
 use Azuriom\Plugin\ServerListing\Models\ServerVote;
 use Azuriom\Plugin\ServerListing\View\Composers\ServerListingAdminDashboardComposer;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\View;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ServerListingServiceProvider extends BasePluginServiceProvider
 {
@@ -79,6 +81,10 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
         //         'created' => 'server-listing::admin.logs.stats.created',
         //     ],
         // ]);
+
+        Relation::morphMap([
+            'server_bid' => ServerBid::class,
+        ]);
     }
 
     /**
