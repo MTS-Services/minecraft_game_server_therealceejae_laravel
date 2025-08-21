@@ -68,9 +68,9 @@ class HomeController extends Controller
                 $query->where('minecraft_version', request()->get('minecraft_version'));
             }
             if ($search) {
-                $data['servers'] = $query->approved()->orderBy('is_featured', 'desc')->orderBy('is_premium', 'desc')->orderBy('position', 'asc')->orderBy('name');
+                $data['servers'] = $query->approved()->orderByRank();
             } else {
-                $data['servers'] = $query->approved()->notPremium()->orderByPopularity();
+                $data['servers'] = $query->approved()->orderBy('server_rank', 'asc');
             }
 
 
@@ -91,16 +91,16 @@ class HomeController extends Controller
                     ->take(10)
                     ->get();
 
-                // --- Premium Servers Pagination ---
-                // Get 'premium_page' from the request, default to 1
-                $premiumPage = request()->query('premium_page', 1);
-                $data['premiumServers'] = ServerListing::with(['country', 'user', 'serverTags'])
-                    ->notFeatured()
-                    ->premium()
-                    ->approved()
-                    ->orderBy('position', 'asc')
-                    // Use 'premium_page' as the pagination parameter
-                    ->paginate(10, ['*'], 'premium_page', $premiumPage);
+                // // --- Premium Servers Pagination ---
+                // // Get 'premium_page' from the request, default to 1
+                // $premiumPage = request()->query('premium_page', 1);
+                // $data['premiumServers'] = ServerListing::with(['country', 'user', 'serverTags'])
+                //     ->notFeatured()
+                //     ->premium()
+                //     ->approved()
+                //     ->orderBy('position', 'asc')
+                //     // Use 'premium_page' as the pagination parameter
+                //     ->paginate(10, ['*'], 'premium_page', $premiumPage);
             }
         }
 

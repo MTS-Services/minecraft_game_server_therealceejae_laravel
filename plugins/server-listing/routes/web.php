@@ -21,15 +21,20 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', [ServerListingHomeController::class, 'index']);
 
 Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
-// Voting Routes 
-Route::controller(VoteController::class)->prefix('vote')->name('vote.')->group(function () {
-    Route::get('/{slug}',  'index')->name('index');
-    Route::post('/{slug}', 'store')->name('store');
-});
+Route::get('/server/favorite/{slug}', [ServerListingController::class, 'favorite'])->name('favorite')->middleware('auth:web');
+// Voting Routes
+// Route::controller(VoteController::class)->prefix('vote')->name('vote.')->group(function () {
+//     Route::get('/{slug}',  'index')->name('index');
+//     Route::post('/{slug}', 'store')->name('store');
+// });
 
-Route::post('/check-connection', [CheckConnectionController::class, 'checkConnection'])->name('check-connection');
+Route::post('/check-connection', [CheckConnectionController::class, 'checkConnection'])->name('check-connection')->middleware('auth:web');
 // Route::get('/submission', [ServerListingController::class, 'submission'])->name('submission')->middleware('auth:web');
 Route::controller(ServerListingController::class)->middleware('auth:web')->prefix('submission')->group(function () {
     Route::get('/', 'submission')->name('submission');
     Route::post('/store', 'store')->name('submission.store');
 });
+
+Route::get('{slug}/vote', [VoteController::class, 'showVotePage'])->name('vote');
+Route::post('{slug}/vote', [VoteController::class, 'submitVote'])->name('vote.submit');
+Route::post('{slug}/vote/status', [VoteController::class, 'checkVoteStatus'])->name('vote.status');

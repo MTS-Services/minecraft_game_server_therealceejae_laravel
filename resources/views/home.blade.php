@@ -426,8 +426,9 @@
 
         .simple-server-badge {
             background: linear-gradient(135deg, var(--bg-dark), var(--text-secondary));
-            padding: 0.4rem 0.8rem;
-            border-radius: 10px;
+            padding: 0.3rem 0.5rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.7rem;
             color: white;
         }
 
@@ -1122,6 +1123,7 @@
                                 </div>
                                 <div class="card-body p-0 premium-top10-body">
                                     @foreach ($topServers as $index => $topServer)
+                                        {{-- <a href="{{ route('server-listing.vote', $topServer->slug) }}">Vote</a> --}}
                                         <!-- Desktop Row -->
                                         <div class="premium-top10-row desktop-server-row">
                                             <a href="{{ route('server-listing.details', $topServer->slug) }}"
@@ -1139,7 +1141,7 @@
                                                             <div class="premium-rank-badge">
                                                                 <i class="bi bi-gem text-dark"></i>
                                                                 <span
-                                                                    class="fw-bold premium-rank-text">#{{ $index + 1 }}</span>
+                                                                    class="fw-bold premium-rank-text">{{ $index + 1 }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1292,7 +1294,7 @@
             @endif
 
             {{-- Premium Servers - Premium Design --}}
-            @if (isset($premiumServers) && count($premiumServers) > 0)
+            {{-- @if (isset($premiumServers) && count($premiumServers) > 0)
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="premium-container">
@@ -1507,7 +1509,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endif --}}
 
             {{-- Middle Description --}}
             <div class="row">
@@ -1565,11 +1567,14 @@
                                                         <img src="{{ $popularServer->logo_image_url }}"
                                                             alt="Server Logo">
                                                     </div>
-                                                    <div class="server-rank">
-                                                        <div class="simple-server-badge">
-                                                            <i class="bi bi-trophy text-white"></i>
+                                                    <div
+                                                        class="{{ $popularServer->is_premium ? 'premium-rank' : 'server-rank' }}">
+                                                        <div
+                                                            class="{{ $popularServer->is_premium ? 'premium-rank-badge' : 'simple-server-badge' }}">
+                                                            <i
+                                                                class="{{ $popularServer->is_premium ? 'bi bi-gem text-black' : 'bi bi-trophy text-white' }} "></i>
                                                             <span
-                                                                class="fw-bold simple-server-text">#{{ $index + 3 }}</span>
+                                                                class="fw-bold {{ $popularServer->is_premium ? 'premium-server-text' : 'simple-server-text' }}">#{{ $popularServer->server_rank }}</span>
                                                         </div>
                                                     </div>
                                                 </div>

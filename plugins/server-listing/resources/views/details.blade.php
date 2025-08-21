@@ -447,15 +447,22 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <a href="{{ route('server-listing.vote.index', $serverDetail->slug) }}" class="btn btn-success">
-                    <i class="fas fa-thumbs-up me-1"></i> Vote
+                <a href="{{ route('server-listing.vote', $serverDetail->slug) }}" class="btn btn-success">
+                    <i class="bi bi-hand-thumbs-up me-1"></i> Vote
                 </a>
-                <button class="btn btn-warning"><i class="bi bi-house"></i></button>
-                <button class="btn btn-warning"><i class="bi bi-info-circle"></i></button>
+                <a href="{{ route('home') }}" class="btn btn-warning"><i class="bi bi-house"></i></a>
+                <a href="{{ route('server-listing.favorite', $serverDetail->slug) }}" class="btn btn-warning">
+                    @if ($serverDetail->isSelfFavorite())
+                        <i class="bi bi-heart-fill text-danger"></i>
+                    @else
+                        <i class="bi bi-heart text-danger"></i>
+                    @endif
+                </a>
+                {{-- <button class="btn btn-warning"><i class="bi bi-info-circle"></i></button>
                 <button class="btn btn-warning"><i class="bi bi-question-circle"></i></button>
                 <button class="btn btn-warning"><i class="bi bi-bar-chart"></i></button>
-                <button class="btn btn-warning"><i class="bi bi-heart"></i></button>
-                <button class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+
+                <button class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button> --}}
             </div>
         </div>
 
@@ -561,27 +568,28 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between py-2 border-bottom">
                                 <span><i class="fas fa-clock me-2"></i> Uptime</span>
-                                <span class="text-success fw-bold">100%</span>
+                                <span class="text-success fw-bold">{{ $serverDetail->getUpTimePercentage() }}%</span>
                             </div>
 
                             <div class="d-flex justify-content-between py-2 border-bottom">
                                 <span><i class="fas fa-thumbs-up me-2"></i> Vote(s)</span>
-                                <span>6828</span>
+                                <span>{{ $serverDetail->total_votes }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between py-2 border-bottom">
                                 <span><i class="fas fa-trophy me-2"></i> Rank</span>
-                                <span>1</span>
+                                <span>{{ $serverDetail->getRankByVotes() }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between py-2 border-bottom">
                                 <span><i class="fas fa-star me-2"></i> Score</span>
-                                <span>13131</span>
+                                <span>{{ $serverDetail->calculateRankScore() }}</span>
                             </div>
+
 
                             <div class="d-flex justify-content-between pt-2">
                                 <span><i class="fas fa-heart me-2"></i> Favorited</span>
-                                <span>52</span>
+                                <span>{{ $serverDetail->favorites_count }}</span>
                             </div>
                         </div>
                     </div>

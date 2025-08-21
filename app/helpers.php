@@ -300,7 +300,7 @@ if (!function_exists('scheduler_running')) {
 }
 
 if (!function_exists('removeHttpFromUrl')) {
-    function removeHttpFromUrl($url): string | null
+    function removeHttpFromUrl($url): string|null
     {
         return $url ? str_replace(['https://', 'http://'], '', $url) : $url;
     }
@@ -324,12 +324,13 @@ if (!function_exists('tagsBgColors')) {
     }
 }
 
-
-function remove_before_dash(string $text): string
+if (!function_exists('remove_before_dash')) {
+    function remove_before_dash(string $text): string
     {
         if (strpos($text, '-') !== false) {
             return substr($text, strpos($text, '-') + 1);
         }
         return $text;
     }
+}
 

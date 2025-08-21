@@ -2,6 +2,7 @@
 
 namespace Azuriom\Plugin\ServerListing\Models;
 
+use Auth;
 use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\User;
 use Carbon\Carbon;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class ServerListing extends Model
@@ -132,12 +134,12 @@ class ServerListing extends Model
 
     public function votes(): HasMany
     {
-        return $this->hasMany(ServerVote::class);
+        return $this->hasMany(ServerVote::class, 'server_id', 'id');
     }
 
     public function stats(): HasMany
     {
-        return $this->hasMany(ServerStats::class);
+        return $this->hasMany(ServerStats::class, 'server_id', 'id');
     }
     public function getFullAddressAttribute(): string
     {
@@ -245,9 +247,7 @@ class ServerListing extends Model
     {
         return $query->orderByDesc('is_featured')
             ->orderByDesc('is_premium')
-            ->orderByDesc('vote_count')
-            ->orderBy('position')
-            ->orderBy('name');
+            ->orderBy('server_rank', 'asc');
     }
 
     public function getOnlineLabelAttribute(): string
@@ -311,4 +311,159 @@ class ServerListing extends Model
 
         return null;
     }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(FavoriteServer::class, 'server_id', 'id');
+    }
+
+    public function isSelfFavorite(): bool
+    {
+        return $this->favorites()->where('user_id', Auth::id())->exists();
+    }
+
+    public function calculateRankScore(): float
+    {
+        // ⚖️ Weights (adjust as needed)
+        $voteWeight = 2;   // each vote worth 2 pts
+        $favoriteWeight = 5;   // each favorite worth 5 pts
+        $playerWeight = 3;   // avg players worth 3 pts
+        $uptimeWeight = 10;  // uptime worth 10 pts
+        $premiumBoost = 50;  // premium servers get +50 pts
+
+        // ✅ Votes & Favorites
+        $votes = $this->vote_count * $voteWeight;
+        $favorites = $this->favorites()->count() * $favoriteWeight;
+
+        // ✅ Player activity → use avg_players from stats table (if exists), otherwise fallback to current
+        $avgPlayers = $this->stats()->avg('avg_players') ?? $this->current_players;
+        $maxPlayers = $this->max_players > 0 ? $this->max_players : 1; // avoid div by 0
+
+        $playerActivity = ($avgPlayers / $maxPlayers) * 100;
+        $playerScore = $playerActivity * $playerWeight;
+
+        // ✅ Uptime (use latest stats record if available)
+        $latestStats = $this->stats()->latest('date')->first();
+        $uptimePercentage = $latestStats?->uptime_percentage ?? 0;
+        $uptimeScore = $uptimePercentage * $uptimeWeight / 100;
+
+        // ✅ Premium boost
+        $boost = $this->is_premium ? $premiumBoost : 0;
+
+        // 🔥 Final rank score
+        $score = $votes + $favorites + $playerScore + $uptimeScore + $boost;
+
+        return round($score, 2);
+    }
+
+    public function getRankByVotes(): int
+    {
+        // Count how many servers have strictly higher vote_count
+        $higherVotes = static::where('vote_count', '>', $this->vote_count)->count();
+
+        // Count how many servers have the same vote_count but a smaller id (tie-breaker)
+        $sameVotesBefore = static::where('vote_count', $this->vote_count)
+            ->where('id', '<', $this->id)
+            ->count();
+
+        // Unique rank = higher votes + earlier same-vote servers + 1
+        return $higherVotes + $sameVotesBefore + 1;
+    }
+
+
+    public function getUpTimePercentage(): float
+    {
+        // Get the latest stats record
+        $latestStats = $this->stats()->latest('date')->first();
+
+        // If no stats available, return 0%
+        if (!$latestStats) {
+            return 0.0;
+        }
+
+        // Return uptime percentage from the latest stats
+        return $latestStats->uptime_percentage ?? 0.0;
+    }
+
+
+    // public function getDailyStats($date = null): array
+    // {
+    //     $date = $date ? now()->parse($date) : today();
+
+    //     // Votes
+    //     $uniqueVotes = $this->votes()
+    //         ->whereDate('created_at', $date)
+    //         ->count();
+
+    //     $totalVotes = $this->votes()
+    //         ->whereDate('created_at', $date)
+    //         ->count();
+
+    //     // Fake players & uptime (until you add real ping logging)
+    //     $avgPlayers = $totalVotes > 0 ? rand(1, 20) : 0;  // just a placeholder
+    //     $maxPlayers = $totalVotes > 0 ? rand($avgPlayers, 50) : 0;
+    //     $uptime = $this->is_online ? 100.00 : 0.00;
+
+    //     return [
+    //         'unique_votes' => $uniqueVotes,
+    //         'total_votes' => $totalVotes,
+    //         'avg_players' => $avgPlayers,
+    //         'max_players_reached' => $maxPlayers,
+    //         'uptime_percentage' => $uptime,
+    //         'position' => 0,
+    //     ];
+    // }
+
+    public function getDailyStats($date = null): array
+    {
+        $date = $date ? now()->parse($date) : today();
+
+        // Votes
+        $uniqueVotes = $this->votes()
+            ->whereDate('created_at', $date)
+            ->count();
+
+        $totalVotes = $this->votes()
+            ->whereDate('created_at', $date)
+            ->count();
+
+        // ---- PING SERVER VIA API ----
+        $ip = $this->ip;     // make sure you have `ip` and `port` columns in your servers table
+        $port = $this->port ?? 25565;
+
+        $avgPlayers = 0;
+        $maxPlayers = 0;
+        $uptime = 0.00;
+
+        try {
+            $response = Http::get("https://api.mcsrvstat.us/2/{$ip}:{$port}");
+
+            if ($response->successful()) {
+                $data = $response->json();
+
+                if (!empty($data['online']) && $data['online'] === true) {
+                    $uptime = 100.00;
+
+                    $onlinePlayers = $data['players']['online'] ?? 0;
+                    $maxPlayers = $data['players']['max'] ?? 0;
+
+                    // For now, avg = current (since no history is stored)
+                    $avgPlayers = $onlinePlayers;
+                }
+            }
+        } catch (\Throwable $e) {
+            // If ping fails, mark offline
+            $uptime = 0.00;
+        }
+
+        return [
+            'unique_votes' => $uniqueVotes,
+            'total_votes' => $totalVotes,
+            'avg_players' => $avgPlayers,
+            'max_players_reached' => $maxPlayers,
+            'uptime_percentage' => $uptime,
+            'position' => 0,
+        ];
+    }
+
 }
