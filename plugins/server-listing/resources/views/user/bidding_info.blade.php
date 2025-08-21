@@ -448,12 +448,15 @@
                 border-radius: 5px;
                 transition: all 0.3s ease;
             }
+
             #biddingModal .place-bid-btn:hover {
                 background: linear-gradient(135deg, #17a2b8, #20c997);
             }
+
             #biddingModal .form-control {
                 outline: none ! important;
             }
+
             #biddingModal .form-control:focus {
                 border-color: var(--purple);
             }
@@ -461,17 +464,18 @@
     @endpush
 
     <div class="container mt-4">
-        @if(biddingIsOpen())
+        @if (biddingIsOpen())
             <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true"
                 data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered modal-md">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="biddingModalLabel">Place a Bid</h1>
-                            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('server-listing.place-bid', $serverList->slug) }}" method="POST">
+                            <form action="{{ route('server-listing.bids.place-bid', $serverList->slug) }}" method="POST">
                                 @csrf
                                 <!-- Bid Amount -->
                                 <div class="mb-3">
@@ -535,8 +539,8 @@
                         </button>
                     @endif
 
-                    @if (paymentIsOpen())
-                        <a href="#" class="btn-pay float-end">
+                    @if (isset($bid))
+                        <a href="{{ route('server-listing.bids.payment', encrypt($bid->id)) }}" class="btn-pay float-end">
                             <i class="fas fa-credit-card me-1"></i>Pay Now
                         </a>
                     @endif

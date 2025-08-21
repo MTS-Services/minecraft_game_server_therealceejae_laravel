@@ -3,7 +3,7 @@
 namespace Azuriom\Plugin\ServerListing\Models;
 
 use Azuriom\Models\Traits\HasTablePrefix;
-use Azuriom\Models\User;
+use Azuriom\Plugin\ServerListing\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +17,6 @@ class ServerListing extends Model
     protected $table = 'server_listing_servers';
 
     protected $fillable = [
-
         'user_id',
         'country_id',
         'name',
@@ -127,7 +126,7 @@ class ServerListing extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function votes(): HasMany

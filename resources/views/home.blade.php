@@ -1035,7 +1035,7 @@
             <div class="card-body">
                 <p>Your bidding amount is: $50</p>
 
-                <a href="{{ route('server-listing.payments.payment') }}" class="btn btn-primary"> Pay now</a>
+                {{-- <a href="" class="btn btn-primary"> Pay now</a> --}}
 
                 {{-- <form action="{{ route('server-listing.payments.payment')}}" method="POST">
                     @csrf

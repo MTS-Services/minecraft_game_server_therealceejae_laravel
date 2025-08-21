@@ -31,24 +31,14 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
     Route::get('/dashboard', 'userDashboard')->name('user-dashboard');
     Route::get('/server-list', 'serverList')->name('list');
 });
-Route::controller(BidController::class)->middleware('auth:web')->group(function () {
+Route::controller(BidController::class)->middleware('auth:web')->name('bids.')->group(function () {
     Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');
     Route::post('/place-bid/{slug}', 'placeBid')->name('place-bid');
+    Route::get('/payment/{bid}', 'payment')->name('payment');
 });
 
-// Route::prefix('payments')->name('payments.')->group(function () {
-//     Route::middleware('auth')->group(function () {
-//         Route::get('/payment', [PaymentController::class, 'payment'])->name('payment');
-//         Route::post('/{gateway:type}/pay', [PaymentController::class, 'pay'])->name('pay');
-//     });
-
-//     Route::get('/{gateway:type}/success', [PaymentController::class, 'success'])->name('success');
-//     Route::get('/{gateway:type}/failure', [PaymentController::class, 'failure'])->name('failure');
-// });
-
 Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
-    Route::get('/payment', 'payment')->name('payment');
-    Route::post('/{gateway:type}/pay', 'pay')->name('pay');
+    Route::post('/{gateway:type}/pay/{bid}', 'pay')->name('pay');
     Route::get('/{gateway:type}/success', 'success')->name('success');
     Route::get('/{gateway:type}/failure', 'failure')->name('failure');
 });

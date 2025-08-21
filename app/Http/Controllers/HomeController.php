@@ -16,7 +16,6 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-
         if (plugins()->isEnabled('server-listing')) {
             $data['server_countries'] = ServerCountry::active()->ordered()->get();
             $data['tags'] = Tag::active()->ordered()->get();
