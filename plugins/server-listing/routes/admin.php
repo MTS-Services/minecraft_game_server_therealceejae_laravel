@@ -2,6 +2,7 @@
 
 use Azuriom\Plugin\ServerListing\Controllers\Admin\ServerListingController;
 use Azuriom\Plugin\ServerListing\Controllers\Admin\TagController;
+use Azuriom\Plugin\ServerListing\Controllers\VoteManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +37,9 @@ Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(fu
     Route::put('/tags/{tag}', 'update')->name('edit');
     Route::delete('/tags/{tag}', 'destroy')->name('destroy');
 });
+
+Route::get('votes', [VoteManagementController::class, 'index'])->name('votes');
+Route::get('votes/{server}', [VoteManagementController::class, 'show'])->name('votes.show');
+Route::post('votes/{server}/test-votifier', [VoteManagementController::class, 'testVotifier'])->name('votes.test-votifier');
+Route::post('votes/{vote}/resend', [VoteManagementController::class, 'resendVote'])->name('votes.resend');
+Route::get('votes/{server}/export', [VoteManagementController::class, 'exportVotes'])->name('votes.export');

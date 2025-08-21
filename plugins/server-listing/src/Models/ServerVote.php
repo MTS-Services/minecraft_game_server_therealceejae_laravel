@@ -3,9 +3,8 @@
 namespace Azuriom\Plugin\ServerListing\Models;
 
 use Azuriom\Models\Traits\HasTablePrefix;
-use Azuriom\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class ServerVote extends Model
 {
@@ -14,58 +13,41 @@ class ServerVote extends Model
 
     protected $fillable = [
         'server_id',
-        'user_id',
+        'username',
         'ip_address',
         'voted_at',
-        'expires_at',
-        'position',
+        'next_vote_at',
+        'reward_sent',
+        'votifier_response',
+        'status'
     ];
 
     protected $casts = [
         'voted_at' => 'datetime',
-        'expires_at' => 'datetime',
-        'server_id' => 'integer',
-        'user_id' => 'integer',
-        'position' => 'integer',
+        'next_vote_at' => 'datetime',
+        'reward_sent' => 'boolean',
     ];
 
-    public function server(): BelongsTo
+    public function server()
     {
-        return $this->belongsTo(ServerListing::class);
+        return $this->belongsTo(ServerListing::class, 'server_id', 'id');
     }
 
-    public function user(): BelongsTo
+    public function canVoteAgain()
     {
-        return $this->belongsTo(User::class);
+        return $this->next_vote_at <= now();
     }
 
-    public function scopeValid($query)
+    public static function getTopVoters($serverId, $limit = 10)
     {
-        return $query->where('expires_at', '>', now());
-    }
-
-    public function scopeExpired($query)
-    {
-        return $query->where('expires_at', '<=', now());
-    }
-
-    public function scopeForUser($query, ?User $user = null)
-    {
-        if ($user) {
-            return $query->where('user_id', $user->id);
-        }
-
-        return $query->where('ip_address', request()->ip());
-    }
-
-    public function scopeToday($query)
-    {
-        return $query->whereDate('voted_at', today());
-    }
-
-    public function scopeThisMonth($query)
-    {
-        return $query->whereMonth('voted_at', now()->month)
-            ->whereYear('voted_at', now()->year);
+        return self::where('server_id', $serverId)
+            ->select('username', DB::raw('COUNT(*) as vote_count'))
+            ->where('voted_at', '>=', now()->subMonth())
+            ->groupBy('username')
+            ->orderByDesc('vote_count')
+            ->limit($limit)
+            ->get();
     }
 }
+
+

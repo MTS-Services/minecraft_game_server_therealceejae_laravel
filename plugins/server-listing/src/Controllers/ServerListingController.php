@@ -27,8 +27,7 @@ class ServerListingController extends Controller
 
     public function details(string $slug)
     {
-        $serverDetail = ServerListing::where('slug', $slug)->firstOrFail();
-        $serverDetail->load(['user', 'serverTags', 'country']);
+        $serverDetail = ServerListing::with(['user', 'serverTags', 'country', 'favorites'])->withCount('favorites')->where('slug', $slug)->firstOrFail();
         return view('server-listing::details', compact('serverDetail'));
     }
 
@@ -117,5 +116,27 @@ class ServerListingController extends Controller
             ->paginate(10);
 
         return view('server-listing::user.server_listing', compact('promotedListings', 'sListings'));
+    }
+
+
+    public function favorite(string $slug)
+    {
+        $server = ServerListing::where('slug', $slug)->firstOrFail();
+
+        if (Auth::check()) {
+            $favorite = $server->favorites()->where('user_id', Auth::id())->first();
+
+            if ($favorite) {
+                $favorite->delete();
+                return back()->with('success', trans('messages.status.unfavorite'));
+            } else {
+                $server->favorites()->create([
+                    'user_id' => Auth::id(),
+                ]);
+                return back()->with('success', trans('messages.status.favorite'));
+            }
+        } else {
+            return back()->with('error', trans('messages.status.unauthorized'));
+        }
     }
 }

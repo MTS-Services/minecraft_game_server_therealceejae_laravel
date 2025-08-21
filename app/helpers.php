@@ -300,7 +300,7 @@ if (!function_exists('scheduler_running')) {
 }
 
 if (!function_exists('removeHttpFromUrl')) {
-    function removeHttpFromUrl($url): string | null
+    function removeHttpFromUrl($url): string|null
     {
         return $url ? str_replace(['https://', 'http://'], '', $url) : $url;
     }

@@ -6,6 +6,7 @@ use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\ActionLog;
 use Azuriom\Models\Permission;
 use Azuriom\Plugin\ServerListing\Models\ServerBid;
+use Azuriom\Plugin\ServerListing\Console\Commands\UpdateStatsDaily;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Plugin\ServerListing\Models\ServerStats;
 use Azuriom\Plugin\ServerListing\Models\ServerVote;
@@ -43,6 +44,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
         $this->registerSchedule();
 
         $this->commands([
+            UpdateStatsDaily::class,
         ]);
 
 
@@ -92,8 +94,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('shop:subscriptions')->hourly();
-        // $schedule->command('shop:payments')->hourly();
+        $schedule->command('server-listing:update-stats-daily')->everyMinute();
     }
 
     /**
