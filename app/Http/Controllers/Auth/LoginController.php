@@ -81,7 +81,7 @@ class LoginController extends Controller
 
         $this->ensureUserCanLogin($this->credentials($request));
 
-        if (! $this->guard()->once($this->credentials($request))) {
+        if (!$this->guard()->once($this->credentials($request))) {
             $this->incrementLoginAttempts($request);
 
             return $this->sendFailedLoginResponse($request);
@@ -114,7 +114,7 @@ class LoginController extends Controller
             return $this->sendMaintenanceResponse($request);
         }
 
-        if (! $oauth && $user->hasTwoFactorAuth()) {
+        if (!$oauth && $user->hasTwoFactorAuth()) {
             return $this->redirectTo2fa($request, $user);
         }
 
@@ -146,7 +146,7 @@ class LoginController extends Controller
      */
     public function handleProviderCallback(Request $request): Response
     {
-        abort_if(! game()->loginWithOAuth(), 404);
+        abort_if(!game()->loginWithOAuth(), 404);
 
         $userProfile = Socialite::driver(game()->getSocialiteDriverName())->user();
         $user = User::firstWhere('game_id', (string) $userProfile->getId());
@@ -165,7 +165,7 @@ class LoginController extends Controller
                 : redirect($this->redirectPath());
         }
 
-        if (! $user->hasUploadedAvatar()) {
+        if (!$user->hasUploadedAvatar()) {
             $user->avatar = $userProfile->getAvatar();
         }
 
@@ -212,7 +212,7 @@ class LoginController extends Controller
      */
     public function showCodeForm(Request $request)
     {
-        if (! $request->session()->has('login.2fa.id')) {
+        if (!$request->session()->has('login.2fa.id')) {
             return to_route('login');
         }
 
@@ -230,7 +230,7 @@ class LoginController extends Controller
     {
         $this->validate($request, ['code' => 'required']);
 
-        if (! $request->session()->has('login.2fa.id')) {
+        if (!$request->session()->has('login.2fa.id')) {
             throw new AuthenticationException('Unauthenticated.', [$this->guard()], route('login'));
         }
 
@@ -238,7 +238,7 @@ class LoginController extends Controller
         $user = User::findOrFail($request->session()->get('login.2fa.id'));
         $code = $request->input('code');
 
-        if (! $user->isValidTwoFactorCode($code)) {
+        if (!$user->isValidTwoFactorCode($code)) {
             throw ValidationException::withMessages([
                 'code' => trans('auth.2fa.invalid'),
             ]);
@@ -311,7 +311,7 @@ class LoginController extends Controller
 
     protected function isMaintenance(?User $user = null): bool
     {
-        if (! setting('maintenance.enabled', false)) {
+        if (!setting('maintenance.enabled', false)) {
             return false; // Maintenance is not enabled
         }
 

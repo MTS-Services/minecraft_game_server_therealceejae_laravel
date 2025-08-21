@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
 Route::get('/server/favorite/{slug}', [ServerListingController::class, 'favorite'])->name('favorite')->middleware('auth:web');
+Route::get('/my-fevorites-servers', [ServerListingController::class, 'my_favorite_servers'])->name('my_favorite_servers')->middleware('auth:web');
 // Voting Routes
 // Route::controller(VoteController::class)->prefix('vote')->name('vote.')->group(function () {
 //     Route::get('/{slug}',  'index')->name('index');

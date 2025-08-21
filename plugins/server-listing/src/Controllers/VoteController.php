@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Log;
 class VoteController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('captcha')->only('submitVote');
+    }
+
     protected VotifierService $votifierService;
 
     public function showVotePage($server_Slug)

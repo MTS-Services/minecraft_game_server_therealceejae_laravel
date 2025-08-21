@@ -1169,9 +1169,13 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 z-3 text-center">
-                                            <a href="{{ route('server-listing.bids.bidding', $sList->slug) }}"
-                                                class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
+                                        <div class="col-md-2">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                @foreach ($sList->serverTags as $tag)
+                                                    <span
+                                                        class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1240,9 +1244,11 @@
                                                     <small class="mobile-stat-label">{{ __('Max') }}</small>
                                                 </div>
                                             </div>
-                                            <div class="mobile-tags text-center">
-                                                <a href="{{ route('server-listing.bids.bidding', $sList->slug) }}"
-                                                    class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
+                                            <div class="mobile-tags">
+                                                @foreach ($sList->serverTags as $tag)
+                                                    <span
+                                                        class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
