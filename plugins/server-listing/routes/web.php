@@ -41,10 +41,10 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
 Route::controller(BidController::class)->middleware('auth:web')->name('bids.')->group(function () {
     Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');
     Route::post('/place-bid/{slug}', 'placeBid')->name('place-bid');
-    Route::post('/add-to-cart/{encryptedId}', 'addToCart')->name('add-to-cart');
 });
 
 Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
+    Route::post('/payment/{encryptedId}', 'payment')->name('payment');
     Route::get('/success', 'success')->name('success');
 });
 

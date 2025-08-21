@@ -22,7 +22,7 @@
         @forelse($gateways as $gateway)
             <div class="col-md-3">
                 <div class="card">
-                    <a href="{{ isset($route) ? $route($gateway->type) : route('server-listing.payments.pay', $gateway->type) }}"
+                    <a href="{{ isset($route) ? $route($gateway->type) : route('shop.payments.pay', $gateway->type) }}"
                         class="payment-method">
                         <div class="card-body text-center">
                             <img src="{{ $gateway->paymentMethod()->image() }}" style="max-height: 45px" class="img-fluid"

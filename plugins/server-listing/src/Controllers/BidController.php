@@ -59,19 +59,4 @@ class BidController extends Controller
         return redirect()->back();
         // return to_route('server-listing.bids.payment', $bid);
     }
-
-    public function addToCart(Request $request, string $encryptedId)
-    {
-        $bid = ServerBid::findOrFail(decrypt($encryptedId));
-
-        $cart = Cart::fromSession($request->session());
-
-        if ($cart->has($bid)) {
-            return to_route('shop.cart.index')->with('error', 'This bid is already in your cart.');
-        }
-
-        $cart->add($bid);
-
-        return to_route('shop.cart.index')->with('success', 'Bid added to cart.');
-    }
 }

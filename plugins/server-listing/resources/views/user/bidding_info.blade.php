@@ -126,27 +126,6 @@
                 overflow: hidden;
             }
 
-            .section-header::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                animation: shimmer 3s infinite;
-            }
-
-            @keyframes shimmer {
-                0% {
-                    left: -100%;
-                }
-
-                100% {
-                    left: 100%;
-                }
-            }
-
             .bidding-table {
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
@@ -540,7 +519,8 @@
                     @endif
 
                     @if (isset($bid))
-                        <form action="{{ route('server-listing.bids.add-to-cart', encrypt($bid->id)) }}" method="POST" class="float-end">
+                        <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}" method="POST"
+                            class="float-end">
                             @csrf
                             <button type="submit" class="btn-pay">
                                 <i class="fas fa-credit-card me-1"></i>Pay Now
