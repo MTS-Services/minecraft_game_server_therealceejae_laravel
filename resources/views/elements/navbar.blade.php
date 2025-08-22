@@ -61,7 +61,7 @@
                         </li>
                     @endif
                 @else
-                    @include('elements.notifications')
+                    {{-- @include('elements.notifications') --}}
 
                     <li class="nav-item dropdown">
                         <a id="userDropdown" class="nav-link dropdown-toggle" href="#" role="button"

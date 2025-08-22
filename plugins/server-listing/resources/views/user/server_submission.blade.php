@@ -599,12 +599,6 @@
             });
         </script>
     @endpush
-
-
-    <div class="minecraft-header position-relative overflow-hidden">
-        <img src="https://placehold.co/1080x200/png?text=Minecraft+Landscape" alt="Minecraft Landscape" class="w-100">
-        <div class="position-absolute top-0 start-0 w-100 h-100"></div>
-    </div>
     <div class="container py-4">
 
         <div class="alert alert-info">

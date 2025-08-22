@@ -1095,31 +1095,22 @@
 
         <!-- Action Buttons -->
         <div class="mb-4 action-buttons">
-            <button class="btn btn-warning text-white">
+            <a href="{{ route('server-listing.submission') }}" class="btn btn-warning text-white">
                 <i class="bi bi-plus-lg"></i> Register a Server
-            </button>
-            {{-- <button class="btn btn-warning text-white">
-                <i class="bi bi-bell"></i> Manage Notifications
-            </button> --}}
-            <button class="btn btn-warning text-white">
-                <i class="bi bi-star-fill"></i> Premium Option
-            </button>
+            </a>
         </div>
 
         <!-- Table -->
 
         {{-- Promoted Servers --}}
-        @if (isset($promotedListings) && count($promotedListings) > 0)
+        @if (isset($myServers) && count($myServers) > 0)
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="card border-0 shadow-sm server-card premium-card">
-                        <div class="server-card-header premium-top10-header">
-                            <h4 class="mb-0 fw-bold text-white"><i
-                                    class="bi bi-stars text-white me-2"></i>{{ __('Promoted Servers') }}</h4>
-                        </div>
+
 
                         <div class="card-body p-0">
-                            @foreach ($promotedListings as $index => $sList)
+                            @foreach ($myServers as $index => $sList)
                                 <!-- Desktop Row -->
                                 <div class="server-row desktop-server-row">
                                     <a href="{{ route('server-listing.details', $sList->slug) }}" class="details-link"></a>
@@ -1132,7 +1123,8 @@
                                                 <div class="server-rank">
                                                     <div class="simple-server-badge" style="background: #ffc107;">
                                                         <i class="bi bi-star-fill text-white"></i>
-                                                        <span class="fw-bold simple-server-text">#{{ $index + 1 }}</span>
+                                                        <span
+                                                            class="fw-bold simple-server-text">#{{ $sList->server_rank }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1257,205 +1249,6 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        @if (isset($sListings) && count($sListings) > 0)
-            {{-- Popular Servers --}}
-            <div class="row">
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm server-card">
-                        <div class="server-card-header desktop-table-header">
-                            <div class="row align-items-center text-white">
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold"><i
-                                            class="bi bi-hash text-white me-2"></i>{{ __('Rank') }}
-                                    </h5>
-                                </div>
-                                <div class="col-md-4">
-                                    <h5 class="mb-0 fw-bold"><i
-                                            class="bi bi-server text-white me-2"></i>{{ __('Server') }}
-                                    </h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold text-center"><i
-                                            class="bi bi-people text-white me-2"></i>{{ __('Players') }}</h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold text-center"><i
-                                            class="bi bi-circle text-white me-2"></i>{{ __('Status') }}</h5>
-                                </div>
-                                <div class="col-md-2">
-                                    <h5 class="mb-0 fw-bold"><i
-                                            class="bi bi-tags text-white me-2"></i>{{ __('Bidding') }}
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-body p-0">
-                            @foreach ($sListings as $index => $sList)
-                                <!-- Desktop Row -->
-                                <div class="server-row desktop-server-row">
-                                    <a href="{{ route('server-listing.details', $sList->slug) }}"
-                                        class="details-link"></a>
-                                    <div class="row align-items-center">
-                                        <div class="col-md-2">
-                                            <div class="d-flex align-items-center">
-                                                <div class="server-logo me-3">
-                                                    <img src="{{ $sList->logo_image_url }}" alt="Server Logo">
-                                                </div>
-                                                <div class="server-rank">
-                                                    <div class="simple-server-badge">
-                                                        <i class="bi bi-trophy text-white"></i>
-                                                        <span
-                                                            class="fw-bold simple-server-text">#{{ $index + 3 }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="server-banner">
-                                                <img src="{{ $sList->banner_image_url }}" alt="Server Banner">
-                                                <div class="banner-overlay">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="badge version-badge me-2">
-                                                                <i
-                                                                    class="bi bi-gear me-1"></i>{{ remove_before_dash($sList->minecraft_version) }}
-                                                            </span>
-
-                                                            <img style="height: 12px; width: 20px;" class="me-1"
-                                                                src="https://flagcdn.com/{{ strtolower($sList?->country?->code) }}.svg"
-                                                                alt="">
-
-                                                            <span class="text-white text-decoration-none">
-                                                                <small>{{ removeHttpFromUrl($sList->server_ip) }}</small>
-                                                            </span>
-                                                        </div>
-                                                        <button class="btn btn-sm copy-btn"
-                                                            onclick="copyIP('{{ $sList->server_ip }}')">
-                                                            <i class="bi bi-copy"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="text-center">
-                                                <span class="player-count">
-                                                    {{ $sList->current_players }}/{{ $sList->max_players }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="text-center">
-                                                <span class="badge status-badge {{ $sList->is_online ?: 'offline' }}">
-                                                    <i
-                                                        class=" me-1 {{ $sList->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($sList->online_label) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 z-3 text-center">
-                                            <a href="{{ route('server-listing.bids.bidding', $sList->slug) }}"
-                                                class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
-                                            {{-- <div class="d-flex flex-wrap gap-1">
-                                                @foreach ($sList->serverTags as $tag)
-                                                    <span
-                                                        class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
-                                                @endforeach
-                                            </div> --}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Mobile Card -->
-                                <div class="mobile-server-row">
-                                    <div class="mobile-server-card">
-                                        <div class="mobile-server-header">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="simple-server-badge me-2">
-                                                        <i class="bi bi-trophy text-white"></i>
-                                                        <span class="fw-bold">#{{ $index + 3 }}</span>
-                                                    </div>
-                                                    <h6 class="mb-0 text-white">
-                                                        <i class="bi bi-server me-1"></i>{{ __('Server') }}
-                                                    </h6>
-                                                </div>
-                                                <span class="badge status-badge {{ $sList->is_online ?: 'offline' }}">
-                                                    <i
-                                                        class="me-1 {{ $sList->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>
-                                                    {{ __($sList->online_label) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-server-content">
-                                            <a href="{{ route('server-listing.details', $sList->slug) }}"
-                                                class="details-link"></a>
-
-                                            <div class="mobile-server-banner">
-                                                <img src="{{ $sList->banner_image_url }}" alt="Server Banner">
-                                                <div class="mobile-banner-overlay">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="badge version-badge me-2">
-                                                                <i
-                                                                    class="bi bi-gear me-1"></i>{{ remove_before_dash($sList->minecraft_version) }}
-                                                            </span>
-                                                            <img style="height: 10px; width: 16px;" class="me-1"
-                                                                src="https://flagcdn.com/{{ strtolower($sList?->country?->code) }}.svg"
-                                                                alt="">
-                                                        </div>
-                                                        <button class="btn btn-sm copy-btn"
-                                                            onclick="copyIP('{{ $sList->server_ip }}')">
-                                                            <i class="bi bi-copy"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mobile-server-info">
-                                                <div class="mobile-server-logo">
-                                                    <img src="{{ $sList->logo_image_url }}" alt="Server Logo">
-                                                </div>
-                                                <div class="mobile-server-details flex-grow-1">
-                                                    <h6>{{ removeHttpFromUrl($sList->server_ip) }}</h6>
-                                                    <small class="text-muted">{{ __('Minecraft Server') }}</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="mobile-server-stats">
-                                                <div class="mobile-stat-item">
-                                                    <span
-                                                        class="mobile-stat-value player-count">{{ $sList->current_players }}</span>
-                                                    <small class="mobile-stat-label">{{ __('Online') }}</small>
-                                                </div>
-                                                <div class="mobile-stat-item">
-                                                    <span
-                                                        class="mobile-stat-value player-count">{{ $sList->max_players }}</span>
-                                                    <small class="mobile-stat-label">{{ __('Max') }}</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="mobile-tags text-center">
-                                                <a href="{{ route('server-listing.bids.bidding', $sList->slug) }}"
-                                                    class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
-                                                {{-- @foreach ($sList->serverTags as $tag)
-                                                    <span
-                                                        class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
-                                                @endforeach --}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        {{ $sListings->appends(request()->except('popular_page'))->links() }}
                     </div>
                 </div>
             </div>

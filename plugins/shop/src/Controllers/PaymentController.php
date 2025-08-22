@@ -16,7 +16,6 @@ class PaymentController extends Controller
 {
     public function payment(Request $request)
     {
-        // dd($request);
         $cart = Cart::fromSession($request->session());
 
         // If the cart isn't empty and the total is 0, just complete
@@ -28,7 +27,6 @@ class PaymentController extends Controller
 
             return to_route('shop.home')->with('success', trans('shop::messages.cart.success'));
         }
-
 
         $gateways = Gateway::enabled()
             ->get()

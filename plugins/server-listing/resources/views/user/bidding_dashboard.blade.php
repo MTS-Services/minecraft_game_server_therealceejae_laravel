@@ -111,7 +111,7 @@
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="YourAccount.html">
+                <a href="{{ route('profile.index') }}">
                     <div class="dashboard-card">
                         <div class="dashboard-icon">
                             <i class="bi bi-pencil-square text-primary"></i>
@@ -121,12 +121,12 @@
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="yourFavorites.html">
+                <a href="{{ route('server-listing.my_favorite_servers') }}">
                     <div class="dashboard-card">
                         <div class="dashboard-icon">
                             <i class="bi bi-trophy-fill text-primary"></i>
                         </div>
-                        <button class="btn btn-dashboard">Your Achievements <i class="bi bi-heart"></i></button>
+                        <button class="btn btn-dashboard">Favorites Servers <i class="bi bi-heart"></i></button>
                     </div>
                 </a>
             </div>

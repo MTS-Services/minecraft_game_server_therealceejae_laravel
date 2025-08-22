@@ -32,14 +32,14 @@ class PaymentManager
     {
         $this->paymentMethods = collect([
             'paypal' => PayPalMethod::class,
-            'paypal-checkout' => PayPalCheckoutMethod::class,
-            'mollie' => MollieMethod::class,
-            'paysafecard' => PaysafecardMethod::class,
+            // 'paypal-checkout' => PayPalCheckoutMethod::class,
+            // 'mollie' => MollieMethod::class,
+            // 'paysafecard' => PaysafecardMethod::class,
             'stripe' => StripeMethod::class,
-            'paymentwall' => PaymentWallMethod::class,
-            'xsolla' => XsollaMethod::class,
-            'skrill' => SkrillMethod::class,
-            'mercadopago' => MercadoPagoMethod::class,
+            // 'paymentwall' => PaymentWallMethod::class,
+            // 'xsolla' => XsollaMethod::class,
+            // 'skrill' => SkrillMethod::class,
+            // 'mercadopago' => MercadoPagoMethod::class,
         ]);
     }
 
@@ -63,7 +63,7 @@ class PaymentManager
 
     public function getPaymentMethodOrFail(string $type, ?Gateway $gateway = null): PaymentMethod
     {
-        abort_if(! $this->paymentMethods->has($type), 404);
+        abort_if(!$this->paymentMethods->has($type), 404);
 
         return $this->getPaymentMethod($type, $gateway);
     }

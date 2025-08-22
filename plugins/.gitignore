@@ -1,6 +1,6 @@
-# *
+*
 !.gitignore
 !server-listing
 !server-listing/****
-!vote
-!vote/****
+!shop
+!shop/****

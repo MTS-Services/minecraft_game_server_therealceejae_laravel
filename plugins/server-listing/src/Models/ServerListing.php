@@ -357,15 +357,20 @@ class ServerListing extends Model
 
     public function getRankByVotes(): int
     {
-        // Count how many servers have strictly higher vote_count
-        $higherVotes = static::where('vote_count', '>', $this->vote_count)->count();
+        // Total votes for this server
+        $thisVotes = $this->votes()->count();
 
-        // Count how many servers have the same vote_count but a smaller id (tie-breaker)
-        $sameVotesBefore = static::where('vote_count', $this->vote_count)
+        // Servers with strictly more votes
+        $higherVotes = static::withCount('votes')
+            ->having('votes_count', '>', $thisVotes)
+            ->count();
+
+        // Servers with same number of votes but lower ID (tie-breaker)
+        $sameVotesBefore = static::withCount('votes')
+            ->having('votes_count', '=', $thisVotes)
             ->where('id', '<', $this->id)
             ->count();
 
-        // Unique rank = higher votes + earlier same-vote servers + 1
         return $higherVotes + $sameVotesBefore + 1;
     }
 

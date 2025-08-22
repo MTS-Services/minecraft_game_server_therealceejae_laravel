@@ -19,6 +19,7 @@ return [
         'purchases' => 'Purchases',
         'statistics' => 'Statistics',
         'categories' => 'Categories',
+        'bids' => 'Bids',
     ],
 
     'server' => [
@@ -46,9 +47,16 @@ return [
         'name' => 'Tag Name',
 
     ],
+    'bid' => [
+        'title' => 'Server Bid',
+
+    ],
     'card' => [
         'approved_server' => 'Approved Server',
         'premium_server' => 'Premium Server',
+        'this_month_bid_participants' => 'This Month Bid Participants',
+        'this_month_top_10_total_bids' => 'This Month Winners Bid Amount',
+        'this_month_total_bids' => 'This Month Total Bids Amount',
     ],
 
     'permissions' => [

@@ -5,6 +5,3 @@
 
 # Mac
 .DS_Store
-
-# Composer
-/vendor/

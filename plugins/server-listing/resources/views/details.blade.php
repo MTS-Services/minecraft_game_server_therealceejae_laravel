@@ -573,7 +573,7 @@
 
                             <div class="d-flex justify-content-between py-2 border-bottom">
                                 <span><i class="fas fa-thumbs-up me-2"></i> Vote(s)</span>
-                                <span>{{ $serverDetail->total_votes }}</span>
+                                <span>{{ $serverDetail->votes?->count() ?? 0 }}</span>
                             </div>
 
                             <div class="d-flex justify-content-between py-2 border-bottom">

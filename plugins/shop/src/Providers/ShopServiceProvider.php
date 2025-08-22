@@ -28,7 +28,7 @@ class ShopServiceProvider extends BasePluginServiceProvider
      */
     public function register(): void
     {
-        require_once __DIR__.'/../../vendor/autoload.php';
+        require_once __DIR__ . '/../../vendor/autoload.php';
 
         $this->app->singleton(PaymentManager::class);
 
@@ -137,54 +137,54 @@ class ShopServiceProvider extends BasePluginServiceProvider
                 'icon' => 'bi bi-cart',
                 'route' => 'shop.admin.*',
                 'items' => [
-                    'shop.admin.settings' => [
-                        'name' => trans('shop::admin.nav.settings'),
-                        'permission' => 'shop.settings',
-                    ],
-                    'shop.admin.packages.index' => [
-                        'name' => trans('shop::admin.nav.packages'),
-                        'permission' => 'shop.packages',
-                    ],
+                    // 'shop.admin.settings' => [
+                    //     'name' => trans('shop::admin.nav.settings'),
+                    //     'permission' => 'shop.settings',
+                    // ],
+                    // 'shop.admin.packages.index' => [
+                    //     'name' => trans('shop::admin.nav.packages'),
+                    //     'permission' => 'shop.packages',
+                    // ],
                     'shop.admin.gateways.index' => [
                         'name' => trans('shop::admin.nav.gateways'),
                         'permission' => 'shop.gateways',
                     ],
-                    'shop.admin.offers.index' => [
-                        'name' => trans('shop::admin.nav.offers'),
-                        'permission' => 'shop.gateways',
-                    ],
-                    'shop.admin.discounts.index' => [
-                        'name' => trans('shop::admin.nav.discounts'),
-                        'permission' => 'shop.promotions',
-                    ],
-                    'shop.admin.coupons.index' => [
-                        'name' => trans('shop::admin.nav.coupons'),
-                        'permission' => 'shop.promotions',
-                    ],
-                    'shop.admin.giftcards.index' => [
-                        'name' => trans('shop::admin.nav.giftcards'),
-                        'permission' => 'shop.giftcards',
-                    ],
-                    'shop.admin.variables.index' => [
-                        'name' => trans('shop::admin.nav.variables'),
-                        'permission' => 'shop.packages',
-                    ],
-                    'shop.admin.payments.index' => [
-                        'name' => trans('shop::admin.nav.payments'),
-                        'permission' => 'shop.payments',
-                    ],
-                    'shop.admin.subscriptions.index' => [
-                        'name' => trans('shop::admin.nav.subscriptions'),
-                        'permission' => 'shop.payments',
-                    ],
-                    'shop.admin.purchases.index' => [
-                        'name' => trans('shop::admin.nav.purchases'),
-                        'permission' => 'shop.payments',
-                    ],
-                    'shop.admin.statistics' => [
-                        'name' => trans('shop::admin.nav.statistics'),
-                        'permission' => 'shop.payments',
-                    ],
+                    // 'shop.admin.offers.index' => [
+                    //     'name' => trans('shop::admin.nav.offers'),
+                    //     'permission' => 'shop.gateways',
+                    // ],
+                    // 'shop.admin.discounts.index' => [
+                    //     'name' => trans('shop::admin.nav.discounts'),
+                    //     'permission' => 'shop.promotions',
+                    // ],
+                    // 'shop.admin.coupons.index' => [
+                    //     'name' => trans('shop::admin.nav.coupons'),
+                    //     'permission' => 'shop.promotions',
+                    // ],
+                    // 'shop.admin.giftcards.index' => [
+                    //     'name' => trans('shop::admin.nav.giftcards'),
+                    //     'permission' => 'shop.giftcards',
+                    // ],
+                    // 'shop.admin.variables.index' => [
+                    //     'name' => trans('shop::admin.nav.variables'),
+                    //     'permission' => 'shop.packages',
+                    // ],
+                    // 'shop.admin.payments.index' => [
+                    //     'name' => trans('shop::admin.nav.payments'),
+                    //     'permission' => 'shop.payments',
+                    // ],
+                    // 'shop.admin.subscriptions.index' => [
+                    //     'name' => trans('shop::admin.nav.subscriptions'),
+                    //     'permission' => 'shop.payments',
+                    // ],
+                    // 'shop.admin.purchases.index' => [
+                    //     'name' => trans('shop::admin.nav.purchases'),
+                    //     'permission' => 'shop.payments',
+                    // ],
+                    // 'shop.admin.statistics' => [
+                    //     'name' => trans('shop::admin.nav.statistics'),
+                    //     'permission' => 'shop.payments',
+                    // ],
                 ],
             ],
         ];

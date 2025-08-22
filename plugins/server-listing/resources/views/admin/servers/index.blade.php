@@ -52,31 +52,34 @@
                 <li class="default-item">
                     <div class="card">
                         <div class="card-body row ">
-                            <span class="col">
+                            <span class="col-6 col-md">
                                 {{ trans('server-listing::messages.fields.name') }}
                             </span>
-                            <span class="col">
+                            <span class="col-6 col-md">
                                 {{ trans('server-listing::messages.fields.server') }}
                             </span>
-                            <span class="col">
+                            <span class="col-6 col-md">
                                 {{ trans('server-listing::messages.fields.country') }}
                             </span>
-                            <span class="col-2">
+                            <span class="col-6 col-md-2">
                                 {{ trans('server-listing::messages.fields.server_ip') }}
                             </span>
-                            <span class="col">
-                                {{ trans('server-listing::messages.fields.featured') }}
+                            <span class="col-6 col-md">
+                                {{ trans('server-listing::messages.fields.votes') }}
                             </span>
-                            <span class="col">
+                            <span class="col-6 col-md">
+                                {{ trans('server-listing::messages.fields.favorites') }}
+                            </span>
+                            <span class="col-6 col-md">
                                 {{ trans('server-listing::messages.fields.server_status') }}
                             </span>
-                            <span class="col">
+                            <span class="col-6 col-md">
                                 {{ trans('server-listing::messages.fields.premium_status') }}
                             </span>
-                            <span class="col">
+                            <span class="col-6 col-md">
                                 {{ trans('server-listing::messages.fields.status') }}
                             </span>
-                            <span class="col-1">
+                            <span class="col-6 col-md-1">
                                 {{ trans('server-listing::messages.fields.actions') }}
                             </span>
                         </div>
@@ -86,41 +89,42 @@
                     <li class="sortable-item  sortable-parent" data-id="{{ $server->id }}">
                         <div class="card">
                             <div class="card-body row ">
-                                <span class="col">
+                                <span class="col-6 col-md">
                                     <i class="bi bi-arrows-move sortable-handle"></i>
                                     {{ $server->user->name }}
                                 </span>
-                                <span class="col">
+                                <span class="col-6 col-md">
                                     {{ $server->name }}
                                 </span>
-                                <span class="col">
+                                <span class="col-6 col-md">
                                     {{ $server->country?->name }}
                                 </span>
-                                <span class="col-2">
+                                <span class="col-6 col-md-2">
                                     {{ $server->server_ip }}
 
                                 </span>
-                                <span class="col">
-                                    <span class="{{ $server->featured_bg }}">
-                                        {{ $server->featured_label }}
-                                    </span>
+                                <span class="col-6 col-md">
+                                    {{ $server->votes?->count() ?? 0 }}
                                 </span>
-                                <span class="col">
+                                <span class="col-6 col-md">
+                                    {{ $server->favorites->count() }}
+                                </span>
+                                <span class="col-6 col-md">
                                     <span class="{{ $server->online_bg }}">
                                         {{ $server->online_label }}
                                     </span>
                                 </span>
-                                <span class="col">
+                                <span class="col-6 col-md">
                                     <span class="{{ $server->premium_bg }}">
                                         {{ $server->premium_label }}
                                     </span>
                                 </span>
-                                <span class="col">
+                                <span class="col-6 col-md">
                                     <span class="{{ $server->approved_bg }}">
                                         {{ $server->approved_label }}
                                     </span>
                                 </span>
-                                <span class="col-1">
+                                <span class="col-6 col-md-1">
                                     <a href="{{ route('server-listing.admin.servers.edit', $server->slug) }}"
                                         class="m-1" title="{{ trans('server_listing::messages.actions.edit') }}"
                                         data-bs-toggle="tooltip"><i class="bi bi-pencil-square"></i></a>
