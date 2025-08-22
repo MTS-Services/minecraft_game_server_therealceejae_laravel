@@ -23,7 +23,6 @@ return new class extends Migration {
 
             $table->index(['server_id', 'voted_at']);
             $table->index(['username', 'server_id']);
-            $table->unique(['server_id', 'ip_address', 'username'], 'unique_vote_constraint');
         });
     }
 

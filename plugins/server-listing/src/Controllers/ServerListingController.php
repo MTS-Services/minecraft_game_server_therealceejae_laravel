@@ -13,6 +13,7 @@ use Azuriom\Plugin\ServerListing\Services\ServerStatusService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -140,5 +141,101 @@ class ServerListingController extends Controller
         } else {
             return back()->with('error', trans('messages.status.unauthorized'));
         }
+    }
+
+    public function search()
+    {
+        $versions = Http::get('https://launchermeta.mojang.com/mc/game/version_manifest.json')
+            ->json('versions');
+        $data['minecraft_versions'] = collect($versions)
+            // ->filter(fn($version) => $version['type'] === 'release')
+            ->pluck('id')
+            ->values();
+
+        $data['countries'] = ServerCountry::active()->ordered()->get();
+        $data['tags'] = Tag::active()->ordered()->get();
+        return view('server-listing::search', $data);
+    }
+
+
+    public function filter(Request $request)
+    {
+        $validated = $request->validate([
+            'keyword' => 'nullable|string|max:255',
+            'version' => 'nullable|string|max:50',
+            'country' => 'nullable|exists:server_countries,id',
+            'online_min_players' => 'nullable|integer|min:0',
+            'online_max_players' => 'nullable|integer|min:0',
+            'min_total_players' => 'nullable|integer|min:1',
+            'max_total_players' => 'nullable|integer|min:1',
+            'order_by' => 'nullable|in:server_rank,current_players,max_players',
+            'with_teamspeak' => 'nullable|boolean',
+            'with_discord' => 'nullable|boolean',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|exists:server_tags,id',
+        ]);
+
+
+        return redirect()->route('server-listing.search.result', $validated);
+    }
+
+    public function result(Request $request)
+    {
+        $query = ServerListing::with(['country', 'user', 'serverTags'])->approved();
+
+        if ($request->filled('keyword')) {
+            $keyword = $request->input('keyword');
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%')
+                    ->orWhere('server_ip', 'like', '%' . $keyword . '%')
+                    ->orWhere('minecraft_version', 'like', '%' . $keyword . '%')
+                    ->orWhere('website_url', 'like', '%' . $keyword . '%')
+                    ->orWhereHas('country', function ($subQuery) use ($keyword) {
+                        $subQuery->where('name', 'like', '%' . $keyword . '%');
+                    })
+                    ->orWhereHas('serverTags', function ($subQuery) use ($keyword) {
+                        $subQuery->where('name', 'like', '%' . $keyword . '%');
+                    });
+            });
+        }
+
+        if ($request->filled('version') && $request->input('version') !== 'all') {
+            $query->where('minecraft_version', $request->input('version'));
+        }
+
+        if ($request->filled('country') && $request->input('country') !== 'all') {
+            $query->whereHas('country', function ($q) use ($request) {
+                $q->where('slug', $request->input('country'));
+            });
+        }
+
+        if ($request->filled('tags')) {
+            $query->whereHas('serverTags', function ($q) use ($request) {
+                $q->whereIn('id', $request->input('tags'));
+            });
+        }
+
+        if ($request->filled('online_min_players')) {
+            $query->where('current_players', '>=', $request->input('online_min_players'));
+        }
+
+        if ($request->filled('online_max_players')) {
+            $query->where('current_players', '<=', $request->input('online_max_players'));
+        }
+        if ($request->filled('min_total_players')) {
+            $query->where('max_players', '>=', $request->input('min_total_players'));
+        }
+
+        if ($request->filled('max_total_players')) {
+            $query->where('max_players', '<=', $request->input('max_total_players'));
+        }
+
+        if ($request->filled('order_by')) {
+            $query->orderBy($request->input('order_by'), 'asc');
+        }
+
+        $data['server_listings'] = $query->paginate(10);
+        return view('server-listing::search-result', $data);
     }
 }

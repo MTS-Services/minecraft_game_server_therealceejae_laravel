@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/server/{slug}', [ServerListingController::class, 'details'])->name('details');
 Route::get('/server/favorite/{slug}', [ServerListingController::class, 'favorite'])->name('favorite')->middleware('auth:web');
 Route::get('/my-fevorites-servers', [ServerListingController::class, 'my_favorite_servers'])->name('my_favorite_servers')->middleware('auth:web');
+Route::get('/search', [ServerListingController::class, 'search'])->name('search');
+Route::post('/search', [ServerListingController::class, 'filter'])->name('search.filter');
+Route::get('/search/result', [ServerListingController::class, 'result'])->name('search.result');
 // Voting Routes
 // Route::controller(VoteController::class)->prefix('vote')->name('vote.')->group(function () {
 //     Route::get('/{slug}',  'index')->name('index');
@@ -38,6 +41,7 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
     Route::post('/store', 'store')->name('submission.store');
     Route::get('/dashboard', 'userDashboard')->name('user-dashboard');
     Route::get('/server-list', 'serverList')->name('list');
+
 });
 Route::controller(BidController::class)->middleware('auth:web')->name('bids.')->group(function () {
     Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');

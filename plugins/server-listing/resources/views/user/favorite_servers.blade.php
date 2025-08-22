@@ -1086,12 +1086,12 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('server-listing.user-dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Your Servers</li>
+                <li class="breadcrumb-item active" aria-current="page">Favorite Servers</li>
             </ol>
         </nav>
 
         <!-- Title -->
-        <h1 class="page-title mb-4">Manage Your Servers</h1>
+        <h1 class="page-title mb-4">My Favorite Servers</h1>
 
         <!-- Action Buttons -->
         <div class="mb-4 action-buttons">
