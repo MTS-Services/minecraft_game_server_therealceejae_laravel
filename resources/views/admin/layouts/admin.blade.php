@@ -280,7 +280,7 @@
                         <li class="sidebar-header">{{ trans('admin.nav.other.heading') }}</li>
                     @endcanany
 
-                    @can('admin.update')
+                    {{-- @can('admin.update')
                         <li class="sidebar-item {{ add_active('admin.update.*') }}">
                             <a class="sidebar-link" href="{{ route('admin.update.index') }}">
                                 <i class="bi bi-cloud-download"></i>
@@ -292,7 +292,7 @@
                                 @endif
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
                     @can('admin.logs')
                         <li class="sidebar-item {{ add_active('admin.logs.*') }}">
@@ -316,7 +316,7 @@
                 </a>
 
                 <div class="navbar-collapse collapse">
-                    <div class="d-none d-sm-inline-block">
+                    {{-- <div class="d-none d-sm-inline-block">
                         <a href="https://azuriom.com/discord" class="btn btn-outline-primary mx-1" target="_blank"
                             rel="noopener noreferrer">
                             <i class="bi bi-question-circle"></i>
@@ -328,11 +328,11 @@
                             <i class="bi bi-journals"></i>
                             {{ trans('admin.nav.documentation') }}
                         </a>
-                    </div>
+                    </div> --}}
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav navbar-align">
-                        <li class="nav-item dropdown">
+                        {{-- <li class="nav-item dropdown">
                             <a class="nav-icon dropdown-toggle" href="#" id="notificationsDropdown"
                                 role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="position-relative">
@@ -392,7 +392,7 @@
                                     <i class="bi bi-check-lg"></i> {{ trans('messages.notifications.empty') }}
                                 </div>
                             </div>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
                             <a href="{{ route('profile.theme') }}"

@@ -50,7 +50,7 @@
                                             {{ trans('messages.actions.' . (plugins()->isEnabled($path) ? 'disable' : 'enable')) }}
                                         </button>
                                     </form>
-                                    @if (!plugins()->isEnabled($path) && ($plugin->id !== 'server-listing' && $plugin->id !== 'vote'))
+                                    @if (!plugins()->isEnabled($path) && ($plugin->id !== 'server-listing' && $plugin->id !== 'shop'))
                                         <a href="{{ route('admin.plugins.delete', $path) }}" class="btn btn-danger btn-sm"
                                             data-confirm="delete">
                                             <i class="bi bi-trash"></i> {{ trans('messages.actions.delete') }}
