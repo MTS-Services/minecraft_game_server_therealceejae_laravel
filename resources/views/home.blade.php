@@ -1132,8 +1132,7 @@
                                                 <div class="col-md-2">
                                                     <div class="d-flex align-items-center">
                                                         <div class="elit-server-logo me-3">
-                                                            <img src="{{ $topServer->logo_image_url }}"
-                                                                alt="Server Logo">
+                                                            <img src="{{ $topServer->logo_image_url }}" alt="Server Logo">
                                                             <div class="premium-logo-badge">
                                                                 <i class="bi bi-gem"></i>
                                                             </div>
