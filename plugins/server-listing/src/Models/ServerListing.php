@@ -133,7 +133,7 @@ class ServerListing extends Model
 
     public function votes(): HasMany
     {
-        return $this->hasMany(ServerVote::class, 'server_id', 'id');
+        return $this->hasMany(ServerVote::class, 'server_id', 'id')->where('status', 1);
     }
 
     public function stats(): HasMany
@@ -361,7 +361,7 @@ class ServerListing extends Model
         $thisVotes = $this->votes()->count();
 
         // Servers with strictly more votes
-        $higherVotes = static::withCount('votes')
+        $higherVotes = static::with('votes')->withCount('votes')
             ->having('votes_count', '>', $thisVotes)
             ->count();
 
@@ -468,6 +468,11 @@ class ServerListing extends Model
             'uptime_percentage' => $uptime,
             'position' => 0,
         ];
+    }
+
+    public function isVoteAble(): bool
+    {
+        return $this->votifier_host && $this->votifier_port && $this->votifier_public_key;
     }
 
 }

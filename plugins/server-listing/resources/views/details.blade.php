@@ -447,9 +447,12 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <a href="{{ route('server-listing.vote', $serverDetail->slug) }}" class="btn btn-success">
-                    <i class="bi bi-hand-thumbs-up me-1"></i> Vote
-                </a>
+                @if ($serverDetail->isVoteAble())
+                    <a href="{{ route('server-listing.vote', $serverDetail->slug) }}" class="btn btn-success">
+                        <i class="bi bi-hand-thumbs-up me-1"></i> Vote
+                    </a>
+                @endif
+
                 <a href="{{ route('home') }}" class="btn btn-warning"><i class="bi bi-house"></i></a>
                 <a href="{{ route('server-listing.favorite', $serverDetail->slug) }}" class="btn btn-warning">
                     @if ($serverDetail->isSelfFavorite())
@@ -541,10 +544,10 @@
                                 <span>{{ $serverDetail->updated_at_formatted }}</span>
                             </div>
 
-                            <div class="d-flex justify-content-between border-bottom py-2">
+                            {{-- <div class="d-flex justify-content-between border-bottom py-2">
                                 <span><i class="fas fa-palette me-2"></i> Theme</span>
                                 <span><span class="badge bg-secondary">Modern</span></span>
-                            </div>
+                            </div> --}}
 
                             <div class="py-2">
                                 <i class="fas fa-tags me-2"></i> Game Modes / Tags:<br />

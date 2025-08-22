@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('title', trans('server-listing::messages.server_submission.title'))
+@section('title', 'Minecraft Servers Search Results')
 @include('admin.elements.editor')
 @section('app')
     @push('styles')
@@ -1085,13 +1085,14 @@
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('server-listing.user-dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Favorite Servers</li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('server-listing.search') }}">Minecraft Server Search</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Minecraft Server Search Results</li>
             </ol>
         </nav>
 
         <!-- Title -->
-        <h1 class="page-title mb-4">My Favorite Servers</h1>
+        <h1 class="page-title mb-4">Search Results</h1>
 
         <!-- Action Buttons -->
         <div class="mb-4 action-buttons">
@@ -1103,14 +1104,14 @@
         <!-- Table -->
 
         {{-- Promoted Servers --}}
-        @if (isset($myServers) && count($myServers) > 0)
+        @if (isset($server_listings) && count($server_listings) > 0)
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="card border-0 shadow-sm server-card premium-card">
 
 
                         <div class="card-body p-0">
-                            @foreach ($myServers as $index => $sList)
+                            @foreach ($server_listings as $index => $sList)
                                 <!-- Desktop Row -->
                                 <div class="server-row desktop-server-row">
                                     <a href="{{ route('server-listing.details', $sList->slug) }}" class="details-link"></a>
@@ -1257,6 +1258,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="mt-3">
+                {{ $server_listings->links() }}
             </div>
         @else
             <div class="card server-card">

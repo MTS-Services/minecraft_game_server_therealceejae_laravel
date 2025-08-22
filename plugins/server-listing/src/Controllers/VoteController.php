@@ -67,6 +67,16 @@ class VoteController extends Controller
 
     public function submitVote(Request $request, $server_Slug)
     {
+        $fakeVote = ServerVote::where('ip_address', $request->ip())
+            ->whereDay('voted_at', '>=', today())
+            ->count();
+        // if ($fakeVote >= 15) {
+        //     Auth::user()->update(['is_banned' => 1]);
+        //     session()->flash('error', 'Your account has been banned due to suspicious activity. Please contact support if this is a mistake.');
+        //     return redirect()->back();
+        // }
+
+
         $server_ = ServerListing::where('slug', $server_Slug)->firstOrFail();
 
 
@@ -79,7 +89,7 @@ class VoteController extends Controller
         $ipAddress = $request->ip();
 
         // Check if user has already voted recently
-        $existingVote = ServerVote::where('server_id', $server_->id)
+        $existingVote = ServerVote::where('server_id', $server_->id)->where('status', 1)
             ->where(function ($query) use ($username, $ipAddress) {
                 $query->where('username', $username)
                     ->orWhere('ip_address', $ipAddress);
@@ -109,22 +119,22 @@ class VoteController extends Controller
                 'ip_address' => $ipAddress,
                 'voted_at' => now(),
                 'next_vote_at' => now()->addHours(12), // 12 hour cooldown
-                'status' => 1 // Assuming 1 means success, 0 means pending
+                'status' => 0 // Assuming 1 means success, 0 means pending
             ]);
 
             // Send to Votifier if configured
             $votifierResult = null;
             if ($server_->votifier_host && $server_->votifier_port && $server_->votifier_public_key) {
-                // $this->votifierService = new VotifierService(
-                //     $server_->votifier_host,
-                //     $server_->votifier_port,
-                //     $server_->votifier_public_key
-                // );
                 $this->votifierService = new VotifierService(
-                    "50.20.250.112",
-                    "20987",
-                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjtOO/GHfDlZam/BNbUTRUlRYc9jlOZgkOSvrDtOiqkcA0INfwD4x1GLvtUTT4rRFtlqs93ePpk8mEgrwzGfThb0vCpGjzyo9SE/b9Puqdikv4ATTHlcHZxhxQWVRXu//jOB0/q+2jKT/9/m3p+3bz4wxJfkSsmfnbwqX6t97UpfR9qZnV0UqD0vX64pJf2CqdaJYYdgcKJGqlsFs12VwTImTq46l+QH7QBxY8SGyh7uQ9FArw8btgd9QFFVIPBAiZy92e5bss7hnPJtfaD1ryrU5WfZheTh68XTEmN+T1Nm6HGqL2Hnb/3xaEv8AgU7XSFc+DC+w/qJMlSLYtulauQIDAQAB",
+                    $server_->votifier_host,
+                    $server_->votifier_port,
+                    $server_->votifier_public_key
                 );
+                // $this->votifierService = new VotifierService(
+                //     "50.20.250.112",
+                //     "20987",
+                //     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjtOO/GHfDlZam/BNbUTRUlRYc9jlOZgkOSvrDtOiqkcA0INfwD4x1GLvtUTT4rRFtlqs93ePpk8mEgrwzGfThb0vCpGjzyo9SE/b9Puqdikv4ATTHlcHZxhxQWVRXu//jOB0/q+2jKT/9/m3p+3bz4wxJfkSsmfnbwqX6t97UpfR9qZnV0UqD0vX64pJf2CqdaJYYdgcKJGqlsFs12VwTImTq46l+QH7QBxY8SGyh7uQ9FArw8btgd9QFFVIPBAiZy92e5bss7hnPJtfaD1ryrU5WfZheTh68XTEmN+T1Nm6HGqL2Hnb/3xaEv8AgU7XSFc+DC+w/qJMlSLYtulauQIDAQAB",
+                // );
 
                 $votifierResult = $this->votifierService->sendVote($username);
 
@@ -133,22 +143,24 @@ class VoteController extends Controller
                     'votifier_response' => $votifierResult['response'],
                     'status' => $votifierResult['success'] ? 1 : 0
                 ]);
+                if ($vote->status == 1) {
+                    ServerVoteStatistic::updateStats($server_->id);
+                    // Increment server vote count
+                    $server_->increment('total_votes');
+
+                    // $allServers = ServerListing::latest()->get();
+                    // foreach ($allServers as $server) {
+                    //     $server->update([
+                    //         'server_rank' => $server->getRankByVotes(),
+                    //     ]);
+                    // }
+                } // IGNORE
             } else {
-                $vote->update(['status' => 1]);
+                $vote->update(['status' => 0]);
             }
 
             // Update statistics
-            ServerVoteStatistic::updateStats($server_->id);
 
-            // Increment server vote count
-            $server_->increment('total_votes');
-
-            $allServers = ServerListing::latest()->get();
-            foreach ($allServers as $server) {
-                $server->update([
-                    'server_rank' => $server->getRankByVotes(),
-                ]);
-            }
 
             DB::commit();
 
@@ -159,10 +171,20 @@ class VoteController extends Controller
             //     'next_vote_at' => $vote->next_vote_at->toISOString()
             // ]);
 
-            return redirect()->back()->with('success', 'Thank you for voting! You can vote again in 12 hours')->with([
-                'votifier_sent' => $votifierResult ? $votifierResult['success'] : false,
-                'next_vote_at' => $vote->next_vote_at->toISOString()
-            ]);
+            if ($votifierResult['success']) {
+                return redirect()->back()->with('success', 'Thank you for voting! You can vote again in 12 hours')->with([
+                    'votifier_sent' => $votifierResult ? $votifierResult['success'] : false,
+                    'next_vote_at' => $vote->next_vote_at->toISOString()
+                ]);
+            } else {
+                $message = 'Something went wrong. Please try again. Must use valid username';
+                $type = 'error';
+                // if ($fakeVote >= 10) {
+                //     $message = 'Many tries detected. Please try again after 24 hours. Otherwise your account may be banned.';
+                //     $type = 'error';
+                // }
+                return redirect()->back()->with($type, $message);
+            }
 
         } catch (Exception $e) {
             DB::rollback();
@@ -204,6 +226,7 @@ class VoteController extends Controller
             'next_vote' => $vote->next_vote_at->toISOString(),
             'time_left' => $canVote ? null : $vote->next_vote_at->diffForHumans(),
             'total_votes' => ServerVote::where('server_id', $server_->id)
+                ->where('status', 1)
                 ->where('username', $request->username)
                 ->count()
         ]);

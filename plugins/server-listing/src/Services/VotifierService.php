@@ -4,6 +4,7 @@ namespace Azuriom\Plugin\ServerListing\Services;
 
 use Illuminate\Support\Facades\Log;
 use Exception;
+use phpseclib3\Crypt\RSA;
 
 class VotifierService
 {
@@ -107,12 +108,10 @@ class VotifierService
 
             // If OpenSSL fails, try with phpseclib3
             Log::info('OpenSSL failed, trying phpseclib3...');
-
             try {
                 $rsa = RSA::loadPublicKey($this->publicKey);
-                $rsa = $rsa->withPadding(RSA::ENCRYPTION_PKCS1);
 
-                $encrypted = $rsa->encrypt($data);
+                $encrypted = $rsa->encrypt($data, RSA::ENCRYPTION_PKCS1);
                 Log::info('Data encrypted successfully with phpseclib3, length: ' . strlen($encrypted));
                 return $encrypted;
 

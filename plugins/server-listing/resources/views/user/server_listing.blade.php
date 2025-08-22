@@ -1252,6 +1252,9 @@
                     </div>
                 </div>
             </div>
+            <div class="mt-3">
+                {{ $myServers->links() }}
+            </div>
         @else
             <div class="card server-card">
                 <div class="card-body">

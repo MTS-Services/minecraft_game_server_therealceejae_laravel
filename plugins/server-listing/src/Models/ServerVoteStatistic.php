@@ -32,7 +32,7 @@ class ServerVoteStatistic extends Model
     {
         $date = $date ?: now()->toDateString();
 
-        $stats = ServerVote::where('server_id', $serverId)
+        $stats = ServerVote::where('server_id', $serverId)->where('status', 1)
             ->whereDate('voted_at', $date)
             ->selectRaw('COUNT(*) as total_votes, COUNT(DISTINCT username) as unique_voters')
             ->first();
