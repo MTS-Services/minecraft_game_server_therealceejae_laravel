@@ -18,8 +18,26 @@ class SkrillMethod extends PaymentMethod
      * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide_v10.3.pdf
      */
     private const LANGUAGES = [
-        'BG', 'CS', 'DA', 'DE', 'EL', 'EN', 'ES', 'FI', 'FR', 'IT',
-        'JA', 'KO', 'NL', 'PL', 'PT', 'RO', 'RU', 'SV', 'TR', 'ZH',
+        'BG',
+        'CS',
+        'DA',
+        'DE',
+        'EL',
+        'EN',
+        'ES',
+        'FI',
+        'FR',
+        'IT',
+        'JA',
+        'KO',
+        'NL',
+        'PL',
+        'PT',
+        'RO',
+        'RU',
+        'SV',
+        'TR',
+        'ZH',
     ];
 
     private const STATUS_PROCESSED = 2;
@@ -46,10 +64,10 @@ class SkrillMethod extends PaymentMethod
      */
     protected $name = 'Skrill (paysafecard)';
 
-    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
         $user = auth()->user();
-        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
         $locale = strtoupper(Str::before(app()->getLocale(), '_'));
 
         $response = Http::asForm()->post('https://pay.skrill.com', [
@@ -70,7 +88,10 @@ class SkrillMethod extends PaymentMethod
 
         $sessionId = $response->throw()->body();
 
-        return redirect()->away('https://pay.skrill.com/?sid='.$sessionId);
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
+
+        return redirect()->away('https://pay.skrill.com/?sid=' . $sessionId);
     }
 
     public function notification(Request $request, ?string $paymentId)
@@ -94,7 +115,7 @@ class SkrillMethod extends PaymentMethod
         }
 
         if ($status !== self::STATUS_PROCESSED) {
-            return $this->invalidPayment($payment, $transactionId, 'Invalid status: '.$status);
+            return $this->invalidPayment($payment, $transactionId, 'Invalid status: ' . $status);
         }
 
         return $this->processPayment($payment, $transactionId);

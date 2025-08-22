@@ -7,6 +7,7 @@ use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\Traits\HasUser;
 use Azuriom\Models\Traits\Searchable;
 use Azuriom\Models\User;
+use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\Shop\Events\PaymentPaid;
 use Azuriom\Plugin\Shop\Notifications\PaymentPaid as PaymentPaidNotification;
 use Azuriom\Plugin\Shop\Payment\Currencies;
@@ -63,7 +64,7 @@ class Payment extends Model
         'gateway_type',
         'transaction_id',
         'user_id',
-        'server_id',
+        'bid_id',
     ];
 
     /**
@@ -118,6 +119,11 @@ class Payment extends Model
     public function subscription()
     {
         return $this->belongsTo(Subscription::class);
+    }
+
+    public function bids()
+    {
+        return $this->belongsTo(ServerBid::class);
     }
 
     /**

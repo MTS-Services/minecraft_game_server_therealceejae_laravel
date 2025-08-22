@@ -26,9 +26,9 @@ class PayPalMethod extends PaymentMethod
      */
     protected $name = 'PayPal';
 
-    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
-        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
 
         $attributes = [
             'cmd' => '_xclick',
@@ -45,7 +45,13 @@ class PayPalMethod extends PaymentMethod
             'notify_url' => route('shop.payments.notification', $this->id),
             'custom' => $payment->id,
             'bn' => 'Azuriom',
+            'metadata' => [
+                'transaction_id' => $payment->transaction_id,
+            ],
         ];
+
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
 
         return redirect()->away('https://www.paypal.com/cgi-bin/webscr?' . Arr::query($attributes));
     }

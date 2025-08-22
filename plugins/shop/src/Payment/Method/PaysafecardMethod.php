@@ -19,7 +19,8 @@ class PaysafecardMethod extends PaymentMethod
      * The paysafecard available environments.
      */
     protected const ENVIRONMENTS = [
-        'test', 'production',
+        'test',
+        'production',
     ];
 
     /**
@@ -36,7 +37,7 @@ class PaysafecardMethod extends PaymentMethod
      */
     protected $name = 'paysafecard';
 
-    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
         $successUrl = route('shop.payments.success', $this->id);
         $failureUrl = route('shop.payments.failure', $this->id);
@@ -62,7 +63,11 @@ class PaysafecardMethod extends PaymentMethod
             return $this->errorResponse();
         }
 
-        $this->createPayment($cart, $amount, $currency, $response['id'], serverID: $serverID);
+        $payment = $this->createPayment($cart, $amount, $currency, $response['id'], bidID: $bidID);
+
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
+
 
         return redirect()->away($response['redirect']['auth_url']);
     }

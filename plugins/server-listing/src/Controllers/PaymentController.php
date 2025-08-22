@@ -32,7 +32,7 @@ class PaymentController extends Controller
             $gateway = $gateways->first();
             // dd($gateway);
 
-            return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency(), serverID: $bid?->serverListing?->id);
+            return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency(), bidID: $bid->id);
         }
         return view('server-listing::payment.gateways', ['gateways' => $gateways, 'bid' => $bid]);
     }
@@ -59,7 +59,7 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Cart is empty');
         }
 
-        return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency(), serverID: $bid?->serverListing?->id);
+        return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency(), bidID: $bid->id);
     }
 
 }

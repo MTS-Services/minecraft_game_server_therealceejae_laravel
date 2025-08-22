@@ -18,6 +18,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->getCategories();
+        
+        return redirect()->route('shop.profile');
 
         if (! setting('shop.home.enabled', true) && ! $categories->isEmpty()) {
             request()->session()->reflash();
@@ -117,7 +119,7 @@ class CategoryController extends Controller
     protected function getCategories(): Collection
     {
         return Category::scopes(['parents', 'enabled'])
-            ->with(['categories' => fn (Builder $q) => $q->scopes('enabled')])
+            ->with(['categories' => fn(Builder $q) => $q->scopes('enabled')])
             ->withCount('packages')
             ->get();
     }

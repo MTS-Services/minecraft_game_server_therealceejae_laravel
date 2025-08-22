@@ -19,6 +19,7 @@ class ProfileController extends Controller
             ->scopes(['notPending', 'withRealMoney'])
             ->latest()
             ->get();
+        // dd($payments);
 
         $subscriptions = Subscription::notPending()
             ->whereBelongsTo($user)

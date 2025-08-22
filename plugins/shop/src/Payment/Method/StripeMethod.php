@@ -23,12 +23,30 @@ class StripeMethod extends PaymentMethod
 {
     // https://docs.stripe.com/currencies#zero-decimal
     protected const ZERO_DECIMAL_CURRENCIES = [
-        'BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'VND', 'VUV', 'XAF', 'XOF', 'XPF',
+        'BIF',
+        'CLP',
+        'DJF',
+        'GNF',
+        'JPY',
+        'KMF',
+        'KRW',
+        'MGA',
+        'PYG',
+        'RWF',
+        'VND',
+        'VUV',
+        'XAF',
+        'XOF',
+        'XPF',
     ];
 
     // https://docs.stripe.com/currencies#three-decimal
     protected const THREE_DECIMAL_CURRENCIES = [
-        'BHD', 'JOD', 'KWD', 'OMR', 'TND',
+        'BHD',
+        'JOD',
+        'KWD',
+        'OMR',
+        'TND',
     ];
 
     /**
@@ -45,11 +63,11 @@ class StripeMethod extends PaymentMethod
      */
     protected $name = 'Stripe';
 
-    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
         $this->setup();
 
-        $items = $cart->itemsPrice()->map(fn (array $data) => [
+        $items = $cart->itemsPrice()->map(fn(array $data) => [
             'price_data' => [
                 'currency' => $currency,
                 'unit_amount' => $this->convertAmount($data['unit_price'], $currency),
@@ -61,10 +79,12 @@ class StripeMethod extends PaymentMethod
             'quantity' => $data['item']->quantity,
         ]);
 
-        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
+
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
         $coupon = $this->applyGiftcards($payment, $currency);
         $successUrl = route('shop.payments.success', [$this->id, '%id%']);
 
+        // dd($payment);
         $session = Session::create([
             'mode' => 'payment',
             'customer_email' => $payment->user->email,
@@ -73,7 +93,14 @@ class StripeMethod extends PaymentMethod
             'cancel_url' => route('shop.cart.index'),
             'client_reference_id' => $payment->id,
             'discounts' => $coupon ? [['coupon' => $coupon->id]] : [],
+            'metadata' => [ // Use 'metadata' instead of 'transaction_data'
+                'description' => $this->getPurchaseDescription($payment),
+                'transaction_id' => $payment->transaction_id,
+            ],
         ]);
+
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
 
         return redirect()->away($session->url);
     }
@@ -125,6 +152,7 @@ class StripeMethod extends PaymentMethod
     public function notification(Request $request, ?string $paymentId)
     {
         $this->setup();
+        Log::info($request->all());
 
         $endpointSecret = $this->gateway->data['endpoint-secret'];
         $stripeSignature = $request->header('Stripe-Signature');
@@ -133,7 +161,7 @@ class StripeMethod extends PaymentMethod
             $event = Webhook::constructEvent($request->getContent(), $stripeSignature, $endpointSecret);
         } catch (SignatureVerificationException $e) {
             return response()->json([
-                'error' => 'Invalid signature: '.$e->getMessage(),
+                'error' => 'Invalid signature: ' . $e->getMessage(),
             ], 400);
         }
 
@@ -166,7 +194,7 @@ class StripeMethod extends PaymentMethod
             $subscription = Subscription::where('subscription_id', $stripeSub->id)->first();
 
             if ($subscription === null) {
-                Log::warning('Unknown Stripe subscription: '.$stripeSub->id);
+                Log::warning('Unknown Stripe subscription: ' . $stripeSub->id);
 
                 return response()->json(['status' => 'unknown_subscription'], 400);
             }

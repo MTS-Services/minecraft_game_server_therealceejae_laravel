@@ -8,16 +8,16 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('shop_payments', function (Blueprint $table) {
-            $table->unsignedBigInteger('server_id')->nullable()->after('user_id');
-            $table->foreign('server_id', 'user_servers')->references('id')->on('server_listing_servers')->cascadeOnDelete();
+            $table->unsignedBigInteger('bid_id')->nullable()->after('user_id');
+            $table->foreign('bid_id', 'user_bids')->references('id')->on('server_listing_bids')->cascadeOnDelete();
         });
     }
 
     public function down(): void
     {
         Schema::table('shop_payments', function (Blueprint $table) {
-            $table->dropForeign('user_servers');
-            $table->dropColumn('server_id');
+            $table->dropForeign('user_bids');
+            $table->dropColumn('bid_id');
         });
     }
 };
