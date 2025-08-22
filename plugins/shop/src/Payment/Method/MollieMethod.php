@@ -42,9 +42,9 @@ class MollieMethod extends PaymentMethod
         }
     }
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
 
         $molliePayment = $this->mollie->payments->create([
             'amount' => [
@@ -64,6 +64,9 @@ class MollieMethod extends PaymentMethod
         ]);
 
         $payment->update(['transaction_id' => $molliePayment->id]);
+
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
 
         return redirect()->away($molliePayment->getCheckoutUrl());
     }

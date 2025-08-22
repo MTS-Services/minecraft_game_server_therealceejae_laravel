@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit2e588304745c5093faa8669a5cad0448
 {
+    public static $files = array (
+        '917dfc0abf4571faec1de7e43f850dd4' => __DIR__ . '/../..' . '/src/helpers.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'A' => 
         array (
@@ -21,23 +25,50 @@ class ComposerStaticInit2e588304745c5093faa8669a5cad0448
     );
 
     public static $classMap = array (
+        'Azuriom\\Plugin\\ServerListing\\Console\\Commands\\CleanupOldVotes' => __DIR__ . '/../..' . '/src/Console/Commands/CleanupOldVotes.php',
+        'Azuriom\\Plugin\\ServerListing\\Console\\Commands\\ProcessPendingVotes' => __DIR__ . '/../..' . '/src/Console/Commands/ProcessPendingVotes.php',
+        'Azuriom\\Plugin\\ServerListing\\Console\\Commands\\UpdateStatsDaily' => __DIR__ . '/../..' . '/src/Console/Commands/UpdateStatsDaily.php',
         'Azuriom\\Plugin\\ServerListing\\Controllers\\Admin\\AdminController' => __DIR__ . '/../..' . '/src/Controllers/Admin/AdminController.php',
         'Azuriom\\Plugin\\ServerListing\\Controllers\\Admin\\ServerListingController' => __DIR__ . '/../..' . '/src/Controllers/Admin/ServerListingController.php',
         'Azuriom\\Plugin\\ServerListing\\Controllers\\Admin\\TagController' => __DIR__ . '/../..' . '/src/Controllers/Admin/TagController.php',
         'Azuriom\\Plugin\\ServerListing\\Controllers\\Api\\ApiController' => __DIR__ . '/../..' . '/src/Controllers/Api/ApiController.php',
+        'Azuriom\\Plugin\\ServerListing\\Controllers\\BidController' => __DIR__ . '/../..' . '/src/Controllers/BidController.php',
         'Azuriom\\Plugin\\ServerListing\\Controllers\\CheckConnectionController' => __DIR__ . '/../..' . '/src/Controllers/CheckConnectionController.php',
+        'Azuriom\\Plugin\\ServerListing\\Controllers\\PaymentController' => __DIR__ . '/../..' . '/src/Controllers/PaymentController.php',
         'Azuriom\\Plugin\\ServerListing\\Controllers\\ServerListingController' => __DIR__ . '/../..' . '/src/Controllers/ServerListingController.php',
+        'Azuriom\\Plugin\\ServerListing\\Controllers\\VoteController' => __DIR__ . '/../..' . '/src/Controllers/VoteController.php',
+        'Azuriom\\Plugin\\ServerListing\\Controllers\\VoteManagementController' => __DIR__ . '/../..' . '/src/Controllers/VoteManagementController.php',
+        'Azuriom\\Plugin\\ServerListing\\Jobs\\ProcessVoteJob' => __DIR__ . '/../..' . '/src/Jobs/ProcessVoteJob.php',
+        'Azuriom\\Plugin\\ServerListing\\Mail\\VoteReceivedMail' => __DIR__ . '/../..' . '/src/Mail/VoteReceivedMail.php',
+        'Azuriom\\Plugin\\ServerListing\\Middleware\\VoteRateLimit' => __DIR__ . '/../..' . '/src/Middleware/VoteRateLimit.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\FavoriteServer' => __DIR__ . '/../..' . '/src/Models/FavoriteServer.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\Gateway' => __DIR__ . '/../..' . '/src/Models/Gateway.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\ServerBid' => __DIR__ . '/../..' . '/src/Models/ServerBid.php',
         'Azuriom\\Plugin\\ServerListing\\Models\\ServerCountry' => __DIR__ . '/../..' . '/src/Models/ServerCountry.php',
         'Azuriom\\Plugin\\ServerListing\\Models\\ServerListing' => __DIR__ . '/../..' . '/src/Models/ServerListing.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\ServerPayment' => __DIR__ . '/../..' . '/src/Models/ServerPayment.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\ServerPaymentItem' => __DIR__ . '/../..' . '/src/Models/ServerPaymentItem.php',
         'Azuriom\\Plugin\\ServerListing\\Models\\ServerStats' => __DIR__ . '/../..' . '/src/Models/ServerStats.php',
         'Azuriom\\Plugin\\ServerListing\\Models\\ServerTag' => __DIR__ . '/../..' . '/src/Models/ServerTag.php',
         'Azuriom\\Plugin\\ServerListing\\Models\\ServerVote' => __DIR__ . '/../..' . '/src/Models/ServerVote.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\ServerVoteReward' => __DIR__ . '/../..' . '/src/Models/ServerVoteReward.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\ServerVoteStatistic' => __DIR__ . '/../..' . '/src/Models/ServerVoteStatistic.php',
         'Azuriom\\Plugin\\ServerListing\\Models\\Tag' => __DIR__ . '/../..' . '/src/Models/Tag.php',
+        'Azuriom\\Plugin\\ServerListing\\Models\\User' => __DIR__ . '/../..' . '/src/Models/User.php',
+        'Azuriom\\Plugin\\ServerListing\\Payment\\PaymentManager' => __DIR__ . '/../..' . '/src/Payment/PaymentManager.php',
+        'Azuriom\\Plugin\\ServerListing\\Payment\\PaymentMethod' => __DIR__ . '/../..' . '/src/Payment/PaymentMethod.php',
         'Azuriom\\Plugin\\ServerListing\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/src/Providers/RouteServiceProvider.php',
         'Azuriom\\Plugin\\ServerListing\\Providers\\ServerListingServiceProvider' => __DIR__ . '/../..' . '/src/Providers/ServerListingServiceProvider.php',
         'Azuriom\\Plugin\\ServerListing\\Requests\\ServerRequest' => __DIR__ . '/../..' . '/src/Requests/ServerRequest.php',
         'Azuriom\\Plugin\\ServerListing\\Requests\\TagRequest' => __DIR__ . '/../..' . '/src/Requests/TagRequest.php',
+        'Azuriom\\Plugin\\ServerListing\\Requests\\VoteRequest' => __DIR__ . '/../..' . '/src/Requests/VoteRequest.php',
+        'Azuriom\\Plugin\\ServerListing\\Rule\\UniqueVoteRule' => __DIR__ . '/../..' . '/src/Rule/UniqueVoteRule.php',
+        'Azuriom\\Plugin\\ServerListing\\Services\\BidService' => __DIR__ . '/../..' . '/src/Services/BidService.php',
         'Azuriom\\Plugin\\ServerListing\\Services\\ServerStatusService' => __DIR__ . '/../..' . '/src/Services/ServerStatusService.php',
+        'Azuriom\\Plugin\\ServerListing\\Services\\VoteAnalyticsService' => __DIR__ . '/../..' . '/src/Services/VoteAnalyticsService.php',
+        'Azuriom\\Plugin\\ServerListing\\Services\\VoteFraudDetectionService' => __DIR__ . '/../..' . '/src/Services/VoteFraudDetectionService.php',
+        'Azuriom\\Plugin\\ServerListing\\Services\\VoteNotificationService' => __DIR__ . '/../..' . '/src/Services/VoteNotificationService.php',
+        'Azuriom\\Plugin\\ServerListing\\Services\\VotifierService' => __DIR__ . '/../..' . '/src/Services/VotifierService.php',
         'Azuriom\\Plugin\\ServerListing\\View\\Composers\\ServerListingAdminDashboardComposer' => __DIR__ . '/../..' . '/src/View/Composers/ServerListingAdminDashboardComposer.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );

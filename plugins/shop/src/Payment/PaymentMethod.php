@@ -39,7 +39,7 @@ abstract class PaymentMethod
      *
      * @return \Illuminate\Http\Response
      */
-    abstract public function startPayment(Cart $cart, float $amount, string $currency);
+    abstract public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null);
 
     /**
      * Start a new subscription with this method.
@@ -70,6 +70,7 @@ abstract class PaymentMethod
      */
     public function success(Request $request)
     {
+        // dd('success', $request);
         return to_route('shop.home')
             ->with('success', trans('shop::messages.payment.success'));
     }
@@ -103,7 +104,7 @@ abstract class PaymentMethod
      */
     public function image()
     {
-        return asset('plugins/shop/img/payments/'.($this->image ?? ($this->id().'.svg')));
+        return asset('plugins/shop/img/payments/' . ($this->image ?? ($this->id() . '.svg')));
     }
 
     public function id(): string
@@ -150,12 +151,14 @@ abstract class PaymentMethod
     /**
      * Create a new pending payment for the given cart, associated with this payment method.
      */
-    protected function createPayment(Cart $cart, float $price, string $currency, ?string $paymentId = null): Payment
+    protected function createPayment(Cart $cart, float $price, string $currency, ?string $paymentId = null, ?string $bidID = null): Payment
     {
-        // Clear expired pending payments before creating a new one
+        if ($paymentId === null) {
+            $paymentId = generate_trnx_id();
+        }
         Payment::purgePendingPayments();
 
-        return PaymentManager::createPayment($cart, $price, $currency, $this->id, $paymentId);
+        return PaymentManager::createPayment($cart, $price, $currency, $this->id, $paymentId, bidID: $bidID);
     }
 
     /**
@@ -195,7 +198,7 @@ abstract class PaymentMethod
     protected function processPayment(?Payment $payment, ?string $paymentId = null)
     {
         if ($payment === null) {
-            logger()->warning('[Shop] Invalid payment for #'.$paymentId);
+            logger()->warning('[Shop] Invalid payment for #' . $paymentId);
 
             return response()->json([
                 'status' => false,
@@ -211,11 +214,11 @@ abstract class PaymentMethod
         }
 
         if (! $payment->isPending()) {
-            logger()->warning("[Shop] Invalid payment status for #{$payment->id}: ".$payment->status);
+            logger()->warning("[Shop] Invalid payment status for #{$payment->id}: " . $payment->status);
 
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid payment status: '.$payment->status,
+                'message' => 'Invalid payment status: ' . $payment->status,
             ]);
         }
 
@@ -249,11 +252,11 @@ abstract class PaymentMethod
         }
 
         if (! $payment->isCompleted()) {
-            logger()->warning("[Shop] Invalid payment status for #{$payment->id}: ".$payment->status);
+            logger()->warning("[Shop] Invalid payment status for #{$payment->id}: " . $payment->status);
 
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid payment status: '.$payment->status,
+                'message' => 'Invalid payment status: ' . $payment->status,
             ]);
         }
 
@@ -262,7 +265,7 @@ abstract class PaymentMethod
         $payment->revoke($isChargeback ? 'chargeback' : 'refund');
 
         if (($webhook = setting('shop.webhook')) !== null) {
-            rescue(fn () => $payment->createRefundDiscordWebhook($isChargeback)->send($webhook));
+            rescue(fn() => $payment->createRefundDiscordWebhook($isChargeback)->send($webhook));
         }
 
         return response()->json(['status' => true]);

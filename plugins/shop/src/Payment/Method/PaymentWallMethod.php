@@ -27,11 +27,11 @@ class PaymentWallMethod extends PaymentMethod
      */
     protected $name = 'PaymentWall';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
         $this->setupConfig();
 
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
         $user = $payment->user;
 
         $widget = new Widget(
@@ -39,7 +39,7 @@ class PaymentWallMethod extends PaymentMethod
             'p1_1',
             [
                 new Product(
-                    'payment_'.$payment->id,
+                    'payment_' . $payment->id,
                     $amount,
                     $currency,
                     $this->getPurchaseDescription($payment),
@@ -53,6 +53,10 @@ class PaymentWallMethod extends PaymentMethod
                 'success_url' => route('shop.payments.success', $this->id),
             ]
         );
+
+
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
 
         return redirect()->away($widget->getUrl());
     }
