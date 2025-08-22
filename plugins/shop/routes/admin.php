@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" and "admin" middleware groups. Now create a great admin panel !
 |
 */
+
 Route::middleware('can:shop.settings')->prefix('settings')->group(function () {
     Route::get('/', [SettingController::class, 'show'])->name('settings');
     Route::post('/', [SettingController::class, 'save'])->name('settings.save');
@@ -36,8 +37,10 @@ Route::middleware('can:shop.packages')->group(function () {
     Route::resource('variables', VariableController::class)->except('show');
 
     Route::post('/packages/update-order', [PackageController::class, 'updateOrder'])->name('packages.update-order');
-    Route::post('/packages/{package}/duplicate',
-        [PackageController::class, 'duplicate'])->name('packages.duplicate');
+    Route::post(
+        '/packages/{package}/duplicate',
+        [PackageController::class, 'duplicate']
+    )->name('packages.duplicate');
 });
 
 Route::middleware('can:shop.payments')->group(function () {

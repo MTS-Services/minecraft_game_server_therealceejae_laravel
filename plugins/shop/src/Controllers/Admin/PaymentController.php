@@ -21,8 +21,8 @@ class PaymentController extends Controller
         $search = $request->input('search');
 
         $payments = Payment::scopes(['notPending', 'withRealMoney'])
-            ->with('user')
-            ->when($search, fn (Builder $query) => $query->search($search))
+            ->with(['user', 'bid.serverListing'])
+            ->when($search, fn(Builder $query) => $query->search($search))
             ->latest()
             ->paginate();
 

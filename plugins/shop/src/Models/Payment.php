@@ -121,7 +121,7 @@ class Payment extends Model
         return $this->belongsTo(Subscription::class);
     }
 
-    public function bids()
+    public function bid()
     {
         return $this->belongsTo(ServerBid::class);
     }

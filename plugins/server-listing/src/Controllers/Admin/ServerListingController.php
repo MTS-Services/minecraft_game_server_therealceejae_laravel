@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use Illuminate\Database\Eloquent\Builder;
 
 class ServerListingController extends Controller
 {
@@ -28,10 +29,16 @@ class ServerListingController extends Controller
         $this->serverStatusService = $serverStatusService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+
+        $search = $request->input('search');
+
+
         $data['per_page'] = 10;
-        $data['servers'] = ServerListing::with(['user', 'country'])->latest()
+        $data['servers'] = ServerListing::with(['user', 'country'])
+            ->when($search, fn(Builder $query) => $query->search($search))
+            ->latest()
             ->paginate($data['per_page']);
         return view('server-listing::admin.servers.index', $data);
     }
