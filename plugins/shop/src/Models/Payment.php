@@ -7,6 +7,7 @@ use Azuriom\Models\Traits\HasTablePrefix;
 use Azuriom\Models\Traits\HasUser;
 use Azuriom\Models\Traits\Searchable;
 use Azuriom\Models\User;
+use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\Shop\Events\PaymentPaid;
 use Azuriom\Plugin\Shop\Notifications\PaymentPaid as PaymentPaidNotification;
 use Azuriom\Plugin\Shop\Payment\Currencies;
@@ -57,7 +58,13 @@ class Payment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'price', 'currency', 'status', 'gateway_type', 'transaction_id', 'user_id',
+        'price',
+        'currency',
+        'status',
+        'gateway_type',
+        'transaction_id',
+        'user_id',
+        'bid_id',
     ];
 
     /**
@@ -75,7 +82,11 @@ class Payment extends Model
      * @var array<int, string>
      */
     protected array $searchable = [
-        'status', 'gateway_type', 'transaction_id', 'subscription_id', 'user.*',
+        'status',
+        'gateway_type',
+        'transaction_id',
+        'subscription_id',
+        'user.*',
     ];
 
     /**
@@ -110,6 +121,11 @@ class Payment extends Model
         return $this->belongsTo(Subscription::class);
     }
 
+    public function bids()
+    {
+        return $this->belongsTo(ServerBid::class);
+    }
+
     /**
      * Get the giftcards used in this payment.
      */
@@ -133,7 +149,7 @@ class Payment extends Model
         $this->update(['status' => 'completed']);
 
         foreach ($this->giftcards as $giftcard) {
-            Cache::forget('shop.giftcards.pending.'.$giftcard->id);
+            Cache::forget('shop.giftcards.pending.' . $giftcard->id);
         }
 
         foreach ($this->items as $item) {
@@ -145,10 +161,10 @@ class Payment extends Model
         }
 
         if (($webhookUrl = setting('shop.webhook')) !== null) {
-            rescue(fn () => $this->createDiscordWebhook()->send($webhookUrl));
+            rescue(fn() => $this->createDiscordWebhook()->send($webhookUrl));
         }
 
-        rescue(fn () => $this->user->notify(new PaymentPaidNotification($this)));
+        rescue(fn() => $this->user->notify(new PaymentPaidNotification($this)));
     }
 
     public function revoke(string $trigger)
@@ -161,7 +177,7 @@ class Payment extends Model
     public function processGiftcards(float $originalTotal, Collection $giftcards): float
     {
         return $giftcards
-            ->filter(fn (Giftcard $card) => $card->isActive())
+            ->filter(fn(Giftcard $card) => $card->isActive())
             ->reduce(function ($total, Giftcard $card) {
                 if ($total <= 0) {
                     return 0;
@@ -183,7 +199,7 @@ class Payment extends Model
                     $card->decrement('balance', $total);
                 }
 
-                Cache::put('shop.giftcards.pending.'.$card->id, true, now()->addMinutes(15));
+                Cache::put('shop.giftcards.pending.' . $card->id, true, now()->addMinutes(15));
 
                 return $newTotal;
             }, $originalTotal);
@@ -225,11 +241,11 @@ class Payment extends Model
 
         $embed = Embed::create()
             ->title($title)
-            ->description(implode("\n", array_map(fn (string $s) => '- '.$s, $lines)))
+            ->description(implode("\n", array_map(fn(string $s) => '- ' . $s, $lines)))
             ->author($this->user->name, null, $this->user->getAvatar())
             ->url(route('shop.admin.payments.show', $this))
             ->color($color)
-            ->footer('Azuriom v'.Azuriom::version())
+            ->footer('Azuriom v' . Azuriom::version())
             ->timestamp(now());
 
         foreach ($this->items as $item) {
@@ -249,7 +265,7 @@ class Payment extends Model
             }
 
             if ($full) {
-                $embed->addField($name.$quantity, implode("\n", $lines), true);
+                $embed->addField($name . $quantity, implode("\n", $lines), true);
             }
         }
 

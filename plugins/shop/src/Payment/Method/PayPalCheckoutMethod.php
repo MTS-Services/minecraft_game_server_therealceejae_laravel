@@ -40,11 +40,11 @@ class PayPalCheckoutMethod extends PaymentMethod
      */
     protected $image = 'paypal.svg';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
 
-        $items = $cart->itemsPrice()->map(fn (array $data) => [
+        $items = $cart->itemsPrice()->map(fn(array $data) => [
             'name' => $data['item']->name(),
             'quantity' => $data['item']->quantity,
             'description' => $data['item']->buyable()->getDescription(),
@@ -90,6 +90,9 @@ class PayPalCheckoutMethod extends PaymentMethod
 
         $payment->update(['transaction_id' => $id]);
 
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
+
         return view('shop::gateways.paypal-checkout', [
             'sandbox' => $this->gateway->data['environment'] === 'sandbox',
             'clientId' => $this->gateway->data['client-id'],
@@ -107,7 +110,7 @@ class PayPalCheckoutMethod extends PaymentMethod
         $planId = $this->findOrCreatePlan($package);
 
         $response = $this->getClient()->post('/v1/billing/subscriptions', [
-            'custom_id' => $user->id.'|'.$package->id,
+            'custom_id' => $user->id . '|' . $package->id,
             'plan_id' => $planId,
             'subscriber' => [
                 'email_address' => $user->email,
@@ -128,7 +131,7 @@ class PayPalCheckoutMethod extends PaymentMethod
     {
         $id = $subscription->subscription_id;
 
-        $this->getClient()->post('v1/billing/subscriptions/'.$id.'/cancel', [
+        $this->getClient()->post('v1/billing/subscriptions/' . $id . '/cancel', [
             'reason' => 'User canceled',
         ]);
     }
@@ -146,14 +149,14 @@ class PayPalCheckoutMethod extends PaymentMethod
             $subscriptionId = $request->json('resource.id');
 
             // If the subscription was created after the first payment, process it now
-            $paymentId = Cache::pull('shop.paypal.subscription.'.$subscriptionId);
+            $paymentId = Cache::pull('shop.paypal.subscription.' . $subscriptionId);
 
             if ($paymentId !== null) {
                 return $this->createPayPalSubscription($userId, $packageId, $subscriptionId, $paymentId);
             }
 
             // Wait for the first payment to process the subscription
-            Log::info('Waiting payment for PayPal subscription '.$subscriptionId.', for user '.$userId.' and package '.$packageId);
+            Log::info('Waiting payment for PayPal subscription ' . $subscriptionId . ', for user ' . $userId . ' and package ' . $packageId);
 
             return response()->json(['status' => 'subscription_pending']);
         }
@@ -168,7 +171,7 @@ class PayPalCheckoutMethod extends PaymentMethod
                 return $this->renewSubscription($subscription, $paymentId);
             }
 
-            $response = $this->getClient()->get('/v1/billing/subscriptions/'.$subscriptionId);
+            $response = $this->getClient()->get('/v1/billing/subscriptions/' . $subscriptionId);
             [$userId, $packageId] = explode('|', $response->json('custom_id'));
 
             return $this->createPayPalSubscription($userId, $packageId, $subscriptionId, $paymentId);
@@ -206,12 +209,12 @@ class PayPalCheckoutMethod extends PaymentMethod
     protected function capturePayPalOrder(string $paymentId)
     {
         // Seems like the PayPal API does not accept an empty body for the capture request
-        $response = $this->getClient(false)->post('/v2/checkout/orders/'.$paymentId.'/capture', ['' => 0]);
+        $response = $this->getClient(false)->post('/v2/checkout/orders/' . $paymentId . '/capture', ['' => 0]);
 
         if ($response->status() === 422) {
             $payment = Payment::firstWhere('transaction_id', $paymentId);
 
-            logger()->warning('[Shop] Unexpected response from PayPal API: '.$response->body());
+            logger()->warning('[Shop] Unexpected response from PayPal API: ' . $response->body());
 
             return $payment !== null
                 ? $this->invalidPayment($payment, $paymentId, 'Invalid PayPal order')
@@ -246,7 +249,7 @@ class PayPalCheckoutMethod extends PaymentMethod
             $planId = $this->syncPlan($package, $productId);
 
             $this->gateway->metadata()
-                ->make(['value' => $productId.'|'.$planId])
+                ->make(['value' => $productId . '|' . $planId])
                 ->model()->associate($package)
                 ->save();
 
@@ -258,7 +261,7 @@ class PayPalCheckoutMethod extends PaymentMethod
         $productId = $this->syncProduct($package, $productId);
         $planId = $this->syncPlan($package, $productId, $planId);
 
-        $metadata->update(['value' => $productId.'|'.$planId]);
+        $metadata->update(['value' => $productId . '|' . $planId]);
 
         return $planId;
     }
@@ -304,7 +307,7 @@ class PayPalCheckoutMethod extends PaymentMethod
             return $response->json('id');
         }
 
-        $response = $this->getClient(false)->get('/v1/billing/plans/'.$planId);
+        $response = $this->getClient(false)->get('/v1/billing/plans/' . $planId);
 
         if ($response->status() === 404) {
             return $this->syncPlan($package, $productId);
@@ -318,7 +321,7 @@ class PayPalCheckoutMethod extends PaymentMethod
             return $this->syncPlan($package, $productId);
         }
 
-        $this->getClient()->patch('/v1/billing/plans/'.$planId, [
+        $this->getClient()->patch('/v1/billing/plans/' . $planId, [
             [
                 'op' => 'replace',
                 'path' => '/name',
@@ -349,13 +352,13 @@ class PayPalCheckoutMethod extends PaymentMethod
             return $response->json('id');
         }
 
-        $res = $this->getClient(false)->patch('/v1/catalogs/products/'.$productId, [
+        $res = $this->getClient(false)->patch('/v1/catalogs/products/' . $productId, [
             [
                 'op' => 'replace',
                 'path' => '/description',
                 'value' => $package->short_description,
             ],
-        ])->throwIf(fn (Response $res) => ! $res->successful() && $res->status() !== 404);
+        ])->throwIf(fn(Response $res) => ! $res->successful() && $res->status() !== 404);
 
         return $res->successful() ? $productId : $this->syncProduct($package);
     }
@@ -427,9 +430,9 @@ class PayPalCheckoutMethod extends PaymentMethod
         $secret = $this->gateway->data['secret'];
 
         $token = Cache::remember(
-            'shop.paypal.token.'.substr($clientId, 0, 5).substr($secret, 0, 5),
+            'shop.paypal.token.' . substr($clientId, 0, 5) . substr($secret, 0, 5),
             now()->addHour(),
-            fn () => $this->generateAccessToken()
+            fn() => $this->generateAccessToken()
         );
 
         return $this->getBaseClient($throw)->withToken($token);

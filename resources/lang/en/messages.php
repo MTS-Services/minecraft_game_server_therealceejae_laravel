@@ -15,6 +15,7 @@ return [
         'profile' => 'Profile',
         'admin' => 'Admin dashboard',
         'server' => 'Your servers',
+        'dashboard' => 'Dashboard',
     ],
 
     'actions' => [

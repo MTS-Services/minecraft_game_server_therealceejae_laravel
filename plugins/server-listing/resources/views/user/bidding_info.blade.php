@@ -126,27 +126,6 @@
                 overflow: hidden;
             }
 
-            .section-header::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                animation: shimmer 3s infinite;
-            }
-
-            @keyframes shimmer {
-                0% {
-                    left: -100%;
-                }
-
-                100% {
-                    left: 100%;
-                }
-            }
-
             .bidding-table {
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
@@ -464,6 +443,22 @@
     @endpush
 
     <div class="container mt-4">
+
+        {{-- Display success or error messages --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+
         @if (biddingIsOpen())
             <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true"
                 data-bs-backdrop="static" data-bs-keyboard="false">
@@ -540,7 +535,8 @@
                     @endif
 
                     @if (isset($bid))
-                        <form action="{{ route('server-listing.bids.add-to-cart', encrypt($bid->id)) }}" method="POST" class="float-end">
+                        <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}" method="POST"
+                            class="float-end">
                             @csrf
                             <button type="submit" class="btn-pay">
                                 <i class="fas fa-credit-card me-1"></i>Pay Now

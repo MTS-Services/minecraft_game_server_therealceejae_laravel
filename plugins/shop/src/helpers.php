@@ -4,6 +4,7 @@ use Azuriom\Plugin\Shop\Cart\Cart;
 use Azuriom\Plugin\Shop\Payment\Currencies;
 use Azuriom\Plugin\Shop\Payment\PaymentManager;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Request;
 |
 */
 
-if (! function_exists('payment_manager')) {
+if (!function_exists('payment_manager')) {
     /**
      * Get the payment manager of the shop.
      */
@@ -27,7 +28,7 @@ if (! function_exists('payment_manager')) {
     }
 }
 
-if (! function_exists('use_site_money')) {
+if (!function_exists('use_site_money')) {
     /**
      * Return whether the site money should be used for purchases.
      */
@@ -37,7 +38,7 @@ if (! function_exists('use_site_money')) {
     }
 }
 
-if (! function_exists('currency')) {
+if (!function_exists('currency')) {
     /**
      * Return the active currency on the shop.
      */
@@ -47,7 +48,7 @@ if (! function_exists('currency')) {
     }
 }
 
-if (! function_exists('currency_display')) {
+if (!function_exists('currency_display')) {
     /**
      * Return the display of the given currency.
      */
@@ -57,7 +58,7 @@ if (! function_exists('currency_display')) {
     }
 }
 
-if (! function_exists('shop_active_currency')) {
+if (!function_exists('shop_active_currency')) {
     /**
      * Return active shop currency or the site money.
      */
@@ -67,24 +68,37 @@ if (! function_exists('shop_active_currency')) {
     }
 }
 
-if (! function_exists('shop_format_amount')) {
+if (!function_exists('shop_format_amount')) {
     /**
      * Format the given amount with the active currency or the site money.
      */
     function shop_format_amount(float $amount, bool $forceSiteCurrency = false): string
     {
         return $forceSiteCurrency || use_site_money()
-            ? $amount.' '.money_name($amount)
+            ? $amount . ' ' . money_name($amount)
             : Currencies::formatAmount($amount, currency());
     }
 }
 
-if (! function_exists('shop_cart')) {
+if (!function_exists('shop_cart')) {
     /**
      * Get the cart of the current user, or create a new one.
      */
     function shop_cart(): Cart
     {
         return Cart::fromSession(Request::session());
+    }
+}
+
+
+if (!function_exists('generate_trnx_id')) {
+    function generate_trnx_id(): string
+    {
+        $prefix = 'TRNX-';
+        $timestampPart = base_convert(time(), 10, 36);
+        $randomPart = bin2hex(random_bytes(4));
+        $uniquePart = $timestampPart . $randomPart;
+        $finalUniquePart = substr($uniquePart, 0, 16);
+        return strtoupper($prefix . $finalUniquePart);
     }
 }

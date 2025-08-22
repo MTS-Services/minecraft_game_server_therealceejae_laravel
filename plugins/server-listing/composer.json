@@ -5,7 +5,10 @@
     "autoload": {
         "psr-4": {
             "Azuriom\\Plugin\\ServerListing\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "replace": {
         "guzzlehttp/guzzle": "*",

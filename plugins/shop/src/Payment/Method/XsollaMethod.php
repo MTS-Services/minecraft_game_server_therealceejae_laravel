@@ -32,11 +32,11 @@ class XsollaMethod extends PaymentMethod
      */
     protected $name = 'Xsolla';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
         $sandbox = ($this->gateway->data['sandbox'] === 'true');
         $projectId = $this->gateway->data['project-id'];
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
 
         // Their PHP SDK need casts everywhere...
         $tokenRequest = new TokenRequest((int) $projectId, (string) $payment->user->id);
@@ -53,7 +53,10 @@ class XsollaMethod extends PaymentMethod
 
         $token = $xsollaClient->createPaymentUITokenFromRequest($tokenRequest);
 
-        $domain = ($sandbox ? 'sandbox-' : '').'secure.xsolla.com';
+        session()->remove('payment_transaction_id');
+        session()->put('payment_transaction_id', encrypt($payment->transaction_id));
+
+        $domain = ($sandbox ? 'sandbox-' : '') . 'secure.xsolla.com';
 
         return redirect()->away("https://{$domain}/paystation2/?access_token={$token}");
     }
@@ -105,7 +108,7 @@ class XsollaMethod extends PaymentMethod
         $payment = Payment::find($message->getExternalPaymentId());
 
         if ($payment === null) {
-            throw new InvalidInvoiceException('Unknown payment id: '.$message->getExternalPaymentId());
+            throw new InvalidInvoiceException('Unknown payment id: ' . $message->getExternalPaymentId());
         }
 
         if ($message->isRefund()) {
@@ -122,7 +125,7 @@ class XsollaMethod extends PaymentMethod
         $userId = $message->getUserId();
 
         if (! is_numeric($userId) || ! User::whereKey($userId)->exists()) {
-            throw new InvalidUserException('Unknown user id: '.$message->getUserId());
+            throw new InvalidUserException('Unknown user id: ' . $message->getUserId());
         }
     }
 }

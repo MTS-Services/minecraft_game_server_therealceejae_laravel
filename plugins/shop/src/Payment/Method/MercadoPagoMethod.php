@@ -32,11 +32,11 @@ class MercadoPagoMethod extends PaymentMethod
      *
      * @link https://www.mercadopago.com.ar/developers/en/docs/checkout-pro/integrate-preferences
      */
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $bidID = null)
     {
         $this->setupConfig();
         $client = new PreferenceClient();
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, bidID: $bidID);
 
         try {
             $preference = $client->create([
@@ -60,6 +60,9 @@ class MercadoPagoMethod extends PaymentMethod
                 'notification_url' => route('shop.payments.notification', $this->id),
                 'external_reference' => $payment->id,
             ]);
+
+            session()->remove('payment_transaction_id');
+            session()->put('payment_transaction_id', encrypt($payment->transaction_id));
 
             return redirect()->away($preference->init_point);
         } catch (MPApiException $e) {
@@ -92,7 +95,7 @@ class MercadoPagoMethod extends PaymentMethod
             $payment = Payment::findOrFail($mercadoPayment->external_reference);
 
             if ($payment === null) {
-                logger()->warning('[Shop] Payment not found for Mercado Pago payment '.$id);
+                logger()->warning('[Shop] Payment not found for Mercado Pago payment ' . $id);
 
                 return response()->json(['error' => 'Payment not found'], 404);
             }
@@ -113,7 +116,7 @@ class MercadoPagoMethod extends PaymentMethod
                 logger()->warning("[Shop] Invalid Mercado Pago payment status for payment {$id}: {$mercadoPayment->status}");
 
                 return response()->json([
-                    'error' => 'Invalid payment status: '.$mercadoPayment->status,
+                    'error' => 'Invalid payment status: ' . $mercadoPayment->status,
                 ], 400);
             }
 

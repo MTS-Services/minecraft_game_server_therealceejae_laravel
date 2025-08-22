@@ -2,6 +2,7 @@
 
 namespace Azuriom\Plugin\Shop\Payment;
 
+use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\Shop\Cart\Cart;
 use Azuriom\Plugin\Shop\Models\Gateway;
 use Azuriom\Plugin\Shop\Models\Giftcard;
@@ -104,13 +105,15 @@ class PaymentManager
         $payment->deliver();
     }
 
-    public static function createPayment(Cart $cart, float $price, string $currency, string $gatewayId, ?string $paymentId = null): Payment
+    public static function createPayment(Cart $cart, float $price, string $currency, string $gatewayId, ?string $paymentId = null, ?string $bidID = null): Payment
     {
+        // dd('cart', $cart, 'price', $price, 'currency', $currency, 'gatewayId', $gatewayId, 'paymentId', $paymentId, 'bidID', $bidID);
         $payment = Payment::create([
             'price' => $price,
             'currency' => $currency,
             'gateway_type' => $gatewayId,
             'status' => 'pending',
+            'bid_id' => $bidID,
             'transaction_id' => $paymentId,
         ]);
 
