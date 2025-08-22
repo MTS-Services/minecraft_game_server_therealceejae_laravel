@@ -77,11 +77,11 @@
                                         {{ trans('admin.nav.settings.global') }}
                                     </a>
                                 </li>
-                                <li class="sidebar-item {{ add_active('admin.settings.home') }}">
+                                {{-- <li class="sidebar-item {{ add_active('admin.settings.home') }}">
                                     <a class="sidebar-link" href="{{ route('admin.settings.home') }}">
                                         {{ trans('admin.nav.settings.home') }}
                                     </a>
-                                </li>
+                                </li> --}}
                                 @if (!oauth_login())
                                     <li class="sidebar-item {{ add_active('admin.settings.auth') }}">
                                         <a class="sidebar-link" href="{{ route('admin.settings.auth') }}">
@@ -94,20 +94,21 @@
                                         {{ trans('admin.nav.settings.mail') }}
                                     </a>
                                 </li>
-                                <li class="sidebar-item {{ add_active('admin.settings.performance') }}">
+                                {{-- <li class="sidebar-item {{ add_active('admin.settings.performance') }}">
                                     <a class="sidebar-link" href="{{ route('admin.settings.performance') }}">
                                         {{ trans('admin.nav.settings.performances') }}
                                     </a>
-                                </li>
-                                <li class="sidebar-item {{ add_active('admin.settings.maintenance') }}">
+                                </li> --}}
+                                {{-- <li class="sidebar-item {{ add_active('admin.settings.maintenance') }}">
                                     <a class="sidebar-link" href="{{ route('admin.settings.maintenance') }}">
                                         {{ trans('admin.nav.settings.maintenance') }}
                                     </a>
-                                <li class="sidebar-item {{ add_active('admin.social-links.*') }}">
+                                </li> --}}
+                                {{-- <li class="sidebar-item {{ add_active('admin.social-links.*') }}">
                                     <a class="sidebar-link" href="{{ route('admin.social-links.index') }}">
                                         {{ trans('admin.nav.settings.social') }}
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                     @endcan
@@ -121,14 +122,14 @@
                         </li>
                     @endcan
 
-                    @can('admin.servers')
+                    {{-- @can('admin.servers')
                         <li class="sidebar-item {{ add_active('admin.servers.*') }}">
                             <a class="sidebar-link" href="{{ route('admin.servers.index') }}">
                                 <i class="bi bi-hdd-network"></i>
                                 <span>{{ trans('admin.nav.settings.servers') }}</span>
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
                     @canany(['admin.users', 'admin.roles'])
                         <!-- Heading -->
@@ -166,23 +167,23 @@
                         <li class="sidebar-header">{{ trans('admin.nav.content.heading') }}</li>
                     @endcanany
 
-                    @can('admin.pages')
+                    {{-- @can('admin.pages')
                         <li class="sidebar-item {{ add_active('admin.pages.*') }}">
                             <a class="sidebar-link" href="{{ route('admin.pages.index') }}">
                                 <i class="bi bi-file-earmark"></i>
                                 <span>{{ trans('admin.nav.content.pages') }}</span>
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
-                    @can('admin.posts')
+                    {{-- @can('admin.posts')
                         <li class="sidebar-item {{ add_active('admin.posts.*') }}">
                             <a class="sidebar-link" href="{{ route('admin.posts.index') }}">
                                 <i class="bi bi-newspaper"></i>
                                 <span>{{ trans('admin.nav.content.posts') }}</span>
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
                     @can('admin.images')
                         <li class="sidebar-item {{ add_active('admin.images.*') }}">
@@ -193,14 +194,14 @@
                         </li>
                     @endcan
 
-                    @can('admin.redirects')
+                    {{-- @can('admin.redirects')
                         <li class="sidebar-item {{ add_active('admin.redirects.*') }}">
                             <a class="sidebar-link" href="{{ route('admin.redirects.index') }}">
                                 <i class="bi bi-signpost"></i>
                                 <span>{{ trans('admin.nav.content.redirects') }}</span>
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
                     @canany(['admin.plugins', 'admin.themes'])
                         <li class="sidebar-header">{{ trans('admin.nav.extensions.heading') }}</li>
