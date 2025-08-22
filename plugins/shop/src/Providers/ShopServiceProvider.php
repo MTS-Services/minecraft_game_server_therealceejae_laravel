@@ -169,10 +169,10 @@ class ShopServiceProvider extends BasePluginServiceProvider
                     //     'name' => trans('shop::admin.nav.variables'),
                     //     'permission' => 'shop.packages',
                     // ],
-                    // 'shop.admin.payments.index' => [
-                    //     'name' => trans('shop::admin.nav.payments'),
-                    //     'permission' => 'shop.payments',
-                    // ],
+                    'shop.admin.payments.index' => [
+                        'name' => trans('shop::admin.nav.payments'),
+                        'permission' => 'shop.payments',
+                    ],
                     // 'shop.admin.subscriptions.index' => [
                     //     'name' => trans('shop::admin.nav.subscriptions'),
                     //     'permission' => 'shop.payments',

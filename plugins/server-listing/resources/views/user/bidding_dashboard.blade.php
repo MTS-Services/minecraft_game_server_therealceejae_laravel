@@ -82,13 +82,6 @@
             </div>
         </div>
 
-        <!-- Servers Section -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="section-title">Servers</h2>
-            </div>
-        </div>
-
         <div class="row g-4 mb-4">
             <div class="col-md-4">
                 <a href="{{ route('server-listing.submission') }}">
@@ -127,6 +120,16 @@
                             <i class="bi bi-trophy-fill text-primary"></i>
                         </div>
                         <button class="btn btn-dashboard">Favorites Servers <i class="bi bi-heart"></i></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ route('shop.profile') }}">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon">
+                            <i class="bi bi-trophy-fill text-primary"></i>
+                        </div>
+                        <button class="btn btn-dashboard">Your Payments <i class="bi bi-heart"></i></button>
                     </div>
                 </a>
             </div>
