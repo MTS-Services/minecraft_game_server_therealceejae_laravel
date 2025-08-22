@@ -33,12 +33,14 @@ return [
     ],
 
     'vote' => [
-        'minecraft_servers' =>  'Minecraft Servers'
+        'minecraft_servers' => 'Minecraft Servers'
     ],
 
     'fields' => [
         'logo' => 'Logo',
         'name' => 'Name',
+        'amount' => 'Amount',
+        'bid_at' => 'Bidded At',
         'category' => 'Category',
         'server_ip' => 'Server IP',
         'featured' => 'Featured',

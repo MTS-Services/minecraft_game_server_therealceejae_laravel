@@ -35,6 +35,7 @@ class ServerBid extends Model implements Buyable
         return 'Bid for ' . $this->serverListing->name;
     }
 
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -58,5 +59,16 @@ class ServerBid extends Model implements Buyable
     public function deliver(PaymentItem $item): void
     {
         $this->update(['status' => 'completed']);
+    }
+
+
+    public static function getStatusList(): array
+    {
+        return [
+            'pending' => 'Pending',
+            'win' => 'Win',
+            'paid' => 'Paid',
+            'rejected' => 'Rejected',
+        ];
     }
 }

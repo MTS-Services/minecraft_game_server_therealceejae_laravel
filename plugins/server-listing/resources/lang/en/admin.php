@@ -19,6 +19,7 @@ return [
         'purchases' => 'Purchases',
         'statistics' => 'Statistics',
         'categories' => 'Categories',
+        'bids' => 'Bids',
     ],
 
     'server' => [
@@ -44,6 +45,10 @@ return [
         'create' => 'Create Tag',
         'edit' => 'Edit Tag :tag',
         'name' => 'Tag Name',
+
+    ],
+    'bid' => [
+        'title' => 'Server Bid',
 
     ],
     'card' => [

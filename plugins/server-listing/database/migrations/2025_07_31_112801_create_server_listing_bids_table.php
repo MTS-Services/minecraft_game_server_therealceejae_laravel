@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedBigInteger('server_listing_id')->nullable();
             $table->decimal('amount', 15, 2);
-            $table->string('status')->default('pending'); // pending, completed, failed
+            $table->string('status')->default('pending'); // pending, win, paid, lose
             $table->timestamp('bidding_at');
             $table->timestamps();
 

@@ -38,7 +38,7 @@ class BidController extends Controller
     public function placeBid(Request $request, $slug)
     {
         $validated = $request->validate([
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|min:50',
         ]);
 
         $server = ServerListing::where('slug', $slug)->firstOrFail();

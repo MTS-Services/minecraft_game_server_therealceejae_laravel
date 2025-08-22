@@ -1,5 +1,6 @@
 <?php
 
+use Azuriom\Plugin\ServerListing\Controllers\Admin\BidController;
 use Azuriom\Plugin\ServerListing\Controllers\Admin\ServerListingController;
 use Azuriom\Plugin\ServerListing\Controllers\Admin\TagController;
 use Azuriom\Plugin\ServerListing\Controllers\VoteManagementController;
@@ -36,6 +37,10 @@ Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(fu
     Route::get('/tags/{tag}', 'edit')->name('edit');
     Route::put('/tags/{tag}', 'update')->name('edit');
     Route::delete('/tags/{tag}', 'destroy')->name('destroy');
+});
+Route::controller(BidController::class)->name('bids.')->prefix('bids')->group(function () {
+    Route::get('/index', 'index')->name('index');
+    Route::post('/bids/update-order', 'updateOrder')->name('update-order');
 });
 
 Route::get('votes', [VoteManagementController::class, 'index'])->name('votes');

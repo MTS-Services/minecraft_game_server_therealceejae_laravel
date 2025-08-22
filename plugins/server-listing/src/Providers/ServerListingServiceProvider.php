@@ -57,6 +57,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
             'server-listing.votes' => 'server-listing::admin.permissions.votes',
             'server-listing.stats' => 'server-listing::admin.permissions.stats',
             'server-listing.settings' => 'server-listing::admin.permissions.settings',
+            'server-listing.bid' => 'server-listing::admin.permissions.bid',
         ]);
 
         ActionLog::registerLogModels([
@@ -130,6 +131,10 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
                     'server-listing.admin.servers.index' => [
                         'name' => trans('server-listing::admin.nav.servers'),
                         'permission' => 'server-listing.server',
+                    ],
+                    'server-listing.admin.bids.index' => [
+                        'name' => trans('server-listing::admin.nav.bids'),
+                        'permission' => 'server-listing.bid',
                     ],
                 ],
             ],
