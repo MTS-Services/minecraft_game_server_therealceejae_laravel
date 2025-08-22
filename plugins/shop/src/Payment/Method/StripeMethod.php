@@ -45,7 +45,7 @@ class StripeMethod extends PaymentMethod
      */
     protected $name = 'Stripe';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
         $this->setup();
 
@@ -61,7 +61,7 @@ class StripeMethod extends PaymentMethod
             'quantity' => $data['item']->quantity,
         ]);
 
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
         $coupon = $this->applyGiftcards($payment, $currency);
         $successUrl = route('shop.payments.success', [$this->id, '%id%']);
 

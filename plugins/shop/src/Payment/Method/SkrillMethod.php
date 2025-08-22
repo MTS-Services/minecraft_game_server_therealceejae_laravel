@@ -46,10 +46,10 @@ class SkrillMethod extends PaymentMethod
      */
     protected $name = 'Skrill (paysafecard)';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
         $user = auth()->user();
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
         $locale = strtoupper(Str::before(app()->getLocale(), '_'));
 
         $response = Http::asForm()->post('https://pay.skrill.com', [

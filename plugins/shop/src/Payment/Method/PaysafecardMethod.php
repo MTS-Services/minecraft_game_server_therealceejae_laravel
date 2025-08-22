@@ -36,7 +36,7 @@ class PaysafecardMethod extends PaymentMethod
      */
     protected $name = 'paysafecard';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
         $successUrl = route('shop.payments.success', $this->id);
         $failureUrl = route('shop.payments.failure', $this->id);
@@ -62,7 +62,7 @@ class PaysafecardMethod extends PaymentMethod
             return $this->errorResponse();
         }
 
-        $this->createPayment($cart, $amount, $currency, $response['id']);
+        $this->createPayment($cart, $amount, $currency, $response['id'], serverID: $serverID);
 
         return redirect()->away($response['redirect']['auth_url']);
     }

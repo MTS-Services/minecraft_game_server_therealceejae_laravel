@@ -32,11 +32,11 @@ class MercadoPagoMethod extends PaymentMethod
      *
      * @link https://www.mercadopago.com.ar/developers/en/docs/checkout-pro/integrate-preferences
      */
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
         $this->setupConfig();
         $client = new PreferenceClient();
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
 
         try {
             $preference = $client->create([
@@ -92,7 +92,7 @@ class MercadoPagoMethod extends PaymentMethod
             $payment = Payment::findOrFail($mercadoPayment->external_reference);
 
             if ($payment === null) {
-                logger()->warning('[Shop] Payment not found for Mercado Pago payment '.$id);
+                logger()->warning('[Shop] Payment not found for Mercado Pago payment ' . $id);
 
                 return response()->json(['error' => 'Payment not found'], 404);
             }
@@ -113,7 +113,7 @@ class MercadoPagoMethod extends PaymentMethod
                 logger()->warning("[Shop] Invalid Mercado Pago payment status for payment {$id}: {$mercadoPayment->status}");
 
                 return response()->json([
-                    'error' => 'Invalid payment status: '.$mercadoPayment->status,
+                    'error' => 'Invalid payment status: ' . $mercadoPayment->status,
                 ], 400);
             }
 

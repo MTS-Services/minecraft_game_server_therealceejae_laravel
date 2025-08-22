@@ -27,11 +27,11 @@ class PaymentWallMethod extends PaymentMethod
      */
     protected $name = 'PaymentWall';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency , ?string $serverID = null)
     {
         $this->setupConfig();
 
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
         $user = $payment->user;
 
         $widget = new Widget(

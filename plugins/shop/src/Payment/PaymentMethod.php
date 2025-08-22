@@ -39,7 +39,7 @@ abstract class PaymentMethod
      *
      * @return \Illuminate\Http\Response
      */
-    abstract public function startPayment(Cart $cart, float $amount, string $currency);
+    abstract public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null);
 
     /**
      * Start a new subscription with this method.
@@ -150,12 +150,12 @@ abstract class PaymentMethod
     /**
      * Create a new pending payment for the given cart, associated with this payment method.
      */
-    protected function createPayment(Cart $cart, float $price, string $currency, ?string $paymentId = null): Payment
+    protected function createPayment(Cart $cart, float $price, string $currency, ?string $paymentId = null, ?string $serverID = null): Payment
     {
         // Clear expired pending payments before creating a new one
         Payment::purgePendingPayments();
 
-        return PaymentManager::createPayment($cart, $price, $currency, $this->id, $paymentId);
+        return PaymentManager::createPayment($cart, $price, $currency, $this->id, $paymentId, serverID: $serverID);
     }
 
     /**

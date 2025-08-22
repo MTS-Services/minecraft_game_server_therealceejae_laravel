@@ -45,7 +45,7 @@ Route::controller(BidController::class)->middleware('auth:web')->name('bids.')->
 
 Route::controller(PaymentController::class)->prefix('payments')->name('payments.')->group(function () {
     Route::post('/payment/{encryptedId}', 'payment')->name('payment');
-    Route::get('/success', 'success')->name('success');
+    Route::post('/{gateway:type}/pay', 'pay')->name('pay');
 });
 
 Route::get('{slug}/vote', [VoteController::class, 'showVotePage'])->name('vote');

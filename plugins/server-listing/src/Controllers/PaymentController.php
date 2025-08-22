@@ -27,16 +27,14 @@ class PaymentController extends Controller
         if ($gateways->count() === 0) {
             return redirect()->back()->with('error', 'No payment gateways available');
         }
-
         if ($gateways->count() === 1) {
 
             $gateway = $gateways->first();
-            dd($gateway);
+            // dd($gateway);
 
-            return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency());
+            return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency(), serverID: $bid?->serverListing?->id);
         }
-        dd($gateways);
-        return view('server-listing::payment.gateways', ['gateways' => $gateways]);
+        return view('server-listing::payment.gateways', ['gateways' => $gateways, 'bid' => $bid]);
     }
 
 
@@ -45,8 +43,23 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function pay(Request $request)
+    public function pay(Request $request, Gateway $gateway)
     {
-        return view('shop::payments.success');
+        abort_if(!$gateway->is_enabled, 403);
+
+        $cart = Cart::fromSession($request->session());
+        $bid = ServerBid::findOrFail(decrypt($request->input('bid_id')));
+
+        if (!$cart->has($bid)) {
+            $cart->add($bid);
+        }
+        $bid->load('serverListing');
+
+        if ($cart->isEmpty()) {
+            return redirect()->back()->with('error', 'Cart is empty');
+        }
+
+        return $gateway->paymentMethod()->startPayment($cart, $cart->payableTotal(), currency(), serverID: $bid?->serverListing?->id);
     }
+
 }

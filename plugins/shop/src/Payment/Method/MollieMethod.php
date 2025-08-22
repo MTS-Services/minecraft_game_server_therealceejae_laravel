@@ -42,9 +42,9 @@ class MollieMethod extends PaymentMethod
         }
     }
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
 
         $molliePayment = $this->mollie->payments->create([
             'amount' => [

@@ -40,7 +40,7 @@ class PayPalCheckoutMethod extends PaymentMethod
      */
     protected $image = 'paypal.svg';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
         $payment = $this->createPayment($cart, $amount, $currency);
 

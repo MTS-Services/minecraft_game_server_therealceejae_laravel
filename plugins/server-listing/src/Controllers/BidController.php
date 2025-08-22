@@ -57,6 +57,5 @@ class BidController extends Controller
 
         session()->flash('success', 'Bid placed successfully');
         return redirect()->back();
-        // return to_route('server-listing.bids.payment', $bid);
     }
 }

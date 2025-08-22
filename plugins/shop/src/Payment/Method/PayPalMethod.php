@@ -26,9 +26,9 @@ class PayPalMethod extends PaymentMethod
      */
     protected $name = 'PayPal';
 
-    public function startPayment(Cart $cart, float $amount, string $currency)
+    public function startPayment(Cart $cart, float $amount, string $currency, ?string $serverID = null)
     {
-        $payment = $this->createPayment($cart, $amount, $currency);
+        $payment = $this->createPayment($cart, $amount, $currency, serverID: $serverID);
 
         $attributes = [
             'cmd' => '_xclick',
@@ -47,7 +47,7 @@ class PayPalMethod extends PaymentMethod
             'bn' => 'Azuriom',
         ];
 
-        return redirect()->away('https://www.paypal.com/cgi-bin/webscr?'.Arr::query($attributes));
+        return redirect()->away('https://www.paypal.com/cgi-bin/webscr?' . Arr::query($attributes));
     }
 
     public function notification(Request $request, ?string $rawPaymentId)
@@ -83,7 +83,7 @@ class PayPalMethod extends PaymentMethod
 
         if ($status === 'Pending') {
             $payment->update(['status' => 'pending', 'transaction_id' => $paymentId]);
-            logger()->info('[Shop] Pending payment for #'.$paymentId);
+            logger()->info('[Shop] Pending payment for #' . $paymentId);
 
             return response()->noContent();
         }
