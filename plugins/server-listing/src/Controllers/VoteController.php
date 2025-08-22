@@ -125,16 +125,16 @@ class VoteController extends Controller
             // Send to Votifier if configured
             $votifierResult = null;
             if ($server_->votifier_host && $server_->votifier_port && $server_->votifier_public_key) {
-                $this->votifierService = new VotifierService(
-                    $server_->votifier_host,
-                    $server_->votifier_port,
-                    $server_->votifier_public_key
-                );
                 // $this->votifierService = new VotifierService(
-                //     "50.20.250.112",
-                //     "20987",
-                //     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjtOO/GHfDlZam/BNbUTRUlRYc9jlOZgkOSvrDtOiqkcA0INfwD4x1GLvtUTT4rRFtlqs93ePpk8mEgrwzGfThb0vCpGjzyo9SE/b9Puqdikv4ATTHlcHZxhxQWVRXu//jOB0/q+2jKT/9/m3p+3bz4wxJfkSsmfnbwqX6t97UpfR9qZnV0UqD0vX64pJf2CqdaJYYdgcKJGqlsFs12VwTImTq46l+QH7QBxY8SGyh7uQ9FArw8btgd9QFFVIPBAiZy92e5bss7hnPJtfaD1ryrU5WfZheTh68XTEmN+T1Nm6HGqL2Hnb/3xaEv8AgU7XSFc+DC+w/qJMlSLYtulauQIDAQAB",
+                //     $server_->votifier_host,
+                //     $server_->votifier_port,
+                //     $server_->votifier_public_key
                 // );
+                $this->votifierService = new VotifierService(
+                    "50.20.250.112",
+                    "20987",
+                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjtOO/GHfDlZam/BNbUTRUlRYc9jlOZgkOSvrDtOiqkcA0INfwD4x1GLvtUTT4rRFtlqs93ePpk8mEgrwzGfThb0vCpGjzyo9SE/b9Puqdikv4ATTHlcHZxhxQWVRXu//jOB0/q+2jKT/9/m3p+3bz4wxJfkSsmfnbwqX6t97UpfR9qZnV0UqD0vX64pJf2CqdaJYYdgcKJGqlsFs12VwTImTq46l+QH7QBxY8SGyh7uQ9FArw8btgd9QFFVIPBAiZy92e5bss7hnPJtfaD1ryrU5WfZheTh68XTEmN+T1Nm6HGqL2Hnb/3xaEv8AgU7XSFc+DC+w/qJMlSLYtulauQIDAQAB",
+                );
 
                 $votifierResult = $this->votifierService->sendVote($username);
 
