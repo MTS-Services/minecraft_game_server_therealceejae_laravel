@@ -28,7 +28,7 @@ class ServerListingController extends Controller
     {
         $this->serverStatusService = $serverStatusService;
     }
-
+ 
     public function index(Request $request)
     {
 
