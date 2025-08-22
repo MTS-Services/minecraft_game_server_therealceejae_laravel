@@ -5,6 +5,7 @@ namespace Azuriom\Plugin\ServerListing\Providers;
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\ActionLog;
 use Azuriom\Models\Permission;
+use Azuriom\Plugin\ServerListing\Console\Commands\CleanupOldVotes;
 use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\ServerListing\Console\Commands\UpdateStatsDaily;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
@@ -45,6 +46,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
 
         $this->commands([
             UpdateStatsDaily::class,
+            CleanupOldVotes::class,
         ]);
 
 
@@ -57,7 +59,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
             'server-listing.votes' => 'server-listing::admin.permissions.votes',
             'server-listing.stats' => 'server-listing::admin.permissions.stats',
             'server-listing.settings' => 'server-listing::admin.permissions.settings',
-            'server-listing.bid' => 'server-listing::admin.permissions.bid',
+            'server-listing.bid' => 'server-listing::admin.permissions.b',
         ]);
 
         ActionLog::registerLogModels([
@@ -96,6 +98,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('server-listing:update-stats-daily')->everyMinute();
+        $schedule->command('server-listing:votes_cleanup')->everyMinute();
     }
 
     /**

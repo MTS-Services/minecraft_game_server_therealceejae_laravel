@@ -41,6 +41,8 @@ return [
         'name' => 'Name',
         'amount' => 'Amount',
         'bid_at' => 'Bidded At',
+        'votes' => 'Votes',
+        'favorites' => 'Favorites',
         'category' => 'Category',
         'server_ip' => 'Server IP',
         'featured' => 'Featured',

@@ -2,27 +2,35 @@
 
 namespace Azuriom\Plugin\ServerListing\Console\Commands;
 
+use Azuriom\Plugin\ServerListing\Models\ServerListing;
 use Azuriom\Plugin\ServerListing\Models\ServerVote;
 use Azuriom\Plugin\ServerListing\Models\ServerVoteStatistic;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CleanupOldVotes extends Command
 {
-    protected $signature = 'votes:cleanup {--days=180 : Number of days to keep votes}';
+    protected $signature = 'server-listing:votes_cleanup';
     protected $description = 'Remove old vote records to keep database clean';
 
     public function handle()
     {
-        $days = $this->option('days');
-        $cutoffDate = now()->subDays($days);
+        try {
+            $days = 30;
+            $cutoffDate = now()->subDays($days);
+            Log::info("Starting cleanup. Cutoff date: {$cutoffDate}");
+            $deletedCount = ServerVote::whereDate('voted_at', '<', $cutoffDate)->delete();
+            Log::info("Deleted votes: {$deletedCount}");
 
-        $deletedCount = ServerVote::where('voted_at', '<', $cutoffDate)->delete();
+            $deletedStatsCount = ServerVoteStatistic::where('date', '<', $cutoffDate)->delete();
+            Log::info("Deleted stats: {$deletedStatsCount}");
 
-        $this->info("Cleaned up {$deletedCount} old vote records older than {$days} days.");
-
-        // Also cleanup old vote statistics
-        $deletedStatsCount = ServerVoteStatistic::where('date', '<', $cutoffDate)->delete();
-
-        $this->info("Cleaned up {$deletedStatsCount} old vote statistics records.");
+            $this->info("Cleanup completed successfully.");
+            return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            Log::error("Vote cleanup failed: " . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            $this->error("Error: " . $e->getMessage());
+            return Command::FAILURE;
+        }
     }
 }

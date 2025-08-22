@@ -111,4 +111,92 @@ class ServerStatusService
         $response = Http::get('http://ip-api.com/json/' . $ip);
         return $response;
     }
+
+
+
+    public function getServerUpdatedData(string $serverIp, ?string $serverPort = null): array
+    {
+        // Check if serverIp is provided and not empty
+        if (empty($serverIp)) {
+            return [
+                'success' => false,
+                'message' => 'Server IP cannot be empty.',
+                'code' => 400
+            ];
+        }
+
+        // Construct the URL. Append the port if it's provided and not the default (25565).
+        $url = $this->baseUrl . $serverIp;
+        if (!empty($serverPort) && $serverPort != '25565') {
+            $url .= ':' . $serverPort;
+        }
+
+        try {
+            $response = Http::get($url);
+
+            // Check for HTTP errors (e.g., 404, 500) from the API
+            if ($response->failed()) {
+                return [
+                    'success' => false,
+                    'message' => 'Failed to connect to the server status API.',
+                    'code' => $response->status(),
+                    'data' => $response->json()
+                ];
+            }
+
+            // Decode the JSON response from the API
+            $responseData = $response->json();
+
+            // Check the status based on the provided logic
+            $isOnline = isset($responseData['online']) ? $responseData['online'] : false;
+            $versionContainsOffline = isset($responseData['version']) ? str_contains(strtolower($responseData['version']), 'offline') : false;
+            $apiIp = isset($responseData['ip']) ? $responseData['ip'] : null;
+            $isLocalIp = in_array($apiIp, ['127.0.0.1', 'localhost', '::1']);
+
+            if ($isOnline && !$versionContainsOffline) {
+                $responseData['is_online'] = true;
+                // Condition 1: online is true and version is not offline
+                return [
+                    'success' => true,
+                    'message' => 'Connection successful. Server is online.',
+                    'server_data' => $responseData,
+                    'code' => 200
+                ];
+            } elseif ($isOnline && $versionContainsOffline) {
+                $responseData['is_online'] = false;
+                // Condition 2: online is true and version contains offline
+                return [
+                    'success' => true,
+                    'message' => 'Make sure your server is online.',
+                    'server_data' => $responseData,
+                    'code' => 200
+                ];
+            } elseif (!$isOnline && $isLocalIp) {
+                // Condition 3: online is false and IP is local
+                return [
+                    'success' => false,
+                    'message' => 'Please check the server ip and port.',
+                    'server_data' => $responseData,
+                    'code' => 200
+                ];
+            } else {
+                $responseData['is_online'] = false;
+                // Condition 4: online is false and IP is not local
+                return [
+                    'success' => true,
+                    'message' => 'Your server is offline.',
+                    'server_data' => $responseData,
+                    'code' => 200
+                ];
+            }
+        } catch (\Exception $e) {
+            // Catch any other exceptions during the HTTP request
+            return [
+                'success' => false,
+                'message' => 'An unexpected error occurred while checking the server status.',
+                'error' => $e->getMessage(),
+                'code' => 500
+            ];
+        }
+    }
 }

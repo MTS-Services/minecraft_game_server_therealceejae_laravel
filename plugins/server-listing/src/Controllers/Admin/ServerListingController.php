@@ -121,6 +121,8 @@ class ServerListingController extends Controller
             $validated['current_players'] = $status['server_data']['players']['online'];
             $validated['server_port'] = $validated['server_port'] ? $validated['server_port'] : $status['server_data']['port'];
             $validated['server_datas'] = $status['server_data'];
+            $validated['is_approved'] = true;
+            $validated['is_online'] = true;
 
             $country = $this->serverStatusService->getCountryCode($validated['server_ip']);
             $country = json_decode($country, true);
