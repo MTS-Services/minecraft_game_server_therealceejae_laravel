@@ -43,13 +43,10 @@
                 padding: 2rem;
                 text-align: center;
                 height: 100%;
-                transition: box-shadow 0.15s ease-in-out;
                 border: 2px solid #c5c5c5;
             }
 
-            .dashboard-card:hover {
-                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            }
+
 
             .dashboard-icon {
                 font-size: 3rem;
@@ -71,7 +68,6 @@
                 margin-bottom: 3rem;
             }
 
-            .monetize-card {}
 
             .monetize-card .dashboard-icon {
                 color: var(--monetize-icon);
@@ -85,8 +81,6 @@
                 font-size: 0.875rem;
             }
 
-            .btn-dashboard:hover {}
-
             .btn-monetize {
                 background-color: #2196f3;
 
@@ -95,13 +89,6 @@
             .btn-monetize:hover {
                 background-color: #1976d2;
 
-            }
-
-            /* Override Bootstrap text-primary for dark mode icons */
-            @media (prefers-color-scheme: dark) {
-                .dashboard-icon .text-primary {
-                    color: var(--primary-icon-color) !important;
-                }
             }
         </style>
     @endpush
@@ -190,14 +177,14 @@
             padding: 2rem 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
             cursor: pointer;
             height: 100%;
         }
 
         .dashboard-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
         }
 
         .dashboard-card h5 {
@@ -254,7 +241,7 @@
             .dashboard-card {
 
                 color: #e9ecef;
-                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.171);
             }
 
             .dashboard-card p {
