@@ -25,36 +25,4 @@ if (! function_exists('asset')) {
     }
 }
 
-// function biddingIsOpen(): bool
-// {
-//     $day = now()->day; // today day of month
-//     return $day >= 20 && $day < 29;
-// }
-if (! function_exists('biddingIsOpen')) {
-    function biddingIsOpen(): bool
-    {
-        $day = now()->day;
-        return $day >= 20 && $day < lastPaymentDayStart();
-    }
-}
-if (! function_exists('paymentIsOpen')) {
-    function paymentIsOpen(): bool
-    {
-        $day = now()->day;
-        return $day >= lastPaymentDayStart() && $day <= lastDayOfMonth();
-    }
-}
-if (! function_exists('lastPaymentDayStart')) {
-    function lastPaymentDayStart(): int
-    {
-        $lastDay = lastDayOfMonth();
-        return $lastDay - 2;
-    }
-}
 
-if (! function_exists('lastDayOfMonth')) {
-    function lastDayOfMonth(): int
-    {
-        return now()->endOfMonth()->day; // 28 / 29 / 30 / 31
-    }
-}
