@@ -11,6 +11,7 @@ use Azuriom\Plugin\Shop\Models\Gateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Azuriom\Plugin\Shop\Models\Payment;
 
 class BidController extends Controller
 {
@@ -25,10 +26,13 @@ class BidController extends Controller
     {
         $data['serverList'] = ServerListing::where('slug', $slug)->first();
 
+        $data['payments_count'] = Payment::whereBelongsTo(Auth::user())
+            ->scopes(['notPending', 'withRealMoney'])
+            ->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count();
+
         $data['bid'] = ServerBid::where([
             'server_listing_id' => $data['serverList']->id,
             'user_id' => Auth::id(),
-            'status' => 'pending',
         ])
             ->whereMonth('bidding_at', now()->month)
             ->whereYear('bidding_at', now()->year)

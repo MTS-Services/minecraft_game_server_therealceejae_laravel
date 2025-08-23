@@ -262,33 +262,42 @@
             <h2 class="subscriptions-title">{{ trans('shop::messages.profile.payments') }}</h2>
         </div>
 
-        <div class="payments-card-body">
-            {{-- Refactored Payments "Table" --}}
-            <div
-                class="d-flex flex-wrap text-white text-uppercase fw-bold text-center p-3 payments-card-header text-center">
-                <div class="col-1 col-md-1">#</div>
-                <div class="col-2 col-md-2">{{ trans('shop::messages.fields.price') }}</div>
-                <div class="col-2 col-md-2">{{ trans('messages.fields.type') }}</div>
-                <div class="col-2 col-md-2">{{ trans('messages.fields.status') }}</div>
-                <div class="col-2 col-md-2">{{ trans('shop::messages.fields.payment_id') }}</div>
-                <div class="col-3 col-md-3">{{ trans('messages.fields.date') }}</div>
-            </div>
-            @foreach ($payments as $payment)
-                <div class="payments-card-row d-flex flex-wrap text-center">
-                    <div class="col-1 col-md-1 fw-bold">{{ $loop->iteration }}</div>
-                    <div class="col-2 col-md-2">{{ $payment->formatPrice() }}</div>
-                    <div class="col-2 col-md-2">{{ $payment->getTypeName() }}</div>
-                    <div class="col-2 col-md-2">
-                        <span class="badge status-badge bg-{{ $payment->statusColor() }}">
-                            {{ trans('shop::admin.payments.status.' . $payment->status) }}
-                        </span>
-                    </div>
-                    <div class="col-2 col-md-2">{{ $payment->transaction_id ?? trans('messages.unknown') }}
-                    </div>
-                    <div class="col-3 col-md-3">{{ format_date($payment->created_at, true) }}</div>
+        @if (!$payments->isEmpty())
+            <div class="payments-card-body">
+                {{-- Refactored Payments "Table" --}}
+                <div
+                    class="d-flex flex-wrap text-white text-uppercase fw-bold text-center p-3 payments-card-header text-center">
+                    <div class="col-1 col-md-1">#</div>
+                    <div class="col-2 col-md-2">{{ trans('shop::messages.fields.price') }}</div>
+                    <div class="col-2 col-md-2">{{ trans('messages.fields.type') }}</div>
+                    <div class="col-2 col-md-2">{{ trans('messages.fields.status') }}</div>
+                    <div class="col-2 col-md-2">{{ trans('shop::messages.fields.payment_id') }}</div>
+                    <div class="col-3 col-md-3">{{ trans('messages.fields.date') }}</div>
                 </div>
-            @endforeach
-        </div>
+                @foreach ($payments as $payment)
+                    <div class="payments-card-row d-flex flex-wrap text-center">
+                        <div class="col-1 col-md-1 fw-bold">{{ $loop->iteration }}</div>
+                        <div class="col-2 col-md-2">{{ $payment->formatPrice() }}</div>
+                        <div class="col-2 col-md-2">{{ $payment->getTypeName() }}</div>
+                        <div class="col-2 col-md-2">
+                            <span class="badge status-badge bg-{{ $payment->statusColor() }}">
+                                {{ trans('shop::admin.payments.status.' . $payment->status) }}
+                            </span>
+                        </div>
+                        <div class="col-2 col-md-2">{{ $payment->transaction_id ?? trans('messages.unknown') }}
+                        </div>
+                        <div class="col-3 col-md-3">{{ format_date($payment->created_at, true) }}</div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="p-4 text-center text-muted">
+                <p class="text-muted m-0">Payments not found</p>
+            </div>
+
+        @endif
+
+
     </div>
 
     @if (!$subscriptions->isEmpty())
