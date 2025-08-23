@@ -541,15 +541,22 @@
                         </button>
                     @endif
 
-                    @if (isset($bid))
+                    @if (isset($bid) && $bid->payments->count() == 0)
                         @if (paymentIsOpen())
-                            <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}" method="POST"
-                                class="float-end">
-                                @csrf
-                                <button type="submit" class="btn-pay">
-                                    <i class="fas fa-credit-card me-1"></i>Pay Now
+                            @if ($bid->status == 'win')
+                                <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}"
+                                    method="POST" class="float-end">
+                                    @csrf
+                                    <button type="submit" class="btn-pay">
+                                        <i class="fas fa-credit-card me-1"></i>Pay Now
+                                    </button>
+                                </form>
+                            @elseif($bid->status == 'rejected')
+                                <button type="button" class="btn-bidding float-end" style="cursor: not-allowed" disabled
+                                    title="Your are not win the bid. You can place a new bid when bidding opens again on {{ biddingStartDay() . ', ' . date('F') }}">
+                                    <i class="bi bi-cash-stack me-1"></i>Bid Rejected
                                 </button>
-                            </form>
+                            @endif
                         @else
                             <button type="button" class="btn-pay float-end" style="cursor: not-allowed" disabled
                                 title="Payment period is not open yet. Payment will start on {{ paymentStartDay() . ', ' . date('F') }}.">
@@ -563,31 +570,30 @@
             <!-- Statistics Grid -->
             <div class="bid-info-grid">
                 <div class="bid-info-card">
-                    <div class="bid-info-number"><i class="fas fa-dollar-sign"></i><span
-                            class="fw-bold">{{ now()->endOfMonth()->day }}</span></div>
+                    <div class="bid-info-number"><i class="fas fa-dollar-sign"></i><span class="fw-bold">50</span></div>
                     <div class="bid-info-label">Minimum Bid</div>
                 </div>
                 <div class="bid-info-card">
                     <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
-                        {{ now()->format('M d, Y') }}
+                        {{ biddingStartDay() . ', ' . date('F') }}
                     </div>
-                    <div class="bid-info-label">Bidding Start Date</div>
+                    <div class="bid-info-label">Next Bidding Start Date</div>
                 </div>
                 <div class="bid-info-card">
                     <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
-                        {{ now()->format('M d, Y') }}
+                        {{ paymentStartDay() - 1 . ', ' . date('F') }}
                     </div>
                     <div class="bid-info-label">Bidding End Date</div>
                 </div>
                 <div class="bid-info-card">
                     <div class="bid-info-number"><i class="fas fa-play me-2 text-success"></i>
-                        {{ now()->format('M d, Y') }}
+                        {{ paymentStartDay() . ', ' . date('F') }}
                     </div>
                     <div class="bid-info-label">Payment Start Date</div>
                 </div>
                 <div class="bid-info-card">
                     <div class="bid-info-number"><i class="fas fa-stop me-2 text-danger"></i>
-                        {{ now()->format('M d, Y') }}
+                        {{ lastDayOfMonth() . ', ' . date('F') }}
                     </div>
                     <div class="bid-info-label">Payment End Date</div>
                 </div>
@@ -597,7 +603,7 @@
         <!-- Statistics Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">10</div>
+                <div class="stat-number">{{ 10 - $payments_count }}</div>
                 <div class="stat-label">Available Slots</div>
             </div>
             <div class="stat-card">
@@ -645,28 +651,32 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="server-stats-card">
                         <i class="fas fa-users text-primary mb-2" style="font-size: 2rem;"></i>
-                        <div class="fw-bold text-primary" style="font-size: 1.5rem;">206/862</div>
+                        <div class="fw-bold text-primary" style="font-size: 1.5rem;">
+                            {{ $serverList->current_players }}/{{ $serverList->max_players }}</div>
                         <small class="text-muted">Players Online</small>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="server-stats-card">
                         <i class="fas fa-chart-line text-success mb-2" style="font-size: 2rem;"></i>
-                        <div class="fw-bold text-success" style="font-size: 1.5rem;">100%</div>
+                        <div class="fw-bold text-success" style="font-size: 1.5rem;">
+                            {{ $serverList->getUpTimePercentage() }}%</div>
                         <small class="text-muted">Uptime</small>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="server-stats-card">
                         <i class="fas fa-trophy text-warning mb-2" style="font-size: 2rem;"></i>
-                        <div class="fw-bold text-warning" style="font-size: 1.5rem;">#1</div>
+                        <div class="fw-bold text-warning" style="font-size: 1.5rem;">#{{ $serverList->server_rank }}
+                        </div>
                         <small class="text-muted">Server Rank</small>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="server-stats-card">
                         <i class="fas fa-thumbs-up text-info mb-2" style="font-size: 2rem;"></i>
-                        <div class="fw-bold text-info" style="font-size: 1.5rem;">6,828</div>
+                        <div class="fw-bold text-info" style="font-size: 1.5rem;">{{ $serverList->votes()->count() }}
+                        </div>
                         <small class="text-muted">Total Votes</small>
                     </div>
                 </div>

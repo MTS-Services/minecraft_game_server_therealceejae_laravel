@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property int $id
@@ -123,7 +124,28 @@ class Payment extends Model
 
     public function bid()
     {
-        return $this->belongsTo(ServerBid::class);
+        return $this->belongsTo(ServerBid::class, 'bid_id', 'id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            Log::info('Creating Payment: ' . json_encode($model));
+            if ($model->status === 'completed' && $model->bid) {
+                $model->bid()->update(['status' => 'paid']);
+                Log::info('Updated Bid to paid for Payment: ' . json_encode($model->bid));
+            }
+        });
+
+        // When updating
+        static::updating(function ($model) {
+            Log::info('Creating Payment: ' . json_encode($model));
+            if ($model->isDirty('status') && $model->status === 'completed' && $model->bid) {
+                $model->bid()->update(['status' => 'paid']);
+                Log::info('Updated Bid to paid for Payment: ' . json_encode($model->bid));
+            }
+        });
     }
 
     /**
@@ -156,7 +178,7 @@ class Payment extends Model
             $item->deliver($renewal);
         }
 
-        if (! $this->isWithSiteMoney()) {
+        if (!$this->isWithSiteMoney()) {
             event(new PaymentPaid($this));
         }
 
@@ -256,7 +278,7 @@ class Payment extends Model
                 trans('shop::messages.payment.price', ['price' => $item->formatPrice()]),
             ];
 
-            if (! empty($item->variables)) {
+            if (!empty($item->variables)) {
                 $lines[] = trans('shop::messages.payment.variables');
 
                 foreach ($item->variables as $key => $value) {

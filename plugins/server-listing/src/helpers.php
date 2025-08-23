@@ -39,7 +39,7 @@ if (!function_exists('paymentStartDay')) {
     function paymentStartDay(): int
     {
         $lastDay = lastDayOfMonth();
-        return $lastDay - 2;
+        return $lastDay - 10;
     }
 }
 

@@ -11,6 +11,7 @@ use Azuriom\Plugin\ServerListing\Models\User;
 use Azuriom\Plugin\Shop\Models\Concerns\Buyable;
 use Azuriom\Plugin\Shop\Models\Concerns\IsBuyable;
 use Azuriom\Plugin\Shop\Models\PaymentItem;
+use Azuriom\Plugin\Shop\Models\Payment;
 
 class ServerBid extends Model implements Buyable
 {
@@ -29,6 +30,23 @@ class ServerBid extends Model implements Buyable
     protected $casts = [
         'bidding_at' => 'datetime',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if ($model->status === 'paid' && $model->serverListing) {
+                $model->serverListing->update(['is_premium' => true, 'is_featured' => true]);
+            }
+        });
+
+        // When updating
+        static::updating(function ($model) {
+            if ($model->isDirty('status') && $model->status === 'paid' && $model->bid) {
+                $model->serverListing->update(['is_premium' => true, 'is_featured' => true]);
+            }
+        });
+    }
 
     public function getDescription(): string
     {
@@ -54,6 +72,11 @@ class ServerBid extends Model implements Buyable
     public function getName(): string
     {
         return 'Bid for ' . $this->serverListing->name;
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'bid_id', 'id')->scopes(['notPending', 'withRealMoney']);
     }
 
     public function deliver(PaymentItem $item): void
