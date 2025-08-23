@@ -17,7 +17,11 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
     'register' => 'Register',
+    'register_title' => 'Join Minecraft MP',
+    'register_description' => 'Create your account and start your adventure in our amazing Minecraft world!',
     'login' => 'Login',
+    'login_description' => 'Login to start your adventure in our amazing Minecraft world!',
+    'already_have_account' => 'Sign in here',
     'logout' => 'Logout',
     'verify' => 'Verify Your Email Address',
     'passwords' => [
