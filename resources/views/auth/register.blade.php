@@ -137,8 +137,8 @@
                 <div class="card registration-card shadow-lg border-0 margintopwhites" style="background-color: #f8fafc;">
                     <div class="card-header text-center pb-4 bg-transparent border-0 backgroundredsss">
                         <div class="my-3">
-                            <img src="https://placehold.co/150x150" alt="Minecraft MP Logo"
-                                class="mx-auto d-block" style="width: 80px; height: 80px; border-radius: 50%;">
+                            <img src="https://placehold.co/150x150" alt="Minecraft MP Logo" class="mx-auto d-block"
+                                style="width: 80px; height: 80px; border-radius: 50%;">
                         </div>
                         <h1 class="card-title h2 mb-2 text-white">{{ trans('auth.register_title') }}</h1>
                         <p class="  fw-semibold  mb-0 text-white">{{ trans('auth.register_description') }}</p>
@@ -166,7 +166,8 @@
                                         <span class="me-2">📧</span>Email Address
                                     </label>
                                     <input type="email" class="form-control  @error('name') is-invalid @enderror"
-                                        id="email" name="email" placeholder="Enter your email address" value="{{ old('email') }}" required>
+                                        id="email" name="email" placeholder="Enter your email address"
+                                        value="{{ old('email') }}" required>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong class="text-danger">{{ $message }}</strong>
@@ -177,13 +178,14 @@
                                     <label for="password" class="form-label">
                                         <span class="me-2">🔒</span>Password
                                     </label>
-                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password"
-                                        placeholder="Create a password" minlength="6" required>
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                        id="password" name="password" placeholder="Create a password" minlength="6"
+                                        required>
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-6">
@@ -200,7 +202,7 @@
                                 @enderror
 
                                 <!-- Terms Checkbox -->
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="agreeToTerms"
                                             name="agreeToTerms">
@@ -209,7 +211,7 @@
                                             <a href="#" class="text-primary">Privacy Policy</a>
                                         </label>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 @include('elements.captcha', ['center' => true])
 
