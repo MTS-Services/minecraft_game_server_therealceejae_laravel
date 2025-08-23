@@ -12,7 +12,8 @@
             </label>
 
             <div class="input-group">
-                <input type="search" class="form-control" id="searchInput" name="q" value="{{ $search ?? '' }}" placeholder="{{ trans('messages.actions.search') }}">
+                <input type="search" class="form-control" id="searchInput" name="q" value="{{ $search ?? '' }}"
+                    placeholder="{{ trans('messages.actions.search') }}">
 
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-search"></i>
@@ -22,10 +23,10 @@
     </div>
 
     <div class="row gy-3">
-        @foreach($posts as $post)
+        @foreach ($posts as $post)
             <div class="col-md-6">
                 <div class="post-preview card">
-                    @if($post->hasImage())
+                    @if ($post->hasImage())
                         <img src="{{ $post->imageUrl() }}" class="card-img-top" alt="{{ $post->title }}">
                     @endif
                     <div class="card-body">
@@ -33,7 +34,8 @@
                             <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
                         </h3>
                         <p class="card-text">{{ Str::limit(strip_tags($post->content), 250) }}</p>
-                        <a class="btn btn-primary" href="{{ route('posts.show', $post) }}">{{ trans('messages.posts.read') }}</a>
+                        <a class="btn btn-primary"
+                            href="{{ route('posts.show', $post) }}">{{ trans('messages.posts.read') }}</a>
                     </div>
                     <div class="card-footer text-body-secondary">
                         {{ trans('messages.posts.posted', ['date' => format_date($post->published_at), 'user' => $post->author->name]) }}
