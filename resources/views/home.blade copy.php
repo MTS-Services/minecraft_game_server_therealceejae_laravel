@@ -23,7 +23,8 @@
                         <div class="col-md-4">
                             <div class="input-group"> <span class="input-group-text"><i class="bi bi-search"></i></span>
                                 <input type="text" class="form-control" name="search" placeholder="Search servers..."
-                                    value="{{ request('search') }}"> </div>
+                                    value="{{ request('search') }}">
+                            </div>
                         </div>
                         <div class="col-md-3"> <select class="form-select" name="category">
                                 <option value="">All Categories</option>
@@ -46,7 +47,8 @@
                 </div>
             </div>
         </div>
-    </div> {{-- Top 10 Premium Servers --}} <div class="row">
+    </div> {{-- Top 10 Premium Servers --}}
+    <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
@@ -113,7 +115,8 @@
                                         class="badge bg-success">Pixelmon</span> <span
                                         class="badge bg-secondary">Pokemon</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
-                                    <span class="badge bg-primary">Survival</span> </div>
+                                    <span class="badge bg-primary">Survival</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 2 -->
@@ -158,7 +161,8 @@
                                     <span class="badge bg-secondary">Roleplay</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
                                     <span class="badge bg-primary">Survival</span> <span
-                                        class="badge bg-warning">Towny</span> </div>
+                                        class="badge bg-warning">Towny</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 3 -->
@@ -183,7 +187,8 @@
                                             <small>mp.connected.gg</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('mp.connected.gg')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -204,7 +209,8 @@
                                         class="badge bg-warning">Economy</span> <span
                                         class="badge bg-success">Events</span> <span class="badge bg-danger">PvP</span>
                                     <span class="badge bg-dark">PvP</span> <span class="badge bg-primary">SMP</span>
-                                    <span class="badge bg-warning">War</span> </div>
+                                    <span class="badge bg-warning">War</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 4 -->
@@ -229,7 +235,8 @@
                                             <small>go.advancius.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('go.advancius.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -276,7 +283,8 @@
                                             <small>play.example.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('play.example.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -322,7 +330,8 @@
                                             <small>mp.mc-complex.com</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('mp.mc-complex.com')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +352,8 @@
                                         class="badge bg-success">Pixelmon</span> <span
                                         class="badge bg-secondary">Pokemon</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
-                                    <span class="badge bg-primary">Survival</span> </div>
+                                    <span class="badge bg-primary">Survival</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 7 -->
@@ -388,7 +398,8 @@
                                     <span class="badge bg-secondary">Roleplay</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
                                     <span class="badge bg-primary">Survival</span> <span
-                                        class="badge bg-warning">Towny</span> </div>
+                                        class="badge bg-warning">Towny</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 8 -->
@@ -413,7 +424,8 @@
                                             <small>mp.connected.gg</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('mp.connected.gg')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -434,7 +446,8 @@
                                         class="badge bg-warning">Economy</span> <span
                                         class="badge bg-success">Events</span> <span class="badge bg-danger">PvP</span>
                                     <span class="badge bg-dark">PvP</span> <span class="badge bg-primary">SMP</span>
-                                    <span class="badge bg-warning">War</span> </div>
+                                    <span class="badge bg-warning">War</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 9 -->
@@ -459,7 +472,8 @@
                                             <small>go.advancius.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('go.advancius.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -506,7 +520,8 @@
                                             <small>play.example.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('play.example.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -534,7 +549,8 @@
                 </div>
             </div>
         </div>
-    </div> {{-- Middle Short Description --}} <div class="row">
+    </div> {{-- Middle Short Description --}}
+    <div class="row">
         <div class="col-12">
             <div class="card shadow-sm bg-secondary text-white my-4">
                 <div class="card-body">
@@ -546,7 +562,8 @@
                 </div>
             </div>
         </div>
-    </div> {{-- Premium Servers --}} <div class="row">
+    </div> {{-- Premium Servers --}}
+    <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
@@ -612,7 +629,8 @@
                                         class="badge bg-success">Pixelmon</span> <span
                                         class="badge bg-secondary">Pokemon</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
-                                    <span class="badge bg-primary">Survival</span> </div>
+                                    <span class="badge bg-primary">Survival</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 2 -->
@@ -657,7 +675,8 @@
                                     <span class="badge bg-secondary">Roleplay</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
                                     <span class="badge bg-primary">Survival</span> <span
-                                        class="badge bg-warning">Towny</span> </div>
+                                        class="badge bg-warning">Towny</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 3 -->
@@ -682,7 +701,8 @@
                                             <small>mp.connected.gg</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('mp.connected.gg')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -703,7 +723,8 @@
                                         class="badge bg-warning">Economy</span> <span
                                         class="badge bg-success">Events</span> <span class="badge bg-danger">PvP</span>
                                     <span class="badge bg-dark">PvP</span> <span class="badge bg-primary">SMP</span>
-                                    <span class="badge bg-warning">War</span> </div>
+                                    <span class="badge bg-warning">War</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 4 -->
@@ -728,7 +749,8 @@
                                             <small>go.advancius.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('go.advancius.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -775,7 +797,8 @@
                                             <small>play.example.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('play.example.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -803,7 +826,8 @@
                 </div>
             </div>
         </div>
-    </div> {{-- Middle Short Description --}} <div class="row">
+    </div> {{-- Middle Short Description --}}
+    <div class="row">
         <div class="col-12">
             <div class="card shadow-sm bg-secondary text-white my-4">
                 <div class="card-body">
@@ -815,7 +839,8 @@
                 </div>
             </div>
         </div>
-    </div> {{-- Wold Top Servers --}} <div class="row">
+    </div> {{-- Wold Top Servers --}}
+    <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
@@ -881,7 +906,8 @@
                                         class="badge bg-success">Pixelmon</span> <span
                                         class="badge bg-secondary">Pokemon</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
-                                    <span class="badge bg-primary">Survival</span> </div>
+                                    <span class="badge bg-primary">Survival</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 2 -->
@@ -926,7 +952,8 @@
                                     <span class="badge bg-secondary">Roleplay</span> <span
                                         class="badge bg-dark">Skyblock</span> <span class="badge bg-danger">SMP</span>
                                     <span class="badge bg-primary">Survival</span> <span
-                                        class="badge bg-warning">Towny</span> </div>
+                                        class="badge bg-warning">Towny</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 3 -->
@@ -951,7 +978,8 @@
                                             <small>mp.connected.gg</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('mp.connected.gg')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -972,7 +1000,8 @@
                                         class="badge bg-warning">Economy</span> <span
                                         class="badge bg-success">Events</span> <span class="badge bg-danger">PvP</span>
                                     <span class="badge bg-dark">PvP</span> <span class="badge bg-primary">SMP</span>
-                                    <span class="badge bg-warning">War</span> </div>
+                                    <span class="badge bg-warning">War</span>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- Server 4 -->
@@ -997,7 +1026,8 @@
                                             <small>go.advancius.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('go.advancius.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1044,7 +1074,8 @@
                                             <small>play.example.net</small> <button
                                                 class="btn btn-sm btn-outline-light ms-2"
                                                 onclick="copyIP('play.example.net')"> <i class="bi bi-copy"></i>
-                                            </button> </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1072,7 +1103,8 @@
                 </div>
             </div>
         </div>
-    </div> {{-- Pagination --}} <div class="row mt-4">
+    </div> {{-- Pagination --}}
+    <div class="row mt-4">
         <div class="col-12">
             <nav aria-label="Server pagination">
                 <ul class="pagination justify-content-center">
@@ -1155,5 +1187,8 @@
         }
     }
 </style>
-<script> function copyIP(ip) { navigator.clipboard.writeText(ip).then(function () { // Create a temporary toast notification const toast = document.createElement('div'); toast.className = 'position-fixed top-0 end-0 m-3 alert alert-success alert-dismissible fade show'; toast.style.zIndex = '9999'; toast.innerHTML = ` <i class="bi bi-check-circle me-2"></i> Server IP "${ip}" copied to clipboard! <button type="button" class="btn-close" data-bs-dismiss="alert"></button> `; document.body.appendChild(toast); // Auto remove after 3 seconds setTimeout(() => { if (toast.parentNode) { toast.parentNode.removeChild(toast); } }, 3000); }).catch(function(err) { console.error('Could not copy text: ', err); }); } </script>
+<script>
+    function copyIP(ip) {
+        navigator.clipboard.writeText(ip).then(function() { // Create a temporary toast notification const toast = document.createElement('div'); toast.className = 'position-fixed top-0 end-0 m-3 alert alert-success alert-dismissible fade show'; toast.style.zIndex = '9999'; toast.innerHTML = ` <i class="bi bi-check-circle me-2"></i> Server IP "${ip}" copied to clipboard! <button type="button" class="btn-close" data-bs-dismiss="alert"></button> `; document.body.appendChild(toast); // Auto remove after 3 seconds setTimeout(() => { if (toast.parentNode) { toast.parentNode.removeChild(toast); } }, 3000); }).catch(function(err) { console.error('Could not copy text: ', err); }); }
+</script>
 @endsectionin

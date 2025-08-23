@@ -4,6 +4,34 @@
 @section('app')
     @push('styles')
         <style>
+            /* Light & Dark Mode Variables */
+            :root {
+                --background-color: #f8f9fa;
+                --card-background: #ffffff;
+                --text-color: #343a40;
+                --muted-text-color: #6c757d;
+                --border-color: #dee2e6;
+                --input-border-color: #ced4da;
+                --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --background-color: #121212;
+                    --card-background: #1e1e1e;
+                    --text-color: #e0e0e0;
+                    --muted-text-color: #a0a0a0;
+                    --border-color: #444444;
+                    --input-border-color: #333333;
+                    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                }
+            }
+
+            body {
+                background-color: var(--background-color);
+
+            }
+
             .search-container {
                 max-width: 1200px;
                 margin: 40px auto;
@@ -11,14 +39,14 @@
             }
 
             .search-card {
-                background-color: #ffffff;
+                /* background-color: var(--card-background); */
                 border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                box-shadow: var(--box-shadow);
                 padding: 30px;
             }
 
             .search-title {
-                color: #343a40;
+
                 font-size: 2rem;
                 font-weight: 700;
                 margin-bottom: 30px;
@@ -26,13 +54,19 @@
 
             .form-label {
                 font-weight: 600;
-                color: #495057;
+
             }
 
             .form-select,
             .form-control {
                 border-radius: 8px;
-                border-color: #dee2e6;
+                border-color: var(--input-border-color);
+
+            }
+
+            .form-control::placeholder {
+                color: var(--muted-text-color);
+                opacity: 0.6;
             }
 
             .btn-primary {
@@ -59,16 +93,17 @@
                 font-size: 1.25rem;
                 font-weight: 600;
                 margin-bottom: 15px;
+
             }
 
             .form-check-label {
                 cursor: pointer;
-                color: #6c757d;
+                /* color: var(--muted-text-color); */
             }
 
             .form-check-input:checked+.form-check-label {
                 font-weight: 600;
-                color: #212529;
+                /* color: var(--text-color); */
             }
 
             .result-section {
@@ -78,13 +113,13 @@
             .result-title {
                 font-size: 1.75rem;
                 font-weight: 600;
-                color: #343a40;
+                color: var(--text-color);
             }
         </style>
     @endpush
     <div class="container search-container">
 
-        <div class="search-card">
+        <div class="search-card ">
             <h1 class="search-title">Minecraft Server Search</h1>
 
             <form action="{{ route('server-listing.search.filter') }}" method="POST">
@@ -112,66 +147,7 @@
                             @endforeach
                         </select>
                     </div>
-                    {{-- <div class="col-md-6">
-                        <label for="theme" class="form-label">Theme</label>
-                        <select id="theme" class="form-select">
-                            <option selected>All Service</option>
-                            <option>Survival</option>
-                            <option>Creative</option>
-                            <option>Minigames</option>
-                            <option>Roleplay</option>
-                            <option>...</option>
-                        </select>
-                    </div> --}}
-                    {{-- <div class="col-md-6">
-                        <label for="tag" class="form-label">Tags/Game Mode</label>
-                        <select id="tag" name="tag" class="form-select">
-                            <option selected value="">All</option>
-                            @foreach ($tags as $tag)
-                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-                    {{-- <div class="col-md-6">
-                        <label for="theme" class="form-label">Ping</label>
-                        <div class="col-lg-5 d-flex">
-                            <select id="theme" class="form-select">
 
-                                <option value=""></option>
-                                <option value="inferior">&lt;=</option>
-
-                            </select>
-                            <select id="theme" class="form-select col-12">
-
-                                <option value=""></option>
-                                <option value="10">Australia, Sydney</option>
-                                <option value="7">Brazil, Rio de Janeiro</option>
-                                <option value="11">China, Hong Kong</option>
-                                <option value="6">Eastern Europe</option>
-                                <option value="12">Germany, Frankfurt</option>
-                                <option value="2">North America</option>
-                                <option value="8">Russia, Moscow</option>
-                                <option value="15">South Africa</option>
-                                <option value="14">Spain, Madrid</option>
-                                <option value="9">Sweden, Stockholm</option>
-                                <option value="4">US, Chicago</option>
-                                <option value="3">US, Dallas</option>
-                                <option value="5">US, Los Angeles</option>
-                                <option value="13">US, Portland</option>
-                                <option value="1">Western Europe</option>
-
-                            </select>
-                            <select id="theme" class="form-select col-12">
-                                <option selected>
-                                <option value=""></option>
-                                <option value="50">50ms</option>
-                                <option value="100">100ms</option>
-                                <option value="150">150ms</option>
-                                <option value="200">200ms</option>
-                                </option>
-                            </select>
-                        </div>
-                    </div> --}}
                     <div class="col-md-6">
                         <label for="players" class="form-label">Connected Players</label>
                         <div class="input-group">
@@ -239,22 +215,16 @@
                                                     for="tag-survival-{{ $tag->id }}">{{ $tag->name }}</label>
                                             </div>
                                         @endforeach
-
                                     </div>
                                 @endforeach
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-
-
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary w-100">Search</button>
                 </div>
             </form>
         </div>
-
     </div>
 @endsection
