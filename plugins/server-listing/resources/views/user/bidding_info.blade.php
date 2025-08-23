@@ -458,7 +458,6 @@
             </div>
         @endif
 
-
         @if (biddingIsOpen())
             <div class="modal fade" id="biddingModal" tabindex="-1" aria-labelledby="biddingModalLabel" aria-hidden="true"
                 data-bs-backdrop="static" data-bs-keyboard="false">
@@ -498,7 +497,7 @@
 
         <!-- Page Title -->
         <h1 class="page-title">
-            <i class="fas fa-crown me-3"></i>Premium Option
+            <i class="fas fa-crown me-3"></i>Bid for a Premium Server
         </h1>
 
         <!-- Premium Info Card -->
@@ -509,9 +508,9 @@
                     <p class="mb-2">Premium servers are displayed at the top on the first page of the site for a whole
                         month. Premium servers will also appear at the top of search results, their country pages, tag pages
                         and version pages (if they fit the criteria).</p>
-                    <p class="mb-0">If you want more information, <a href="#" class="text-white"><u>read our
+                    {{-- <p class="mb-0">If you want more information, <a href="#" class="text-white"><u>read our
                                 Premium
-                                FAQ</u></a>.</p>
+                                FAQ</u></a>.</p> --}}
                 </div>
                 <div class="col-md-4 text-center">
                     <i class="fas fa-trophy" style="font-size: 5rem; opacity: 0.2;"></i>
@@ -524,24 +523,39 @@
                 <span><i class="fas fa-gavel me-2"></i>Bidding Information</span>
                 <div class="d-flex align-items-center gap-2">
                     @if (biddingIsOpen())
-                        <button type="button" class="btn-bidding float-end z-1" data-bs-toggle="modal"
-                            data-bs-target="#biddingModal">
-                            <i class="bi bi-cash-stack me-1"></i>Start Bidding
-                        </button>
+                        @if (isset($bid))
+                            <button type="button" class="btn-bidding float-end z-1" style="cursor: not-allowed" disabled
+                                title="You have already placed a bid of ${{ number_format($bid->amount, 2) }}.">
+                                <i class="bi bi-cash-stack me-1"></i>{{ 'Bid Placed: $' . number_format($bid->amount, 2) }}
+                            </button>
+                        @else
+                            <button type="button" class="btn-bidding float-end z-1" data-bs-toggle="modal"
+                                data-bs-target="#biddingModal">
+                                <i class="bi bi-cash-stack me-1"></i>Bid Now
+                            </button>
+                        @endif
                     @else
-                        <button type="button" class="btn-bidding float-end" style="cursor: not-allowed" disabled>
+                        <button type="button" class="btn-bidding float-end" style="cursor: not-allowed" disabled
+                            title="Bidding will start again on {{ biddingStartDay() . ', ' . date('F') }}">
                             <i class="bi bi-cash-stack me-1"></i>Bidding Closed
                         </button>
                     @endif
 
                     @if (isset($bid))
-                        <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}" method="POST"
-                            class="float-end">
-                            @csrf
-                            <button type="submit" class="btn-pay">
-                                <i class="fas fa-credit-card me-1"></i>Pay Now
+                        @if (paymentIsOpen())
+                            <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}" method="POST"
+                                class="float-end">
+                                @csrf
+                                <button type="submit" class="btn-pay">
+                                    <i class="fas fa-credit-card me-1"></i>Pay Now
+                                </button>
+                            </form>
+                        @else
+                            <button type="button" class="btn-pay float-end" style="cursor: not-allowed" disabled
+                                title="Payment period is not open yet. Payment will start on {{ paymentStartDay() . ', ' . date('F') }}.">
+                                <i class="fas fa-credit-card me-1"></i>Payment
                             </button>
-                        </form>
+                        @endif
                     @endif
                 </div>
             </div>
