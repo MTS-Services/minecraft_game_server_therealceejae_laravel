@@ -46,8 +46,6 @@
                 border: 2px solid #c5c5c5;
             }
 
-
-
             .dashboard-icon {
                 font-size: 3rem;
                 margin-bottom: 1rem;

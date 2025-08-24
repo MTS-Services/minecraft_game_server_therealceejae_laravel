@@ -2,6 +2,78 @@
 
 @section('title', trans('messages.profile.title'))
 
+@push('styles')
+    <style>
+        /* Page Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-header h1 {
+            font-weight: 600;
+            font-size: 2rem;
+        }
+
+        /* Card Enhancements */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Avatar */
+        .profile-avatar {
+            border: 4px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        /* User Info */
+        .profile-info ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .profile-info ul li {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+        }
+    </style>
+@endpush
+
 @section('content')
     <h1>{{ trans('messages.profile.title') }}</h1>
 
@@ -13,7 +85,9 @@
 
                     <h3 class="h5 mb-0">
                         <span class="badge" style="{{ $user->role->getBadgeStyle() }}; vertical-align: middle">
-                            @if($user->role->icon) <i class="{{ $user->role->icon }}"></i> @endif
+                            @if ($user->role->icon)
+                                <i class="{{ $user->role->icon }}"></i>
+                            @endif
                             {{ $user->role->name }}
                         </span>
                     </h3>
@@ -23,21 +97,23 @@
                     <h2>{{ $user->name }}</h2>
 
                     <ul>
-                        <li>{{ trans('messages.profile.info.register', ['date' => format_date($user->created_at, true)]) }}</li>
+                        <li>{{ trans('messages.profile.info.register', ['date' => format_date($user->created_at, true)]) }}
+                        </li>
                         <li>{{ trans('messages.profile.info.money', ['money' => format_money($user->money)]) }}</li>
-                        @if($user->game_id)
+                        @if ($user->game_id)
                             <li>{{ game()->trans('id') }}: {{ $user->game_id }}</li>
                         @endif
-                        @if(! oauth_login())
-                            <li>{{ trans('messages.profile.info.2fa', ['2fa' => trans_bool($user->hasTwoFactorAuth())]) }}</li>
+                        @if (!oauth_login())
+                            <li>{{ trans('messages.profile.info.2fa', ['2fa' => trans_bool($user->hasTwoFactorAuth())]) }}
+                            </li>
                         @endif
-                        @if($discordAccount !== null)
+                        @if ($discordAccount !== null)
                             <li>{{ trans('messages.profile.info.discord', ['user' => $discordAccount->name]) }}</li>
                         @endif
                     </ul>
 
-                    @if(! oauth_login())
-                        @if($user->hasTwoFactorAuth())
+                    @if (!oauth_login())
+                        @if ($user->hasTwoFactorAuth())
                             <a class="btn btn-primary" href="{{ route('profile.2fa.index') }}">
                                 <i class="bi bi-shield-lock"></i> {{ trans('messages.profile.2fa.manage') }}
                             </a>
@@ -47,15 +123,15 @@
                             </a>
                         @endif
 
-                        @if($canDelete)
+                        @if ($canDelete)
                             <a class="btn btn-danger" href="{{ route('profile.delete.index') }}">
                                 <i class="bi bi-x-lg"></i> {{ trans('messages.profile.delete.btn') }}
                             </a>
                         @endif
                     @endif
 
-                    @if($enableDiscordLink)
-                        @if($discordAccount !== null)
+                    @if ($enableDiscordLink)
+                        @if ($discordAccount !== null)
                             <form action="{{ route('profile.discord.unlink') }}" method="POST" class="d-inline-block">
                                 @csrf
 
@@ -76,8 +152,8 @@
         </div>
     </div>
 
-    @if($canVerifyEmail)
-        @if(session('resent'))
+    @if ($canVerifyEmail)
+        @if (session('resent'))
             <div class="alert alert-success mb-4" role="alert">
                 {{ trans('auth.verification.sent') }}
             </div>
@@ -97,7 +173,7 @@
     @endif
 
     <div class="row gy-4">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">
@@ -109,20 +185,24 @@
 
                         <div class="mb-3">
                             <label class="form-label" for="emailInput">{{ trans('auth.email') }}</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="emailInput" name="email" value="{{ old('email', $user->email ?? '') }}" required>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="emailInput"
+                                name="email" value="{{ old('email', $user->email ?? '') }}" required>
 
                             @error('email')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
 
-                        @if(! oauth_login())
+                        @if (!oauth_login())
                             <div class="mb-3">
-                                <label class="form-label" for="emailConfirmPassInput">{{ trans('auth.current_password') }}</label>
-                                <input type="password" class="form-control @error('email_confirm_pass') is-invalid @enderror" id="emailConfirmPassInput" name="email_confirm_pass" required>
+                                <label class="form-label"
+                                    for="emailConfirmPassInput">{{ trans('auth.current_password') }}</label>
+                                <input type="password"
+                                    class="form-control @error('email_confirm_pass') is-invalid @enderror"
+                                    id="emailConfirmPassInput" name="email_confirm_pass" required>
 
                                 @error('email_confirm_pass')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
                         @endif
@@ -135,8 +215,8 @@
             </div>
         </div>
 
-        @if(! oauth_login())
-            <div class="col-md-6">
+        @if (!oauth_login())
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">
@@ -147,26 +227,32 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label class="form-label" for="passwordConfirmPassInput">{{ trans('auth.current_password') }}</label>
-                                <input type="password" class="form-control @error('password_confirm_pass') is-invalid @enderror" id="passwordConfirmPassInput" name="password_confirm_pass" required>
+                                <label class="form-label"
+                                    for="passwordConfirmPassInput">{{ trans('auth.current_password') }}</label>
+                                <input type="password"
+                                    class="form-control @error('password_confirm_pass') is-invalid @enderror"
+                                    id="passwordConfirmPassInput" name="password_confirm_pass" required>
 
                                 @error('password_confirm_pass')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label" for="passwordInput">{{ trans('auth.password') }}</label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="passwordInput" name="password" required>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                    id="passwordInput" name="password" required>
 
                                 @error('password')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label" for="confirmPasswordInput">{{ trans('auth.confirm_password') }}</label>
-                                <input type="password" class="form-control" id="confirmPasswordInput" name="password_confirmation" required>
+                                <label class="form-label"
+                                    for="confirmPasswordInput">{{ trans('auth.confirm_password') }}</label>
+                                <input type="password" class="form-control" id="confirmPasswordInput"
+                                    name="password_confirmation" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary">
@@ -177,7 +263,7 @@
                 </div>
             </div>
 
-            @if($canChangeName)
+            @if ($canChangeName)
                 <div class="col-md-6">
                     <div class="card mb-4">
                         <div class="card-body">
@@ -190,10 +276,13 @@
 
                                 <div class="mb-3">
                                     <label class="form-label" for="nameInput">{{ trans('auth.name') }}</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="nameInput" name="name" value="{{ old('name', $user->name ?? '') }}" required>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        id="nameInput" name="name" value="{{ old('name', $user->name ?? '') }}"
+                                        required>
 
                                     @error('name')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
 
@@ -207,7 +296,7 @@
             @endif
         @endif
 
-        @if($canUploadAvatar)
+        @if ($canUploadAvatar)
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -221,22 +310,25 @@
                             <div class="mb-3">
                                 <label class="form-label" for="imageInput">{{ trans('messages.fields.image') }}</label>
                                 <div class="input-group @error('image') has-validation @enderror">
-                                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="imageInput" name="image" accept=".jpg,.jpeg,.jpe,.png,.gif" required>
+                                    <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                        id="imageInput" name="image" accept=".jpg,.jpeg,.jpe,.png,.gif" required>
 
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-check-lg"></i> {{ trans('messages.actions.save') }}
                                     </button>
 
                                     @error('image')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
 
-                                <small id="imageInfo" class="form-text">{{ trans('messages.profile.avatar', ['size' => '64x64']) }}</small>
+                                <small id="imageInfo"
+                                    class="form-text">{{ trans('messages.profile.avatar', ['size' => '64x64']) }}</small>
                             </div>
                         </form>
 
-                        @if($hasAvatar)
+                        @if ($hasAvatar)
                             <form action="{{ route('profile.avatar') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('DELETE')
@@ -251,7 +343,7 @@
             </div>
         @endif
 
-        @if(setting('users.money_transfer'))
+        @if (setting('users.money_transfer'))
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -263,20 +355,24 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label class="form-label" for="nameInput">{{ game()->userPrimaryAttributeName() }}</label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="nameInput" name="name" value="{{ old('name') }}" required>
+                                <label class="form-label"
+                                    for="nameInput">{{ game()->userPrimaryAttributeName() }}</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="nameInput" name="name" value="{{ old('name') }}" required>
 
                                 @error('name')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label" for="moneyInput">{{ trans('messages.fields.money') }}</label>
-                                <input type="number" placeholder="0.00" min="0" step="0.01" class="form-control @error('money') is-invalid @enderror" id="moneyInput" name="money" value="{{ old('money') }}" required>
+                                <input type="number" placeholder="0.00" min="0" step="0.01"
+                                    class="form-control @error('money') is-invalid @enderror" id="moneyInput"
+                                    name="money" value="{{ old('money') }}" required>
 
                                 @error('money')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
 
@@ -289,7 +385,7 @@
             </div>
         @endif
 
-        @foreach($cards ?? [] as $card)
+        @foreach ($cards ?? [] as $card)
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">

@@ -9,7 +9,7 @@
         <div class="card-body">
             <p>{{ trans('messages.profile.delete.info') }}</p>
 
-            @if($confirmDelete)
+            @if ($confirmDelete)
                 <form method="POST">
                     @csrf
 

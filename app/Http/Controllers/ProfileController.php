@@ -71,13 +71,13 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        if (RateLimiter::tooManyAttempts('email:'.$user->id, 5)) {
+        if (RateLimiter::tooManyAttempts('email:' . $user->id, 5)) {
             throw ValidationException::withMessages([
                 'email' => trans('messages.profile.email_limit'),
             ]);
         }
 
-        RateLimiter::hit('email:'.$user->id, 5 * 60);
+        RateLimiter::hit('email:' . $user->id, 5 * 60);
 
         // Only check if email is already used after the rate limit check
         $this->validate($request, [
@@ -128,7 +128,9 @@ class ProfileController extends Controller
 
         $validated = $this->validate($request, [
             'name' => [
-                'required', 'max:25', new Username(),
+                'required',
+                'max:25',
+                new Username(),
                 Rule::unique('users', 'name')->ignore($request->user()),
             ],
         ]);
@@ -175,7 +177,7 @@ class ProfileController extends Controller
         if ($request->user()->hasTwoFactorAuth()) {
             return view('profile.2fa.index', [
                 'user' => $request->user(),
-                'codesBackupName' => Str::slug(site_name()).'-codes.txt',
+                'codesBackupName' => Str::slug(site_name()) . '-codes.txt',
             ]);
         }
 
