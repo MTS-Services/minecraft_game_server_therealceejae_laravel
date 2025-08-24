@@ -1199,20 +1199,20 @@
         <div class="search-card ">
             <h1 class="search-title">Minecraft Server Search</h1>
 
-            <form action="{{ route('server-listing.search') }}" method="GET">
+            <form action="{{ route('server-listing.search.filter') }}" method="POST">
+                @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="keyword" class="form-label">Keyword</label>
-                        <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Enter keyword"
-                            value="{{ request('keyword') }}">
+                        <input type="text" class="form-control" name="keyword" id="keyword"
+                            placeholder="Enter keyword">
                     </div>
                     <div class="col-md-6">
                         <label for="mc-version" class="form-label">Minecraft Version</label>
                         <select id="mc-version" name="version" class="form-select">
                             <option selected value="">All</option>
                             @foreach ($minecraft_versions as $version)
-                                <option value="{{ $version }}" {{ request('version') == $version ? 'selected' : '' }}>
-                                    {{ $version }}</option>
+                                <option value="{{ $version }}">{{ $version }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -1221,9 +1221,7 @@
                         <select id="location" class="form-select" name="country">
                             <option selected value="">All</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country->code }}"
-                                    {{ request('country') == $country->code ? 'selected' : '' }}>{{ $country->name }}
-                                </option>
+                                <option value="{{ $country->code }}">{{ $country->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -1232,34 +1230,29 @@
                         <label for="players" class="form-label">Connected Players</label>
                         <div class="input-group">
                             <input type="number" class="form-control" name="online_min_players" placeholder="Min"
-                                aria-label="Min" value="{{ request('online_min_players') }}">
+                                aria-label="Min">
                             <span class="input-group-text">to</span>
                             <input type="number" class="form-control" name="online_max_players" placeholder="Max"
-                                aria-label="Max" value="{{ request('online_max_players') }}">
+                                aria-label="Max">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="players" class="form-label">Server Max. Players</label>
                         <div class="input-group">
                             <input type="number" class="form-control" name="min_total_players" placeholder="Min"
-                                aria-label="Min" value="{{ request('min_total_players') }}">
+                                aria-label="Min">
                             <span class="input-group-text">to</span>
                             <input type="number" class="form-control" name="max_total_players" placeholder="Max"
-                                aria-label="Max" value="{{ request('max_total_players') }}">
+                                aria-label="Max">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="order-by" class="form-label">Order By</label>
                         <div class="input-group ">
                             <select id="order-by" class="form-select col-6" name="order_by">
-                                <option value="server_rank"
-                                    {{ request('order_by', 'server_rank') == 'server_rank' ? 'selected' : '' }}>Rank
-                                </option>
-                                <option value="current_players"
-                                    {{ request('order_by') == 'current_players' ? 'selected' : '' }}>Online Players
-                                </option>
-                                <option value="max_players" {{ request('order_by') == 'max_players' ? 'selected' : '' }}>
-                                    Max Players</option>
+                                <option selected value="server_rank">Rank</option>
+                                <option value="current_players">Online Players</option>
+                                <option value="max_players">Max Players</option>
                             </select>
                         </div>
                     </div>
@@ -1267,8 +1260,7 @@
                         <label for="order-by" class="form-label">With Teamspeak Server </label>
                         <div class="input-group">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="with_teamspeak" id="tag-survival"
-                                    {{ request()->has('with_teamspeak') ? 'checked' : '' }}>
+                                <input class="form-check-input" type="checkbox" name="with_teamspeak" id="tag-survival">
                                 <label class="form-check-label" for="tag-survival"></label>
                             </div>
                         </div>
@@ -1278,8 +1270,7 @@
                         <label for="order-by" class="form-label">With Discord Server</label>
                         <div class="input-group">
                             <div class="form-check">
-                                <input class="form-check-input" name="with_discord" type="checkbox" id="tag-survival"
-                                    {{ request()->has('with_discord') ? 'checked' : '' }}>
+                                <input class="form-check-input" name="with_discord" type="checkbox" id="tag-survival">
                                 <label class="form-check-label" for="tag-survival"></label>
                             </div>
                         </div>
@@ -1297,8 +1288,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox"
                                                     id="tag-survival-{{ $tag->id }}" name="tags[]"
-                                                    value="{{ $tag->id }}"
-                                                    {{ request()->has('tags') && in_array($tag->id, request('tags')) ? 'checked' : '' }}>
+                                                    value="{{ $tag->id }}">
                                                 <label class="form-check-label"
                                                     for="tag-survival-{{ $tag->id }}">{{ $tag->name }}</label>
                                             </div>
@@ -1317,6 +1307,7 @@
     </div>
 
     <div class="container py-5">
+        <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
@@ -1326,13 +1317,17 @@
             </ol>
         </nav>
 
+        <!-- Title -->
         <h1 class="page-title mb-4">Search Results</h1>
 
+        <!-- Action Buttons -->
         <div class="mb-4 action-buttons">
             <a href="{{ route('server-listing.submission') }}" class="btn btn-warning text-white">
                 <i class="bi bi-plus-lg"></i> Register a Server
             </a>
         </div>
+
+        <!-- Table -->
 
         {{-- Promoted Servers --}}
         @if (isset($server_listings) && count($server_listings) > 0)
@@ -1343,6 +1338,7 @@
 
                         <div class="card-body p-0">
                             @foreach ($server_listings as $index => $sList)
+                                <!-- Desktop Row -->
                                 <div class="server-row desktop-server-row">
                                     <a href="{{ route('server-listing.details', $sList->slug) }}"
                                         class="details-link"></a>
@@ -1412,6 +1408,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Mobile Card -->
                                 <div class="mobile-server-row">
                                     <div class="mobile-server-card">
                                         <div class="mobile-server-header">
@@ -1490,7 +1487,7 @@
                 </div>
             </div>
             <div class="mt-3">
-                {{ $server_listings->appends(request()->query())->links() }}
+                {{ $server_listings->links() }}
             </div>
         @else
             <div class="card server-card">
