@@ -56,7 +56,7 @@
                                             <i class="bi bi-trash"></i> {{ trans('messages.actions.delete') }}
                                         </a>
                                     @endif
-                                    @if ($pluginsUpdates->has($path))
+                                    @if ($pluginsUpdates->has($path) && ($plugin->id !== 'server-listing' && $plugin->id !== 'shop'))
                                         <form method="POST" action="{{ route('admin.plugins.update', $path) }}"
                                             class="d-inline-block">
                                             @csrf

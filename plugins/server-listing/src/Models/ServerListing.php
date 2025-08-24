@@ -140,6 +140,12 @@ class ServerListing extends Model
     {
         return $this->hasMany(ServerStats::class, 'server_id', 'id');
     }
+
+    public  function bids(): HasMany
+    {
+        return $this->hasMany(ServerBid::class, 'server_listing_id', 'id');
+    }
+
     public function getFullAddressAttribute(): string
     {
         return $this->server_port ? "{$this->server_ip}:{$this->server_port}" : $this->server_ip . ':25565';
@@ -474,5 +480,4 @@ class ServerListing extends Model
     {
         return $this->votifier_host && $this->votifier_port && $this->votifier_public_key;
     }
-
 }

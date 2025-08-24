@@ -522,6 +522,7 @@
             <div class="section-header d-flex align-items-center justify-content-between">
                 <span><i class="fas fa-gavel me-2"></i>Bidding Information</span>
                 <div class="d-flex align-items-center gap-2">
+
                     @if (biddingIsOpen())
                         @if (isset($bid))
                             <button type="button" class="btn-bidding float-end z-1" style="cursor: not-allowed" disabled
@@ -536,14 +537,21 @@
                         @endif
                     @else
                         <button type="button" class="btn-bidding float-end" style="cursor: not-allowed" disabled
-                            title="Bidding will start again on {{ biddingStartDay() . ', ' . date('F') }}">
+                            title="Bidding will start again on {{ biddingStartDay() . ', ' . biddingOpenMonth() }}">
                             <i class="bi bi-cash-stack me-1"></i>Bidding Closed
                         </button>
                     @endif
 
-                    @if (isset($bid) && $bid->payments->count() == 0)
+                    @if (isset($bid) && $bid->count() > 0)
+                        {{-- @dd($bid) --}}
                         @if (paymentIsOpen())
-                            @if ($bid->status == 'win')
+                            @if ($bid?->payments?->last()?->status == 'completed')
+                                <button type="button" class="btn-pay float-end" style="cursor: not-allowed" disabled
+                                    title="Payment period is not open yet. Payment will start on {{ paymentStartDay() . ', ' . date('F') }}.">
+                                    <i class="fas fa-credit-card me-1"></i>Paid:
+                                    ${{ number_format($bid->payments->first()->price, 2) }}
+                                </button>
+                            @elseif ($bid->status == 'win')
                                 <form action="{{ route('server-listing.payments.payment', encrypt($bid->id)) }}"
                                     method="POST" class="float-end">
                                     @csrf

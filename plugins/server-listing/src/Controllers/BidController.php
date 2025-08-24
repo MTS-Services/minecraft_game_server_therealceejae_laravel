@@ -24,21 +24,31 @@ class BidController extends Controller
     }
     public function biddingInfo(string $slug)
     {
-        $data['serverList'] = ServerListing::where('slug', $slug)->first();
+        $data['serverList'] = ServerListing::where('slug', $slug)->firstOrFail();
 
-        $data['payments_count'] = Payment::whereBelongsTo(Auth::user())
-            ->scopes(['notPending', 'withRealMoney'])
-            ->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count();
+        $serverListingId = $data['serverList']->id;
+        $userId = Auth::id();
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
 
         $data['bid'] = ServerBid::where([
-            'server_listing_id' => $data['serverList']->id,
-            'user_id' => Auth::id(),
+            'server_listing_id' => $serverListingId,
+            'user_id' => $userId,
         ])
-            ->whereMonth('bidding_at', now()->month)
-            ->whereYear('bidding_at', now()->year)
+            ->whereMonth('bidding_at', $currentMonth)
+            ->whereYear('bidding_at', $currentYear)
+            ->with('payments')
+            ->withCount('payments')
             ->first();
+
+
+        // dd($data['bid']->payments->count());
+
+        $data['payments_count'] = $data['bid'] ? $data['bid']->payments_count : 0;
+
         return view('server-listing::user.bidding_info', $data);
     }
+
     public function placeBid(Request $request, $slug)
     {
         $validated = $request->validate([

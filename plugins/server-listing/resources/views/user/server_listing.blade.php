@@ -1171,7 +1171,7 @@
                                         </div>
                                         <div class="col-md-2 z-3 text-center">
                                             <a href="{{ route('server-listing.bids.bidding', $sList->slug) }}"
-                                                class="bid-btn text-decoration-none text-center p-2">Bid Now</a>
+                                                class="bid-btn text-decoration-none text-center p-2">{{ $sList?->bids?->count() > 0 ? 'View Bids' : 'Place a Bid' }}</a>
                                         </div>
                                     </div>
                                 </div>

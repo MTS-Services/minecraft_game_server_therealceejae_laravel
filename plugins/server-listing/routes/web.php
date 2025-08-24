@@ -40,8 +40,7 @@ Route::controller(ServerListingController::class)->middleware('auth:web')->group
     Route::get('/submission', 'submission')->name('submission');
     Route::post('/store', 'store')->name('submission.store');
     Route::get('/dashboard', 'userDashboard')->name('user-dashboard');
-    Route::get('/server-list', 'serverList')->name('list');
-
+    Route::get('/servers', 'serverList')->name('list');
 });
 Route::controller(BidController::class)->middleware('auth:web')->name('bids.')->group(function () {
     Route::get('/bidding/{slug}', 'biddingInfo')->name('bidding');

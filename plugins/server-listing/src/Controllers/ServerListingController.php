@@ -105,9 +105,12 @@ class ServerListingController extends Controller
 
         $myServers = ServerListing::where('user_id', Auth::id())
             ->withCount('favorites')
+            ->with('bids', function ($query) {
+                $query->whereMonth('bidding_at', now()->month)
+                    ->whereYear('bidding_at', now()->year);
+            })
             ->orderBy('server_rank', 'asc')
             ->get();
-
         return view('server-listing::user.server_listing', compact('myServers'));
     }
     public function my_favorite_servers()

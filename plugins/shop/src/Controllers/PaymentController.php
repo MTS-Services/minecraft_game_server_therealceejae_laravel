@@ -3,6 +3,7 @@
 namespace Azuriom\Plugin\Shop\Controllers;
 
 use Azuriom\Http\Controllers\Controller;
+use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\Shop\Cart\Cart;
 use Azuriom\Plugin\Shop\Models\Gateway;
 use Azuriom\Plugin\Shop\Models\Payment;
@@ -65,7 +66,11 @@ class PaymentController extends Controller
         session()->forget('payment_transaction_id');
 
         if ($transactionId) {
-            Payment::where('transaction_id', $transactionId)->update(['status' => 'completed']);
+            $payment = Payment::where('transaction_id', $transactionId)->first();
+            $payment->update(['status' => 'completed']);
+            // if ($payment->bid_id !== null) {
+            //     $bid = ServerBid::where('id', $payment->bid_id)->update(['status' => 'completed']);
+            // }
         }
 
         $response = $gateway->paymentMethod()->success($request);
