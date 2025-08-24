@@ -95,3 +95,7 @@ Route::resource('posts.comments', PostCommentController::class)
     ->middleware(['auth', 'verified'])->only(['store', 'destroy']);
 
 Route::get('/{path}', [FallbackController::class, 'get'])->where('path', '.*')->name('pages.show')->fallback();
+
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');

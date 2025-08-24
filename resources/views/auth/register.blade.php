@@ -128,6 +128,20 @@
         .backgroundredsss {
             background-color: #3b82f6 !important;
         }
+
+        [data-bs-theme="dark"] .card-body {
+            background-color: #1f2937 !important;
+            color: #f8f8f8 !important;
+        }
+
+        [data-bs-theme="dark"] label {
+            color: #f8f8f8 !important;
+        }
+
+        [data-bs-theme="dark"] input {
+            background-color: #1f2937 !important;
+            color: #f8f8f8 !important;
+        }
     </style>
 @endpush
 @section('content')

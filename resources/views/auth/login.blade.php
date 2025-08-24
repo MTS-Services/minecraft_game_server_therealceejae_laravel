@@ -131,6 +131,20 @@
 
 
         }
+
+        [data-bs-theme="dark"] .card-body {
+            background-color: #1f2937 !important;
+            color: #f8f8f8 !important;
+        }
+
+        [data-bs-theme="dark"] label {
+            color: #f8f8f8 !important;
+        }
+
+        [data-bs-theme="dark"] input {
+            background-color: #1f2937 !important;
+            color: #f8f8f8 !important;
+        }
     </style>
 @endpush
 
@@ -178,16 +192,7 @@
                                 </div>
 
                                 <!-- Terms Checkbox -->
-                                {{-- <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="agreeToTerms"
-                                            name="agreeToTerms" required>
-                                        <label class="form-check-label" for="agreeToTerms">
-                                            I agree to the <a href="#" class="text-primary">Terms of Service</a> and
-                                            <a href="#" class="text-primary">Privacy Policy</a>
-                                        </label>
-                                    </div>
-                                </div> --}}
+
                                 @includeWhen($captcha, 'elements.captcha', ['center' => true])
                                 <div class="col-12 pt-3">
                                     <button type="submit" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">
