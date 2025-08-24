@@ -77,6 +77,91 @@
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
         }
     </style>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .footer {
+            background-color: #212529;
+            /* Dark footer background */
+            color: #f8f9fa;
+            padding: 2rem 0;
+            margin-top: auto;
+            /* Pushes footer to the bottom */
+            border-top: 5px solid #ff8c00;
+        }
+
+        .footer h5 {
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .footer a {
+            color: #f8f9fa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ffc107;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+            color: #f8f9fa;
+            transition: transform 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.1);
+        }
+
+        .social-links .fa-facebook-square:hover {
+            color: #3b5998;
+        }
+
+        .social-links .fa-twitter-square:hover {
+            color: #00acee;
+        }
+
+        .social-links .fa-instagram-square:hover {
+            color: #e4405f;
+        }
+
+        .social-links .fa-linkedin:hover {
+            color: #0077b5;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767.98px) {
+            .footer-nav {
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .social-links {
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column bg-body-secondary" @if (dark_theme()) data-bs-theme="dark" @endif>
@@ -95,19 +180,39 @@
         @yield('app')
     </div>
 
-    <footer class="text-center text-bg-dark mt-auto py-4">
-        <div class="copyright">
-            <div class="container">
-                <p>{{ __('Copyright © ' . date('Y') . ' The Real Ceejae - All Rights Reserved.') }} | @lang('messages.copyright')
-                </p>
-
-                @foreach (social_links() as $link)
-                    <a href="{{ $link->value }}" title="{{ $link->title }}" target="_blank"
-                        rel="noopener noreferrer" data-bs-toggle="tooltip"
-                        class="d-inline-block mx-1 p-2 rounded-circle" style="background: {{ $link->color }}">
-                        <i class="{{ $link->icon }} text-white"></i>
-                    </a>
-                @endforeach
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="footer-logo">The Real Ceejae</h5>
+                    <p class="text-secondary">Your trusted source for Minecraft servers.</p>                    
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h5>Navigation</h5>
+                            <ul class="list-unstyled footer-nav">
+                                <li><a href="{{ route('home') }}">Home</a></li>
+                                <li><a href="{{ route('about') }}">About</a></li>
+                                <li><a href="{{ route('server-listing.search') }}">Search</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Legal</h5>
+                            <ul class="list-unstyled footer-nav">
+                                <li><a href="{{ route('terms-condition') }}">Terms & Conditions</a></li>
+                                <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
+                                <li><a href="{{ route('faqs') }}">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: #555;">
+            <div class="row">
+                <div class="col text-center">
+                    <p class="mb-0 text-muted">Copyright &copy; 2024 The Real Ceejae - All Rights Reserved.</p>
+                </div>
             </div>
         </div>
     </footer>
