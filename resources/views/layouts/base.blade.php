@@ -161,6 +161,10 @@
                 text-align: center;
             }
         }
+
+        .footer .text-muted {
+            color: #f8f9fa !important;
+        }
     </style>
 </head>
 
@@ -185,7 +189,7 @@
             <div class="row">
                 <div class="col-md-4 mb-4 mb-md-0">
                     <h5 class="footer-logo">The Real Ceejae</h5>
-                    <p class="text-secondary">Your trusted source for Minecraft servers.</p>                    
+                    <p class="text-secondary">Your trusted source for Minecraft servers.</p>
                 </div>
                 <div class="col-md-8">
                     <div class="row">
