@@ -154,7 +154,7 @@
                         <h2 class="accordion-header" id="flush-headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                <i class="fas fa-question-circle me-3"></i>What is {{ config('app.name') }}?
+                                <i class="fas fa-question-circle me-3"></i>What is {{ site_name() }}?
                             </button>
                         </h2>
                         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"

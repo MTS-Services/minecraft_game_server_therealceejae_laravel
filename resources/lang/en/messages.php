@@ -112,7 +112,7 @@ return [
     'servers' => 'Servers',
     'news' => 'News',
     'welcome' => 'Welcome on :name',
-    'copyright' => 'Powered by <a href="https://therealceejae.com" target="_blank" rel="noopener noreferrer">The Real Ceejae</a>.',
+    'copyright' => 'Powered by <a href="https://miencraftserverlist.com" target="_blank" rel="noopener noreferrer">MiencraftServerList</a>.',
 
     'maintenance' => [
         'title' => 'Maintenance',

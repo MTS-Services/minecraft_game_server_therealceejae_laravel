@@ -134,15 +134,15 @@
         <div class="main-container">
             <div class="header-section">
                 <h1><i class="fas fa-user-shield me-3"></i>Privacy Policy</h1>
-                <p class="lead mb-0">How we protect your data at {{ config('app.name') }}</p>
+                <p class="lead mb-0">How we protect your data at {{ site_name() }}</p>
             </div>
 
             <div class="p-4 border-top border-2">
                 <p>We collect only the following data for the use of <span
-                        class="highlight">"{{ config('app.name') }}"</span>. We
+                        class="highlight">"{{ site_name() }}"</span>. We
                     never sell your personal information to third parties. If you have any questions or concerns regarding
                     our privacy policy, please contact us at: <a href=""
-                        class="contact-link">contact@{{ config('app.name') }}</a></p>
+                        class="contact-link">contact@{{ site_name() }}</a></p>
                 <div class="last-revision text-muted">
                     <strong>Last Revision:</strong> March 17th, 2024
                 </div>

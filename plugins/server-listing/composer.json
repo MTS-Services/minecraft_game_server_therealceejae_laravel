@@ -1,7 +1,7 @@
 {
     "name": "azuriom/server-listing",
     "type": "azuriom-plugin",
-    "description": "Plugin for The Real Ceejae's Server-Listing.",
+    "description": "Plugin for Minecart's Server-Listing.",
     "autoload": {
         "psr-4": {
             "Azuriom\\Plugin\\ServerListing\\": "src/"

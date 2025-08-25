@@ -134,16 +134,16 @@
         <div class="main-container">
             <div class="header-section">
                 <h1><i class="fas fa-file-contract me-3"></i>Terms of Service</h1>
-                <p class="lead mb-0">The rules and conditions for using {{ config('app.name') }}</p>
+                <p class="lead mb-0">The rules and conditions for using {{ site_name() }}</p>
             </div>
 
             <div class="p-4 border-top border-2">
                 <p>Welcome to our website. If you continue to browse and use this website, you are
                     agreeing to comply with
                     and be bound by the following terms and conditions of use, which together with our privacy policy govern
-                    {{ config('app.name') }}'s relationship with you in relation to this website.</p>
+                    {{ site_name() }}'s relationship with you in relation to this website.</p>
                 <div class="intro-text alert alert-warning">
-                    <p class="mb-0">The term '{{ config('app.name') }}' or 'us' or 'we' refers to the owner of the
+                    <p class="mb-0">The term '{{ site_name() }}' or 'us' or 'we' refers to the owner of the
                         website. The
                         term 'you' refers to the user or viewer of our website.</p>
                 </div>
@@ -155,7 +155,7 @@
                     <h3 class="section-card-header">
                         User Content
                     </h3>
-                    <p>By submitting any kind of content (text, image, URL) on {{ config('app.name') }}, you agree to take
+                    <p>By submitting any kind of content (text, image, URL) on {{ site_name() }}, you agree to take
                         full
                         responsability for the content you submit. You also accept that we are not responsible for what you
                         publish on our website. You agree that the content you publish is in compliance with all applicable

@@ -363,7 +363,7 @@
     <div class="main-content pb-5">
         <div class="about-header">
             <div class="about-header-content">
-                <h1>About {{ config('app.name') }}</h1>
+                <h1>About {{ site_name() }}</h1>
                 <p class="lead">Don't break blocks alone anymore!</p>
                 <a href="{{ route('login') }}" class="join-button">Join Now!</a>
             </div>
@@ -372,12 +372,12 @@
         <div class="container">
             <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
                 <p id="main-text">
-                    <strong>{{ config('app.name') }}</strong> is the most popular server list and tracker for Minecraft. Its
+                    <strong>{{ site_name() }}</strong> is the most popular server list and tracker for Minecraft. Its
                     goal is
                     to
                     provide an efficient way for players to find a server that suits their needs and also for server owners
                     to
-                    get more players on their servers. {{ config('app.name') }} is part of Listforge.
+                    get more players on their servers. {{ site_name() }} is part of Listforge.
                 </p>
             </div>
 

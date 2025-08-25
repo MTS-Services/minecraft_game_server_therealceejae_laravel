@@ -188,7 +188,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="footer-logo">The Real Ceejae</h5>
+                    <h5 class="footer-logo">{{ site_name() }}</h5>
                     <p class="text-secondary">Your trusted source for Minecraft servers.</p>
                 </div>
                 <div class="col-md-8">
@@ -215,7 +215,7 @@
             <hr class="my-4" style="border-color: #555;">
             <div class="row">
                 <div class="col text-center">
-                    <p class="mb-0 text-muted">Copyright &copy; 2024 The Real Ceejae - All Rights Reserved.</p>
+                    <p class="mb-0 text-muted">Copyright &copy; 2024 {{ site_name() }} - All Rights Reserved.</p>
                 </div>
             </div>
         </div>

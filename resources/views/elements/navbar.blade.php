@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark py-3">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
-            {{ __('The Real Ceejae') }}
+            {{ site_name() }}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
             aria-controls="navbar" aria-expanded="false" aria-label="{{ trans('messages.nav.toggle') }}">

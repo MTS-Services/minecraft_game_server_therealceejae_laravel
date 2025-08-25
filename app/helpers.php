@@ -148,6 +148,16 @@ if (!function_exists('site_name')) {
     }
 }
 
+if (!function_exists('site_url')) {
+    /**
+     * Return the URL of the website.
+     */
+    function site_url(): string
+    {
+        return setting('url', config('app.url'));
+    }
+}
+
 if (!function_exists('image_url')) {
     /**
      * Get the URL of the given image, in the public storage.
