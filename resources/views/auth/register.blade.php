@@ -151,7 +151,7 @@
                 <div class="card registration-card shadow-lg border-0 margintopwhites" style="background-color: #f8fafc;">
                     <div class="card-header text-center pb-4 bg-transparent border-0 backgroundredsss">
                         <div class="my-3">
-                            <img src="https://placehold.co/150x150" alt="Minecraft MP Logo" class="mx-auto d-block"
+                            <img src="{{ site_logo() }}" alt="{{ site_name() }}" class="mx-auto d-block"
                                 style="width: 80px; height: 80px; border-radius: 50%;">
                         </div>
                         <h1 class="card-title h2 mb-2 text-white">{{ trans('auth.register_title') }}</h1>

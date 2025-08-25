@@ -54,10 +54,10 @@
             }
 
             /* .container {
-                                                        max-width: 1200px;
-                                                        margin: 0 auto;
-                                                        padding: 2rem;
-                                                    } */
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                                padding: 2rem;
+                                                                            } */
 
             /* Header & Navbar */
             .about-header {
@@ -363,6 +363,8 @@
     <div class="main-content pb-5">
         <div class="about-header">
             <div class="about-header-content">
+                <img src="{{ site_logo() }}" alt="{{ site_name() }}" class="about-logo"
+                    style="width: 100px; height: 100px; border-radius: 50%;">
                 <h1>About {{ site_name() }}</h1>
                 <p class="lead">Don't break blocks alone anymore!</p>
                 <a href="{{ route('login') }}" class="join-button">Join Now!</a>
