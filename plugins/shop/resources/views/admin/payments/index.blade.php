@@ -48,7 +48,9 @@
                                         href="{{ route('admin.users.edit', $payment->user) }}">{{ $payment->user->name }}</a>
                                 </td>
                                 <td>
-                                    {{ $payment?->bid?->serverListing?->name }}
+                                    <a href="{{ route('server-listing.details', $payment?->bid?->serverListing?->slug) }}">
+                                        {{ $payment?->bid?->serverListing?->name }}
+                                    </a>
                                 </td>
                                 <td>{{ $payment->formatPrice() }}</td>
                                 <td>{{ $payment->getTypeName() }}</td>

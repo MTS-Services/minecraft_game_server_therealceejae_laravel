@@ -110,10 +110,14 @@
                             <div class="card-body row ">
                                 <span class="col-6 col-md">
                                     <i class="bi bi-arrows-move sortable-handle"></i>
-                                    {{ $server->user->name }}
+                                    <a href="{{ route('admin.users.edit', $server?->user?->id) }}">
+                                        {{ $server->user->name }}
+                                    </a>
                                 </span>
                                 <span class="col-6 col-md">
-                                    {{ $server->name }}
+                                    <a href="{{ route('server-listing.details', $server->slug) }}">
+                                        {{ $server->name }}
+                                    </a>
                                 </span>
                                 <span class="col-6 col-md">
                                     {{ $server->country?->name }}

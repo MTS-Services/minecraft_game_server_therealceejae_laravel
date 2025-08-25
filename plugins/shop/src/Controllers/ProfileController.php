@@ -17,6 +17,7 @@ class ProfileController extends Controller
         $user = $request->user();
         $payments = Payment::whereBelongsTo($user)
             ->scopes(['notPending', 'withRealMoney'])
+            ->with(['user', 'bid.serverListing'])
             ->latest()
             ->get();
         // dd($payments);

@@ -199,14 +199,6 @@
             animation: textShine 3s ease-in-out infinite;
         }
 
-        /* New premium table classes */
-
-        [data-bs-theme="dark"] .payments-card {
-            background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box,
-                linear-gradient(45deg, var(--primary-gold), var(--primary-orange)) border-box;
-        }
-
-
         .card-header-title {
             background: linear-gradient(135deg, #f3e5f5, #e3f2fd);
             padding: 1.5rem;
@@ -244,16 +236,21 @@
             background-color: var(--bg-dark);
         }
 
+        [data-bs-theme="dark"] .payments-card-row {
+            background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box,
+                linear-gradient(45deg, var(--primary-gold), var(--primary-orange)) border-box;
+            color: var(--text-white);
+        }
+
         .payments-card-row:last-child {
             border-bottom: none;
+            border-radius: 0 0 25px 25px;
         }
 
         .col-text-white {
             color: var(--text-white)
         }
     </style>
-
-    {{-- <h1 class="text-center">{{ trans('shop::messages.profile.payments') }}</h1> --}}
 
     {{-- Payments Card - Updated to use premium design --}}
     <div class="payments-card">
@@ -264,29 +261,38 @@
 
         @if (!$payments->isEmpty())
             <div class="payments-card-body">
-                {{-- Refactored Payments "Table" --}}
+                {{--
+                    Refactored Payments "Table"
+                    Corrected column widths to ensure the row totals 12 on all screen sizes
+                --}}
                 <div
                     class="d-flex flex-wrap text-white text-uppercase fw-bold text-center p-3 payments-card-header text-center">
                     <div class="col-1 col-md-1">#</div>
-                    <div class="col-2 col-md-2">{{ trans('shop::messages.fields.price') }}</div>
-                    <div class="col-2 col-md-2">{{ trans('messages.fields.type') }}</div>
-                    <div class="col-2 col-md-2">{{ trans('messages.fields.status') }}</div>
-                    <div class="col-2 col-md-2">{{ trans('shop::messages.fields.payment_id') }}</div>
-                    <div class="col-3 col-md-3">{{ trans('messages.fields.date') }}</div>
+                    <div class="col-2 col-md-1">{{ trans('shop::messages.fields.price') }}</div>
+                    <div class="col-3 col-md-3">{{ __('Server Name') }}</div>
+                    <div class="col-1 col-md-1">{{ trans('messages.fields.type') }}</div>
+                    <div class="col-2 col-md-1">{{ trans('messages.fields.status') }}</div>
+                    <div class="col-3 col-md-3">{{ trans('shop::messages.fields.payment_id') }}</div>
+                    <div class="d-none d-md-block col-md-2">{{ trans('messages.fields.date') }}</div>
                 </div>
                 @foreach ($payments as $payment)
                     <div class="payments-card-row d-flex flex-wrap text-center">
                         <div class="col-1 col-md-1 fw-bold">{{ $loop->iteration }}</div>
-                        <div class="col-2 col-md-2">{{ $payment->formatPrice() }}</div>
-                        <div class="col-2 col-md-2">{{ $payment->getTypeName() }}</div>
-                        <div class="col-2 col-md-2">
+                        <div class="col-2 col-md-1">{{ $payment->formatPrice() }}</div>
+                        {{-- Placeholder for a real server name variable, update this --}}
+                        <div class="col-3 col-md-3">
+                            <a href="{{ route('server-listing.details', $payment?->bid?->serverListing?->slug) }}">
+                                {{ $payment?->bid?->serverListing?->name }}</a>
+                        </div>
+                        <div class="col-1 col-md-1">{{ $payment->getTypeName() }}</div>
+                        <div class="col-2 col-md-1">
                             <span class="badge status-badge bg-{{ $payment->statusColor() }}">
                                 {{ trans('shop::admin.payments.status.' . $payment->status) }}
                             </span>
                         </div>
-                        <div class="col-2 col-md-2">{{ $payment->transaction_id ?? trans('messages.unknown') }}
+                        <div class="col-3 col-md-3">{{ $payment->transaction_id ?? trans('messages.unknown') }}
                         </div>
-                        <div class="col-3 col-md-3">{{ format_date($payment->created_at, true) }}</div>
+                        <div class="d-none d-md-block col-md-2">{{ format_date($payment->created_at, true) }}</div>
                     </div>
                 @endforeach
             </div>
@@ -311,35 +317,35 @@
                 {{-- Refactored Subscriptions "Table" --}}
                 <div class="payments-card-header d-flex flex-wrap text-white text-uppercase fw-bold text-center p-3">
                     <div class="col-1 col-md-1">#</div>
-                    <div class="col-1 col-md-1">{{ trans('shop::messages.fields.price') }}</div>
+                    <div class="col-2 col-md-1">{{ trans('shop::messages.fields.price') }}</div>
                     @if (!use_site_money())
-                        <div class="col-1 col-md-1">{{ trans('messages.fields.type') }}</div>
+                        <div class="col-2 col-md-1">{{ trans('messages.fields.type') }}</div>
                     @endif
                     <div class="col-2 col-md-2">{{ trans('shop::messages.fields.package') }}</div>
-                    <div class="col-1 col-md-1">{{ trans('messages.fields.status') }}</div>
-                    <div class="col-2 col-md-2">{{ trans('shop::messages.fields.subscription_id') }}</div>
-                    <div class="col-1 col-md-1">{{ trans('messages.fields.date') }}</div>
-                    <div class="col-2 col-md-2">{{ trans('shop::messages.fields.renewal_date') }}</div>
+                    <div class="col-2 col-md-1">{{ trans('messages.fields.status') }}</div>
+                    <div class="d-none d-md-block col-md-2">{{ trans('shop::messages.fields.subscription_id') }}</div>
+                    <div class="col-2 col-md-1">{{ trans('messages.fields.date') }}</div>
+                    <div class="d-none d-md-block col-md-2">{{ trans('shop::messages.fields.renewal_date') }}</div>
                     <div class="col-1 col-md-1">{{ trans('messages.fields.action') }}</div>
                 </div>
                 @foreach ($subscriptions as $subscription)
                     <div class="payments-card-row d-flex flex-wrap text-center">
                         <div class="col-1 col-md-1 fw-bold">{{ $loop->iteration }}</div>
-                        <div class="col-1 col-md-1">{{ $subscription->formatPrice() }}</div>
+                        <div class="col-2 col-md-1">{{ $subscription->formatPrice() }}</div>
                         @if (!use_site_money())
-                            <div class="col-1 col-md-1">{{ $subscription->getTypeName() }}</div>
+                            <div class="col-2 col-md-1">{{ $subscription->getTypeName() }}</div>
                         @endif
                         <div class="col-2 col-md-2">
                             {{ $subscription->package?->name ?? trans('messages.unknown') }}</div>
-                        <div class="col-1 col-md-1">
+                        <div class="col-2 col-md-1">
                             <span class="badge status-badge bg-{{ $subscription->statusColor() }}">
                                 {{ trans('shop::admin.subscriptions.status.' . $subscription->status) }}
                             </span>
                         </div>
-                        <div class="col-2 col-md-2">
+                        <div class="d-none d-md-block col-md-2">
                             {{ $subscription->subscription_id ?? trans('messages.unknown') }}</div>
-                        <div class="col-1 col-md-1">{{ format_date($subscription->created_at) }}</div>
-                        <div class="col-2 col-md-2">{{ format_date($subscription->ends_at) }}</div>
+                        <div class="col-2 col-md-1">{{ format_date($subscription->created_at) }}</div>
+                        <div class="d-none d-md-block col-md-2">{{ format_date($subscription->ends_at) }}</div>
                         <div class="col-1 col-md-1">
                             @if ($subscription->isActive() && !$subscription->isCanceled())
                                 <form action="{{ route('shop.subscriptions.destroy', $subscription) }}" method="POST">
