@@ -1,6 +1,6 @@
 @extends('admin.layouts.admin')
 
-@section('title', trans('server-listing::admin.bid.title'))
+@section('title', trans('server-listing::messages.winners.title'))
 
 @push('footer-scripts')
     <script src="{{ asset('vendor/sortablejs/Sortable.min.js') }}"></script>
@@ -28,7 +28,6 @@
                 createAlert('danger', error.response.data.message || 'Something went wrong.', true);
             });
         }
-
         document.querySelectorAll('.sortable-list').forEach(function(el) {
             Sortable.create(el, {
                 animation: 150,
@@ -38,7 +37,7 @@
                     updateOrder(); // call axios automatically after reorder
                 }
             });
-        });
+        })
     </script>
 @endpush
 
@@ -46,15 +45,8 @@
 
     <div class="card shadow mb-4">
         <div class="card-header">
-            <form action="{{ route('server-listing.admin.bids.index') }}" method="GET">
+            <form action="{{ route('server-listing.admin.bids.winners') }}" method="GET">
                 <div class="input-group">
-                    <select name="year" class="form-select">
-                        @for ($year = 2025; $year <= now()->year; $year++)
-                            <option value="{{ $year }}"
-                                {{ request('year') == $year ? 'selected' : (!request('year') && $year == now()->year ? 'selected' : '') }}>
-                                {{ $year }}</option>
-                        @endfor
-                    </select>
                     <select name="month" class="form-select">
                         @for ($month = 1; $month <= 12; $month++)
                             <option value="{{ $month }}"
@@ -62,12 +54,17 @@
                                 {{ date('F', mktime(0, 0, 0, $month)) }}</option>
                         @endfor
                     </select>
-                    <select name="status" class="form-select">
-                        <option value="all">All Status</option>
-                        @foreach (Azuriom\Plugin\ServerListing\Models\ServerBid::getStatusList() as $value => $label)
-                            <option value="{{ $value }}" @selected(request('status') == $value)>
-                                {{ $label }}</option>
-                        @endforeach
+                    <select name="year" class="form-select">
+                        @for ($year = 2025; $year <= now()->year; $year++)
+                            <option value="{{ $year }}"
+                                {{ request('year') == $year ? 'selected' : (!request('year') && $year == now()->year ? 'selected' : '') }}>
+                                {{ $year }}</option>
+                        @endfor
+                    </select>
+                    <select name="payment" class="form-select">
+                        <option value="all" {{ request('payment') == 'all' ? 'selected' : '' }}>All</option>
+                        <option value="paid" {{ request('payment') == 'paid' ? 'selected' : '' }}>Paid</option>
+                        <option value="unpaid" {{ request('payment') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
                     </select>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
                 </div>
@@ -95,10 +92,19 @@
                             <span class="col">
                                 {{ trans('server-listing::messages.fields.bid_at') }}
                             </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.winners.gateway') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.winners.payment_id') }}
+                            </span>
+                            <span class="col">
+                                {{ trans('server-listing::messages.winners.payment_at') }}
+                            </span>
                         </div>
                     </div>
                 </li>
-                @foreach ($bids as $bid)
+                @forelse ($bids as $bid)
                     <li class="sortable-item  sortable-parent" data-id="{{ $bid->id }}">
                         <div class="card">
                             <div class="card-body row ">
@@ -122,11 +128,25 @@
                                 <span class="col">
                                     {{ $bid->bidding_at->format('Y-m-d H:i:s') }}
                                 </span>
-
+                                <span class="col">
+                                    {{ $bid->payments->last()?->gateway_type ?? trans('server-listing::messages.winners.not_yet') }}
+                                </span>
+                                <span class="col">
+                                    {{ $bid->payments->last()?->transaction_id ?? trans('server-listing::messages.winners.not_yet') }}
+                                </span>
+                                <span class="col">
+                                    {{ $bid->payments->last()?->created_at->format('Y-m-d H:i:s') ?? trans('server-listing::messages.winners.not_yet') }}
+                                </span>
                             </div>
                         </div>
                     </li>
-                @endforeach
+                @empty
+                    <div class="col">
+                        <div class="alert alert-info text-center" role="alert">
+                            <i class="bi bi-info-circle"></i> {{ trans('server-listing::messages.winners.empty') }}
+                        </div>
+                    </div>
+                @endforelse
             </ol>
             {{ $bids->links() }}
             {{-- <a class="btn btn-primary" href="{{ route('server-listing.admin.tags.create') }}">

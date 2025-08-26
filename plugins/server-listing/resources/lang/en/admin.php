@@ -20,6 +20,7 @@ return [
         'statistics' => 'Statistics',
         'categories' => 'Categories',
         'bids' => 'Bids',
+        'winners' => 'Winners',
     ],
 
     'server' => [
@@ -57,6 +58,8 @@ return [
         'this_month_bid_participants' => 'This Month Bid Participants',
         'this_month_top_10_total_bids' => 'This Month Winners Bid Amount',
         'this_month_total_bids' => 'This Month Total Bids Amount',
+        'this_month_total_bids_payments' => 'This Month’s Bid Payout',
+        'total_bids_payments' => 'Total Bid Payout',
     ],
 
     'permissions' => [

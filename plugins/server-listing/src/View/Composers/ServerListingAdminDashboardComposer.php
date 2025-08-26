@@ -5,6 +5,7 @@ namespace Azuriom\Plugin\ServerListing\View\Composers;
 use Azuriom\Extensions\Plugin\AdminDashboardCardComposer;
 use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\ServerListing\Models\ServerListing;
+use Azuriom\Plugin\Shop\Models\Payment;
 use Illuminate\Support\Facades\Gate;
 
 class ServerListingAdminDashboardComposer extends AdminDashboardCardComposer
@@ -44,6 +45,25 @@ class ServerListingAdminDashboardComposer extends AdminDashboardCardComposer
                 'color' => 'info',
                 'name' => trans('server-listing::admin.card.this_month_total_bids'),
                 'value' => "$" . ServerBid::whereMonth('bidding_at', now()->month)->sum('amount'),
+                'icon' => 'bi bi-cash-coin',
+            ],
+            'this_month_total_bids_paid_amount' => [
+                'color' => 'info',
+                'name' => trans('server-listing::admin.card.this_month_total_bids_payments'),
+                'value' => "$" . ServerBid::whereHas('payments', function ($query) {
+                    $query->where('status', 'completed');
+                })
+                    ->whereMonth('bidding_at', now()->month)
+                    ->sum('amount'),
+                'icon' => 'bi bi-cash-coin',
+            ],
+            'total_bids_paid_amount' => [
+                'color' => 'info',
+                'name' => trans('server-listing::admin.card.total_bids_payments'),
+                'value' => "$" . ServerBid::whereHas('payments', function ($query) {
+                    $query->where('status', 'completed');
+                })
+                    ->sum('amount'),
                 'icon' => 'bi bi-cash-coin',
             ],
         ];

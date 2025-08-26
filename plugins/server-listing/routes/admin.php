@@ -41,6 +41,7 @@ Route::controller(TagController::class)->name('tags.')->prefix('tags')->group(fu
 Route::controller(BidController::class)->name('bids.')->prefix('bids')->group(function () {
     Route::get('/index', 'index')->name('index');
     Route::post('/bids/update-order', 'updateOrder')->name('update-order');
+    Route::get('/winners', 'winners')->name('winners');
 });
 
 Route::get('votes', [VoteManagementController::class, 'index'])->name('votes');

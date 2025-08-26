@@ -24,6 +24,16 @@ return [
         'version' => 'Server Version',
     ],
 
+    'winners' => [
+        'title' => 'Top 10 Winners',
+        'empty' => 'No Winners found',
+        'payment_at' => 'Payment At',
+        'payment_id' => 'Payment Id',
+        'gateway' => 'Gateway',
+        'not_yet' => 'Not yet paid',
+    ],
+
+
     'periods' => [
         'hours' => 'hours',
         'days' => 'days',

@@ -100,9 +100,34 @@ class BidController extends Controller
     }
 
 
+    public function winners(Request $request)
+    {
+        $bids = ServerBid::orderBy('amount', 'desc');
 
+        $data['per_page'] = 10;
+        if ($request->has('year')) {
+            $bids = $bids->whereYear('bidding_at', $request->year);
+        }
+        if ($request->has('month') && $request->month != 'all') {
+            $bids = $bids->whereMonth('bidding_at', $request->month);
+        }
+        if ($request->has('payment') && $request->payment != 'all') {
+            if ($request->payment === 'paid') {
+                // Filter for bids that have at least one completed payment.
+                $bids->whereHas('payments', function ($query) {
+                    $query->where('status', 'completed');
+                });
+            } elseif ($request->payment === 'unpaid') {
+                // Filter for bids that have no payments with 'completed' status.
+                $bids->whereDoesntHave('payments', function ($query) {
+                    $query->where('status', 'completed');
+                });
+            }
+        }
 
-
-
-
+        // This line seems redundant as you're already loading the relations.
+        // The where clause for 'status' should be applied before loading.
+        $data['bids'] = $bids->where('status', 'win')->with(['user', 'serverListing', 'payments'])->paginate($data['per_page'])->withQueryString();
+        return view('server-listing::admin.bids.winners', $data);
+    }
 }
