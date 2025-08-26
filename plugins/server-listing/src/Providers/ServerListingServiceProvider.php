@@ -5,6 +5,7 @@ namespace Azuriom\Plugin\ServerListing\Providers;
 use Azuriom\Extensions\Plugin\BasePluginServiceProvider;
 use Azuriom\Models\ActionLog;
 use Azuriom\Models\Permission;
+use Azuriom\Plugin\ServerListing\Console\Commands\BidWinners;
 use Azuriom\Plugin\ServerListing\Console\Commands\CleanupOldVotes;
 use Azuriom\Plugin\ServerListing\Models\ServerBid;
 use Azuriom\Plugin\ServerListing\Console\Commands\UpdateStatsDaily;
@@ -47,6 +48,7 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
         $this->commands([
             UpdateStatsDaily::class,
             CleanupOldVotes::class,
+            BidWinners::class,
         ]);
 
 
@@ -97,8 +99,15 @@ class ServerListingServiceProvider extends BasePluginServiceProvider
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('server-listing:update-stats-daily')->everyMinute();
-        $schedule->command('server-listing:votes_cleanup')->everyMinute();
+        $schedule->command('server-listing:update-stats-daily')->daily();
+        $schedule->command('server-listing:votes_cleanup')->monthly();
+
+        $schedule->command('server-listing:winners')
+            ->when(function () {
+                return paymentIsOpen();
+            })
+            ->daily()
+            ->runInBackground();
     }
 
     /**

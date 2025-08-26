@@ -522,7 +522,6 @@
             <div class="section-header d-flex align-items-center justify-content-between">
                 <span><i class="fas fa-gavel me-2"></i>Bidding Information</span>
                 <div class="d-flex align-items-center gap-2">
-
                     @if (biddingIsOpen())
                         @if (isset($bid))
                             <button type="button" class="btn-bidding float-end z-1" style="cursor: not-allowed" disabled
@@ -543,7 +542,6 @@
                     @endif
 
                     @if (isset($bid) && $bid->count() > 0)
-                        {{-- @dd($bid) --}}
                         @if (paymentIsOpen())
                             @if ($bid?->payments?->last()?->status == 'completed')
                                 <button type="button" class="btn-pay float-end" style="cursor: not-allowed" disabled
