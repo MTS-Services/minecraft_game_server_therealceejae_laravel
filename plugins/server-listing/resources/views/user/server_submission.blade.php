@@ -468,6 +468,44 @@
                 color: #020;
                 font-weight: 400;
             }
+
+            /* Banner Preview Styles */
+            .banner-preview-container {
+                position: relative;
+                width: 100%;
+                min-height: 120px;
+                border: 2px dashed var(--border-light);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                padding: 10px;
+            }
+            .banner-preview-container:hover {
+                border-color: var(--primary-blue);
+                background: var(--bg-secondary);
+            }
+
+            .preview-file-placeholder {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                color: var(--text-secondary);
+            }
+
+            .preview-file-placeholder .icon {
+                font-size: 2rem;
+            }
+
+            .preview-file-content {
+                max-width: 100%;
+                max-height: 180px;
+                object-fit: contain;
+                display: none; /* Initially hidden */
+            }
         </style>
     @endpush
 
@@ -513,6 +551,11 @@
                 const playersOnlineValue = document.getElementById('playersOnlineValue');
                 const serverVersionValue = document.getElementById('serverVersionValue');
                 const serverLogoPreview = document.getElementById('serverLogoPreview');
+                const bannerImageInput = document.getElementById('bannerImageInput');
+                const bannerPreviewImage = document.getElementById('bannerPreviewImage');
+                const bannerPreviewVideo = document.getElementById('bannerPreviewVideo');
+                const previewPlaceholder = document.getElementById('previewPlaceholder');
+
 
                 function toggleButtonState() {
                     if (serverIpInput.value.trim() === '') {
@@ -595,6 +638,41 @@
                             checkConnectionButton.disabled = false;
                             checkConnectionButton.innerHTML = 'Check Connection';
                         });
+                });
+
+                bannerImageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const fileURL = URL.createObjectURL(file);
+                        const fileType = file.type.split('/')[0];
+
+                        // Hide all preview elements first
+                        bannerPreviewImage.style.display = 'none';
+                        bannerPreviewVideo.style.display = 'none';
+                        previewPlaceholder.style.display = 'none';
+
+                        if (fileType === 'image') {
+                            bannerPreviewImage.src = fileURL;
+                            bannerPreviewImage.style.display = 'block';
+                            bannerPreviewImage.style.maxWidth = '100%';
+                            bannerPreviewImage.style.maxHeight = '180px';
+                        } else if (fileType === 'video') {
+                            bannerPreviewVideo.src = fileURL;
+                            bannerPreviewVideo.style.display = 'block';
+                            bannerPreviewVideo.style.maxWidth = '100%';
+                            bannerPreviewVideo.style.maxHeight = '180px';
+                            bannerPreviewVideo.play();
+                        }
+                    } else {
+                        // Reset when no file is selected
+                        previewPlaceholder.style.display = 'flex';
+                        bannerPreviewImage.style.display = 'none';
+                        bannerPreviewVideo.style.display = 'none';
+                        bannerPreviewVideo.pause();
+                        bannerPreviewVideo.currentTime = 0;
+                        URL.revokeObjectURL(bannerPreviewImage.src);
+                        URL.revokeObjectURL(bannerPreviewVideo.src);
+                    }
                 });
             });
         </script>
@@ -756,7 +834,6 @@
                     @enderror
                 </div>
             </div>
-            <!-- Additional Information Section -->
             <div class="form-section">
                 <div class="section-header">
                     <div class="section-icon">
@@ -797,24 +874,43 @@
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
                     </div>
+
                     <div class="mb-4 col">
                         <label for="bannerImageInput"
                             class="form-label">{{ trans('server-listing::messages.fields.banner_image') }}
                             <span class="text-danger">*</span></label>
-                        <input type="file" name="banner_image" value="{{ old('banner_image') }}"
-                            class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput"
-                            name="banner_image" accept="image/jpg,image/jpeg,image/png,image/gif"
-                            data-image-preview="bannerImagePreview">
+                        <div class="banner-preview-container">
+                            <input type="file" name="banner_image"
+                                class="form-control @error('banner_image') is-invalid @enderror" id="bannerImageInput" accept="image/jpg,image/jpeg,image/png,image/gif"
+                                hidden>
+                            <label for="bannerImageInput" class="position-absolute w-100 h-100"></label>
+                            <div id="previewPlaceholder" class="preview-file-placeholder">
+                                <span class="icon">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+                                <span class="text">Upload Banner</span>
+                            </div>
+                            <img id="bannerPreviewImage" class="preview-file-content" src="#" alt="Banner Preview">
+                            <video id="bannerPreviewVideo" class="preview-file-content" controls loop
+                                playsinline></video>
+                        </div>
                         <div class="form-text">{{ trans('server-listing::messages.placeholder.banner_image_text') }}
                         </div>
+                        {{-- <div class="alert alert-warning mb-3 mt-1" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                                <p class="mb-0" style="font-size: 14px;">For animated banners, you need to use MP4
+                                    format instead of GIF format.
+                                </p>
+                            </div>
+                            <p class="mb-0" style="font-size: 14px;">You can easily convert your GIF banner to MP4 here
+                                : <a href="https://ezgif.com/gif-to-mp4" target="_blank">https://ezgif.com/gif-to-mp4</a>
+                            </p>
+                        </div> --}}
 
                         @error('banner_image')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
-
-                        <img src="#" class="mt-2 img-fluid rounded img-preview d-none" alt="banner image"
-                            id="bannerImagePreview">
-
                     </div>
                 </div>
 
@@ -851,7 +947,6 @@
                 </div>
             </div>
 
-            <!-- Votifier Section -->
             <div class="form-section">
                 <div class="verification-method">
                     <div class="verification-header">
@@ -899,7 +994,6 @@
                 </div>
             </div>
 
-            <!-- TeamSpeak Section -->
             <div class="form-section">
                 <div class="verification-method">
                     <div class="verification-header">
@@ -931,7 +1025,6 @@
                 </div>
             </div>
 
-            <!-- Discord Section -->
             <div class="form-section">
                 <div class="verification-method">
                     <div class="verification-header">
@@ -981,7 +1074,6 @@
 
 
 
-            <!-- Additional Settings Section -->
             <div class="form-section">
                 <div class="section-header">
                     <div class="section-icon">
@@ -1075,7 +1167,6 @@
                 </div>
             </div>
 
-            <!-- Submit Section -->
             <div class="form-section text-center">
                 <div class="mb-4">
                     <h4 class="text-primary mb-3">Ready to Submit?</h4>
@@ -1101,102 +1192,5 @@
         </form>
 
     </div>
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6>Top Servers</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Best Survival</a></li>
-                        <li><a href="#">Top Creative</a></li>
-                        <li><a href="#">Popular PvP</a></li>
-                        <li><a href="#">Faction Wars</a></li>
-                        <li><a href="#">SkyBlock</a></li>
-                        <li><a href="#">Mini Games</a></li>
-                        <li><a href="#">Roleplay</a></li>
-                        <li><a href="#">Hardcore</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6>Top Cities</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">San Francisco</a></li>
-                        <li><a href="#">New York</a></li>
-                        <li><a href="#">Los Angeles</a></li>
-                        <li><a href="#">Chicago</a></li>
-                        <li><a href="#">Seattle</a></li>
-                        <li><a href="#">Miami</a></li>
-                        <li><a href="#">Dallas</a></li>
-                        <li><a href="#">Atlanta</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6>Top Countries</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">United States & America</a></li>
-                        <li><a href="#">United Kingdom</a></li>
-                        <li><a href="#">Germany</a></li>
-                        <li><a href="#">France</a></li>
-                        <li><a href="#">Canada</a></li>
-                        <li><a href="#">Australia</a></li>
-                        <li><a href="#">Netherlands</a></li>
-                        <li><a href="#">Sweden</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6>Our Sites</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">API Documentation</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-lg-6 mb-3">
-                    <h6>Premium Servers</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">HyperCraft Network - Ultimate Survival Experience</a></li>
-                        <li><a href="#">MegaCraft Hub - Premium Minigames Server</a></li>
-                        <li><a href="#">PixelWorld Adventures - Best Pixelmon Server</a></li>
-                        <li><a href="#">CraftWars PvP - Hardcore Faction Battles</a></li>
-                        <li><a href="#">SkyBlock Paradise with Custom Islands and more</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-6 mb-3">
-                    <h6>Latest Reviews</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">"Amazing server with friendly community!"</a></li>
-                        <li><a href="#">"Best survival server I've ever played on"</a></li>
-                        <li><a href="#">"Great custom plugins and active staff"</a></li>
-                        <li><a href="#">"Perfect for both beginners and pros"</a></li>
-                        <li><a href="#">"Unique features that keep me coming back"</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <p class="mb-0">&copy; 2025 Minecraft-MP.com. All Rights Reserved.</p>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <p class="mb-0">Powered by <strong>Azuriom</strong></p>
-                        <div class="mt-2">
-                            <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="me-3"><i class="fab fa-discord"></i></a>
-                            <a href="#" class="me-3"><i class="fab fa-github"></i></a>
-                            <a href="#"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 
 @endsection
