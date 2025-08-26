@@ -36,6 +36,9 @@
 
                 /* Spacing */
                 --spacing-md: .5rem;
+                --spacing-sm: 0.5rem;
+                --spacing-lg: 1.5rem;
+                --spacing-xl: 2rem;
 
                 /* Border Radius */
                 --border-radius-sm: 0.375rem;
@@ -63,145 +66,12 @@
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
 
-            .btn-orange {
-                background-color: var(--primary-green);
-                border-color: var(--primary-green);
-                color: white;
-            }
-
-            .btn-orange:hover {
-                background-color: #e55a2b;
-                border-color: #e55a2b;
-                color: white;
-            }
-
-            .server-rating {
-                color: var(--status-warning);
-            }
-
-            .status-online {
-                color: var(--status-online);
-                font-weight: bold;
-            }
-
-            .status-offline {
-                color: var(--status-offline);
-                font-weight: bold;
-            }
-
             .discord-widget {
                 background: #7289da;
                 color: var(--text-white);
                 border-radius: 0 0 5px 5px;
                 padding: 1rem;
                 text-align: center;
-            }
-
-            .stats-item {
-                border-right: 1px solid var(--border-light);
-                padding: 1rem;
-                text-align: center;
-            }
-
-            .stats-item:last-child {
-                border-right: none;
-            }
-
-            .stats-number {
-                font-size: 2rem;
-                font-weight: bold;
-                color: var(--primary-orange);
-            }
-
-            .minecraft-video {
-                position: relative;
-                width: 100%;
-                height: 300px;
-                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300"><rect fill="%2332CD32" width="800" height="300"/><text x="50%" y="40%" font-family="Arial" font-size="48" font-weight="bold" fill="white" text-anchor="middle">HOW TO</text><text x="50%" y="60%" font-family="Arial" font-size="48" font-weight="bold" fill="yellow" text-anchor="middle">INSTALL</text><text x="50%" y="80%" font-family="Arial" font-size="36" font-weight="bold" fill="blue" text-anchor="middle">Pixelmon</text></svg>') center/cover;
-                border-radius: 10px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .play-button {
-                width: 80px;
-                height: 80px;
-                background: rgba(255, 255, 255, 0.9);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2rem;
-                color: var(--primary-orange);
-            }
-
-            .server-info-item {
-                display: flex;
-                justify-content: space-between;
-                padding: 0.5rem 0;
-                border-bottom: 1px solid var(--border-light);
-            }
-
-            .server-info-item:last-child {
-                border-bottom: none;
-            }
-
-            .version-tags {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-                margin-top: 0.5rem;
-            }
-
-            .version-tag {
-                background-color: var(--text-secondary);
-                color: var(--text-white);
-                padding: 0.25rem 0.5rem;
-                border-radius: 3px;
-                font-size: 0.8rem;
-            }
-
-            .footer-custom {
-                background-color: var(--bg-darker);
-                color: var(--text-secondary);
-                padding: 3rem 0 1rem;
-                margin-top: 4rem;
-            }
-
-            .footer-links {
-                list-style: none;
-                padding: 0;
-            }
-
-            .footer-links li {
-                margin-bottom: 0.5rem;
-            }
-
-            .footer-links a {
-                color: var(--text-secondary);
-                text-decoration: none;
-            }
-
-            .footer-links a:hover {
-                color: var(--primary-orange);
-            }
-
-            .other-servers {
-                display: flex;
-                gap: 1rem;
-            }
-
-            .server-thumb {
-                width: 64px;
-                height: 64px;
-                background: var(--border-light);
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--text-secondary);
             }
 
             .custom-design {
@@ -358,52 +228,331 @@
                 z-index: 2;
             }
 
-            /* Responsive styles */
-            @media (max-width: 767.98px) {
-                .d-flex.flex-md-row {
-                    flex-direction: column !important;
+            /* Badges */
+            .version-badge {
+                background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+                border-radius: var(--border-radius-sm);
+                border: none;
+                font-weight: 600;
+            }
+
+            .status-badge {
+                background: var(--status-online);
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+                border-radius: 15px;
+                font-weight: 600;
+            }
+
+            .status-badge.offline {
+                background: var(--status-offline);
+            }
+
+            .player-count {
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: var(--primary-green);
+            }
+
+            .tag-badge {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.4rem;
+                border-radius: 10px;
+                margin: 1px;
+                font-weight: 500;
+            }
+
+            .copy-btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: var(--text-white);
+                font-size: 0.75rem;
+                padding: 0.2rem 0.4rem;
+                border-radius: var(--border-radius-sm);
+                backdrop-filter: blur(5px);
+                transition: all 0.2s ease;
+            }
+
+            .copy-btn:hover {
+                background: var(--primary-blue);
+                color: var(--text-white);
+            }
+
+            .premium-rank-badge {
+                background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+                color: var(--text-primary);
+                font-size: 0.75rem;
+                padding: 0.3rem 0.5rem;
+                border-radius: var(--border-radius-sm);
+                font-weight: 700;
+            }
+
+            .simple-server-badge {
+                background: linear-gradient(135deg, var(--bg-dark), var(--text-secondary));
+                padding: 0.3rem 0.5rem;
+                border-radius: var(--border-radius-sm);
+                font-size: 0.7rem;
+                color: white;
+            }
+
+            .mobile-server-card {
+                background: white;
+                border-radius: 15px;
+                margin-bottom: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                border: 2px solid var(--border-primary);
+            }
+
+            .mobile-server-header {
+                background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker));
+                color: white;
+                padding: 1rem;
+            }
+
+            .mobile-server-content {
+                padding: 1rem;
+            }
+
+            .mobile-server-banner {
+                width: 100%;
+                height: 120px;
+                border-radius: 10px;
+                overflow: hidden;
+                position: relative;
+                margin-bottom: 1rem;
+            }
+
+            .mobile-server-banner img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .mobile-banner-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+                padding: 0.5rem;
+                color: white;
+            }
+
+            .mobile-server-info {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .mobile-server-logo {
+                width: 50px;
+                height: 50px;
+                border-radius: 8px;
+                overflow: hidden;
+                border: 2px solid var(--border-light);
+                position: relative;
+            }
+
+            .mobile-server-logo img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .mobile-server-details h6 {
+                margin: 0;
+                font-weight: bold;
+                color: var(--text-primary);
+            }
+
+            .mobile-server-stats {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .mobile-stat-item {
+                text-align: center;
+            }
+
+            .mobile-stat-value {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: var(--primary-green);
+                display: block;
+            }
+
+            .mobile-stat-label {
+                font-size: 0.8rem;
+                color: var(--text-secondary);
+            }
+
+            .mobile-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+                margin-bottom: 1rem;
+            }
+
+            /* Dark Mode Adjustments */
+            [data-bs-theme="dark"] .server-row:hover {
+                background-color: var(--bg-dark);
+            }
+
+            [data-bs-theme="dark"] .mobile-server-card {
+                background: var(--bg-secondary);
+                border-color: var(--border-dark);
+            }
+
+            [data-bs-theme="dark"] .mobile-server-details h6 {
+                color: var(--text-white);
+            }
+
+            /* Animations */
+            @keyframes pulse {
+
+                0%,
+                100% {
+                    opacity: 1;
                 }
 
-                .server-logo-container,
-                .server-banner-container {
-                    margin-right: 0;
+                50% {
+                    opacity: 0.5;
+                }
+            }
+
+            .details-link {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                background: transparent;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 992px) {
+
+                /* Hide desktop table headers on tablet and mobile */
+                .desktop-table-header {
+                    display: none !important;
                 }
 
-                .server-banner-container {
-                    width: 100%;
-                    max-width: 100%;
+                /* Show mobile cards on tablet and mobile */
+                .desktop-server-row {
+                    display: none !important;
                 }
 
-                .server-logo-container {
-                    width: 80px;
-                    height: 80px;
-                    margin-bottom: 10px;
+                .mobile-server-row {
+                    display: block !important;
+                }
+            }
+
+            @media (min-width: 993px) {
+
+                /* Show desktop table on desktop */
+                .desktop-table-header {
+                    display: block !important;
                 }
 
-                .server-logo {
-                    width: 100%;
-                    height: 100%;
+                .desktop-server-row {
+                    display: block !important;
                 }
 
-                .server-row .col-md-2,
-                .server-row .col-md-4 {
-                    margin-bottom: 10px;
+                /* Hide mobile cards on desktop */
+                .mobile-server-row {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: 768px) {
+
+                /* Header adjustments */
+                .minecraft-header img {
+                    height: 120px;
                 }
 
-                .server-row .col-md-4 {
+                .minecraft-header .px-5 {
+                    padding-left: 1rem !important;
+                    padding-right: 1rem !important;
+                }
+
+                /* Filter form - stack vertically on mobile */
+                .filter_card .row.g-3>* {
+                    margin-bottom: 0.5rem;
+                }
+
+                .filter_card .col-md-4,
+                .filter_card .col-md-2,
+                .filter_card .col-md-1 {
                     width: 100%;
                     max-width: none;
                 }
 
-                .server-row .server-banner {
-                    width: 100%;
-                    height: auto;
-                    max-width: none;
+                /* Mobile server cards spacing */
+                .mobile-server-card {
+                    margin-bottom: 1.5rem;
                 }
 
-                .server-row .row {
-                    flex-direction: column;
-                    align-items: center;
+                .mobile-server-banner {
+                    height: 100px;
+                }
+
+                .mobile-server-logo {
+                    width: 45px;
+                    height: 45px;
+                }
+
+                .mobile-server-stats {
+                    grid-template-columns: 1fr 1fr 1fr;
+                    gap: 0.5rem;
+                }
+
+                .mobile-stat-value {
+                    font-size: 1rem;
+                }
+
+                .mobile-stat-label {
+                    font-size: 0.7rem;
+                }
+
+                /* Reduce spacing */
+                .container.content {
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                }
+
+                /* Card padding */
+                .card-header-custom {
+                    padding: 1rem;
+                }
+
+                .server-row {
+                    padding: 1rem 0.5rem;
+                }
+
+                /* Badge sizing */
+                .tag-badge {
+                    font-size: 0.65rem;
+                    padding: 0.15rem 0.3rem;
+                    margin: 0.1rem;
+                }
+
+                /* Copy button sizing */
+                .copy-btn {
+                    padding: 0.3rem 0.5rem;
+                    font-size: 0.7rem;
+                }
+
+                /* Player count sizing */
+                .player-count {
+                    font-size: 0.9rem;
                 }
             }
 
@@ -414,6 +563,64 @@
 
                 .server-row .server-logo {
                     margin-bottom: 10px;
+                }
+            }
+
+            @media (max-width: 480px) {
+
+                /* Extra small screens */
+                .mobile-server-stats {
+                    grid-template-columns: 1fr 1fr;
+                }
+
+                .mobile-server-banner {
+                    height: 80px;
+                }
+
+                .mobile-server-logo {
+                    width: 40px;
+                    height: 40px;
+                }
+
+                .container.content {
+                    margin-top: 1rem !important;
+                    margin-bottom: 1rem !important;
+                }
+
+                .mobile-banner-overlay {
+                    padding: 0.25rem;
+                }
+
+                .mobile-server-content {
+                    padding: 0.75rem;
+                }
+            }
+
+            /* Landscape mobile adjustments */
+            @media (max-width: 768px) and (orientation: landscape) {
+                .minecraft-header img {
+                    height: 80px;
+                }
+            }
+
+            /* Tablet specific adjustments */
+            @media (min-width: 769px) and (max-width: 992px) {
+                .mobile-server-banner {
+                    height: 140px;
+                }
+
+                .mobile-server-logo {
+                    width: 55px;
+                    height: 55px;
+                }
+
+                .mobile-stat-value {
+                    font-size: 1.3rem;
+                }
+
+                .mobile-server-stats {
+                    grid-template-columns: 1fr 1fr 1fr;
+                    gap: 1.5rem;
                 }
             }
         </style>
@@ -612,20 +819,20 @@
             </div>
         </div>
 
-        <div class="mt-4">
-            <div class="card-header-custom">
-                <i class="fas fa-play me-2"></i>Server Video
+        @if ($serverDetail->youtube_video_id)
+            <div class="mt-4">
+                <div class="card-header-custom">
+                    <i class="fas fa-play me-2"></i>Server Video
+                </div>
+                <div style="border-radius: 0 0 10px 10px; overflow: hidden">
+                    <iframe width="100%" height="641"
+                        src="https://www.youtube.com/embed/{{ $serverDetail->youtube_video_id }}"
+                        title="How to INSTALL PIXELMON! *FASTEST GUIDE* | Minecraft Pokemon Mod" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
             </div>
-            <div style="border-radius: 0 0 10px 10px; overflow: hidden">
-                <iframe width="100%" height="641"
-                    src="https://www.youtube.com/embed/{{ $serverDetail->youtube_video_id }}"
-                    title="How to INSTALL PIXELMON! *FASTEST GUIDE* | Minecraft Pokemon Mod" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-
-        </div>
-
+        @endif
         <div class="card mt-4">
             <div class="card-header card-header-custom">
                 <i class="fas fa-file-alt me-2"></i>About This Server
@@ -640,59 +847,161 @@
                 <i class="fas fa-server me-2"></i>Other Servers
             </div>
             <div class="card-body">
-                <div class="server-row">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <div class="d-flex align-items-center">
-                                <div class="server-logo me-3">
-                                    <img src="{{ asset('img/server-logo.png') }}" alt="Server Logo">
-                                </div>
-                                <div class="server-rank">
-                                    <div class="simple-server-badge">
-                                        <i class="bi bi-trophy text-white"></i>
-                                        <span class="fw-bold simple-server-text">#3</span>
+                @forelse ($relatedServers as $index => $server)
+
+                    <div class="server-row desktop-server-row">
+                        <a href="{{ route('server-listing.details', $server->slug) }}" class="details-link"></a>
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="server-logo me-3">
+                                        <img src="{{ $server->logo_image_url }}" alt="Server Logo">
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="server-banner">
-                                <video src="{{ asset('img/server-banner.mp4') }}" autoplay loop muted
-                                    class="w-100"></video>
-                                <div class="banner-overlay">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <span class="badge version-badge me-2">
-                                                <i class="bi bi-gear me-1"></i> 1.16.5
-                                            </span>
-                                            <i class="bi bi-flag me-1"></i>
-                                            <a class="text-white text-decoration-none" href="" target="_blank">
-                                                <small>play.dynamic-craft.com</small>
-                                            </a>
+                                    <div class="{{ $server->is_premium ? 'premium-rank' : 'server-rank' }}">
+                                        <div
+                                            class="{{ $server->is_premium ? 'premium-rank-badge' : 'simple-server-badge' }}">
+                                            <i
+                                                class="{{ $server->is_premium ? 'bi bi-gem text-black' : 'bi bi-trophy text-white' }} "></i>
+                                            <span
+                                                class="fw-bold {{ $server->is_premium ? 'premium-server-text' : 'simple-server-text' }}">#{{ $server->server_rank }}</span>
                                         </div>
-                                        <button class="btn btn-sm copy-btn" onclick="copyIP('play.dynamic-craft.com')">
-                                            <i class="bi bi-copy"></i>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="text-center">
-                                <span class="player-count">
-                                    500/1000
-                                </span>
+                            <div class="col-md-4">
+                                <div class="server-banner">
+                                    <img src="{{ $server->banner_image_url }}" alt="Server Banner">
+                                    <div class="banner-overlay">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge version-badge me-2">
+                                                    <i
+                                                        class="bi bi-gear me-1"></i>{{ remove_before_dash($server->minecraft_version) }}
+                                                </span>
+
+                                                <img style="height: 12px; width: 20px;" class="me-1"
+                                                    src="https://flagcdn.com/{{ strtolower($server?->country?->code) }}.svg"
+                                                    alt="">
+
+                                                <span class="text-white text-decoration-none">
+                                                    <small>{{ removeHttpFromUrl($server->server_ip) }}</small>
+                                                </span>
+                                            </div>
+                                            <button class="btn btn-sm copy-btn"
+                                                onclick="copyIP('{{ $server->server_ip }}')">
+                                                <i class="bi bi-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="text-center">
-                                <span class="badge status-badge">
-                                    <i class="bi bi-circle-fill me-1 pulse"></i> Online
-                                </span>
+                            <div class="col-md-2">
+                                <div class="text-center">
+                                    <span class="player-count">
+                                        {{ $server->current_players }}/{{ $server->max_players }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-center">
+                                    <span class="badge status-badge {{ $server->is_online ?: 'offline' }}">
+                                        <i
+                                            class="me-1 {{ $server->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>{{ __($server->online_label) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach ($server->serverTags as $tag)
+                                        <span
+                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="mobile-server-row">
+                        <div class="mobile-server-card">
+                            <div class="mobile-server-header">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="simple-server-badge me-2">
+                                            <i class="bi bi-trophy text-white"></i>
+                                            <span class="fw-bold">#{{ $index + 3 }}</span>
+                                        </div>
+                                        <h6 class="mb-0 text-white">
+                                            <i class="bi bi-server me-1"></i>{{ __('Server') }}
+                                        </h6>
+                                    </div>
+                                    <span class="badge status-badge {{ $server->is_online ?: 'offline' }}">
+                                        <i class="me-1 {{ $server->is_online ? 'pulse bi bi-circle-fill' : '' }}"></i>
+                                        {{ __($server->online_label) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mobile-server-content">
+                                <a href="{{ route('server-listing.details', $server->slug) }}" class="details-link"></a>
+
+                                <div class="mobile-server-banner">
+                                    <img src="{{ $server->banner_image_url }}" alt="Server Banner">
+                                    <div class="mobile-banner-overlay">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge version-badge me-2">
+                                                    <i
+                                                        class="bi bi-gear me-1"></i>{{ remove_before_dash($server->minecraft_version) }}
+                                                </span>
+                                                <img style="height: 10px; width: 16px;" class="me-1"
+                                                    src="https://flagcdn.com/{{ strtolower($server?->country?->code) }}.svg"
+                                                    alt="">
+                                            </div>
+                                            <button class="btn btn-sm copy-btn"
+                                                onclick="copyIP('{{ $server->server_ip }}')">
+                                                <i class="bi bi-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-server-info">
+                                    <div class="mobile-server-logo">
+                                        <img src="{{ $server->logo_image_url }}" alt="Server Logo">
+                                    </div>
+                                    <div class="mobile-server-details flex-grow-1">
+                                        <h6>{{ removeHttpFromUrl($server->server_ip) }}</h6>
+                                        <small class="text-muted">{{ __('Minecraft Server') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-server-stats">
+                                    <div class="mobile-stat-item">
+                                        <span class="mobile-stat-value player-count">{{ $server->current_players }}</span>
+                                        <small class="mobile-stat-label">{{ __('Online') }}</small>
+                                    </div>
+                                    <div class="mobile-stat-item">
+                                        <span class="mobile-stat-value player-count">{{ $server->max_players }}</span>
+                                        <small class="mobile-stat-label">{{ __('Max') }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="mobile-tags">
+                                    @foreach ($server->serverTags as $tag)
+                                        <span
+                                            class="badge tag-badge {{ Arr::random(tagsBgColors()) }} text-white">{{ $tag->name }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                @empty
+                    <div class="col">
+                        <div class="alert alert-warning text-center" role="alert">
+                            <i class="bi bi-info-circle"></i> {{ __('No Related Servers found') }}
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

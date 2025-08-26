@@ -29,7 +29,16 @@ class ServerListingController extends Controller
     public function details(string $slug)
     {
         $serverDetail = ServerListing::with(['user', 'serverTags', 'country', 'favorites'])->withCount('favorites')->where('slug', $slug)->firstOrFail();
-        return view('server-listing::details', compact('serverDetail'));
+
+        // releted server should be the same country and near server rank
+        $relatedServers = ServerListing::with(['user', 'serverTags', 'country', 'favorites'])
+            ->withCount('favorites')
+            ->where('country_id', $serverDetail->country_id)
+            ->whereNot('id', $serverDetail->id)
+            ->orderBy('server_rank', 'asc')
+            ->limit(5)
+            ->get();
+        return view('server-listing::details', compact(['serverDetail', 'relatedServers']));
     }
 
     public function submission()
